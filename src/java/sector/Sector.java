@@ -12,6 +12,8 @@ package sector;
 public class Sector {
     
     private int num;
-    private String nombre;
+    private float notas;
+    private String direccion;
+    private int id;
     
 }

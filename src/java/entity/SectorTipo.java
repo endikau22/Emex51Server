@@ -20,5 +20,4 @@ public enum SectorTipo implements Serializable{
     * Para especificar que el sector es criatura
     */
    CRIATURA;
-    
 }

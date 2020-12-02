@@ -129,5 +129,4 @@ public class Creature implements Serializable {
     public String toString() {
         return "creature.Creature[ idCriatura=" + idCriatura + " ]";
     }
-    
 }

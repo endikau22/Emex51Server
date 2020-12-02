@@ -8,15 +8,18 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import static javax.persistence.FetchType.EAGER;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author 2dam
  */
 @Entity
+@Table(name="boss",schema="emex51db")
+@XmlRootElement
 public class Boss extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,20 +31,14 @@ public class Boss extends User implements Serializable {
     /**
      * arraylist de los empleados que esta al cargo del jefe
      */
+    @OneToMany(mappedBy="boss", fetch=EAGER) 
     private ArrayList <Employee> empleado;
-    /**
-     * 
-     * @return id unico del jefe
-     */
-    
     /**
      * constructor vacio del jefe
      */
     public Boss() {
     }
     /**
-     * 
-     * @param id
      * @param salario
      * @param empleado 
      */
@@ -50,33 +47,16 @@ public class Boss extends User implements Serializable {
         this.salario = salario;
         this.empleado = empleado;
     }
-    /**
-     * 
-     * @return el salario del jefe
-     */
     public float getSalario() {
         return salario;
     }
-    /**
-     * 
-     * @param salario 
-     */
     public void setSalario(float salario) {
         this.salario = salario;
     }
-    /**
-     * 
-     * @return lista de empleados 
-     */
     public ArrayList<Employee> getEmpleado() {
         return empleado;
     }
-    /**
-     * 
-     * @param empleado 
-     */
     public void setEmpleado(ArrayList<Employee> empleado) {
         this.empleado = empleado;
     }
-    
 }

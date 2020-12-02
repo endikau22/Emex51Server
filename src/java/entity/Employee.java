@@ -5,39 +5,79 @@
  */
 package entity;
 
-import entity.Boss;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import static javax.persistence.FetchType.EAGER;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author 2dam
  */
 @Entity
+@Table(name="employee",schema="emex51db")
+@XmlRootElement
 public class Employee extends User implements Serializable{
 
     private static final long serialVersionUID = 1L;
     
+    /**
+     * 
+     */
     private float Salario;
+    /**
+     * 
+     */
     private String puesto;
-    private Sector sector;
-    private Visitor visitante;
+    /**
+     * 
+     */
+    @ManyToMany(fetch=EAGER)//cascade = MERGE???
+    @JoinTable(schema="emex51db", name="employee_sector")
+    private ArrayList <Sector> sectors;
+    /**
+     * 
+     */
+    
+    @OneToMany(mappedBy = "emloyee", fetch=EAGER)
+    private ArrayList <Visitor> visitantes;
+    /**
+     * 
+     */
+    @ManyToOne
     private Boss jefe;
-
+    /**
+     * Constructor vacio
+     */
     public Employee() {
     }
-
-    public Employee(float Salario, String puesto, Sector sector, Visitor visitante, Boss jefe) {
+    /**
+     * Constructor lleno
+     * @param Salario
+     * @param puesto
+     * @param sectors
+     * @param visitantes
+     * @param jefe
+     * @param login
+     * @param email
+     * @param fullName
+     * @param password 
+     */
+    public Employee(float Salario, String puesto, ArrayList<Sector> sectors, ArrayList<Visitor> visitantes, Boss jefe, String login, String email, String fullName, String password) {
+        super(login, email, fullName, password);
         this.Salario = Salario;
         this.puesto = puesto;
-        this.sector = sector;
-        this.visitante = visitante;
+        this.sectors = sectors;
+        this.visitantes = visitantes;
         this.jefe = jefe;
     }
-
     public float getSalario() {
         return Salario;
     }
@@ -53,21 +93,21 @@ public class Employee extends User implements Serializable{
     public void setPuesto(String puesto) {
         this.puesto = puesto;
     }
-
-    public Sector getSector() {
-        return sector;
+    @XmlTransient
+    public ArrayList<Sector> getSectors() {
+        return sectors;
     }
 
-    public void setSector(Sector sector) {
-        this.sector = sector;
+    public void setSectors(ArrayList<Sector> sectors) {
+        this.sectors = sectors;
     }
 
-    public Visitor getVisitante() {
-        return visitante;
+    public ArrayList<Visitor> getVisitantes() {
+        return visitantes;
     }
 
-    public void setVisitante(Visitor visitante) {
-        this.visitante = visitante;
+    public void setVisitantes(ArrayList<Visitor> visitantes) {
+        this.visitantes = visitantes;
     }
 
     public Boss getJefe() {
@@ -77,5 +117,13 @@ public class Employee extends User implements Serializable{
     public void setJefe(Boss jefe) {
         this.jefe = jefe;
     }
+    /**
+     * Contructor lleno
+     * @param Salario
+     * @param puesto
+     * @param sector
+     * @param visitante
+     * @param jefe 
+     */
 
 }

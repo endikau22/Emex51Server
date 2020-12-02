@@ -11,12 +11,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author 2dam
  */
 @Entity
+@Table(name="army",schema="emex51db")
+@XmlRootElement
 public class Army implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,6 +30,7 @@ public class Army implements Serializable {
      * Identificativo unico para el armamento
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idArmamento;
     /**
      * El nombre del armamento 
@@ -33,87 +39,52 @@ public class Army implements Serializable {
     /**
      * El sector donde esta el armamento 
      */
+    @ManyToOne
     private Sector sector;
     /**
      * Fecha en la que llega el armamento 
      */
     private LocalDateTime fechaLlegada;
     /**
-     * 
-     * @return id
-     */
-    /**
      * Constructor vacio
      */
+    
     public Army() {
     }
     /**
-     * 
-     * @param id
+     * Constructor lleno
      * @param idArmamento
      * @param nombre
      * @param sector
      * @param fechaLlegada 
      */
-    public Army(Long id, Integer idArmamento, String nombre, Sector sector, LocalDateTime fechaLlegada) {
+    public Army(Integer idArmamento, String nombre, Sector sector, LocalDateTime fechaLlegada) {
         this.idArmamento = idArmamento;
         this.nombre = nombre;
         this.sector = sector;
         this.fechaLlegada = fechaLlegada;
     }
-    /**
-     * 
-     * @return Id del armamento
-     */
     public Integer getIdArmamento() {
         return idArmamento;
     }
-    /**
-     * 
-     * @param idArmamento 
-     */
     public void setIdArmamento(Integer idArmamento) {
         this.idArmamento = idArmamento;
     }
-    /**
-     * 
-     * @return el nombre del armamento
-     */
     public String getNombre() {
         return nombre;
     }
-    /**
-     * 
-     * @param nombre 
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    /**
-     * 
-     * @return el sector donde esta el armamento
-     */
     public Sector getSector() {
         return sector;
     }
-    /**
-     * 
-     * @param sector 
-     */
     public void setSector(Sector sector) {
         this.sector = sector;
     }
-    /**
-     * 
-     * @return fecha que llega el armamento 
-     */
     public LocalDateTime getFechaLlegada() {
         return fechaLlegada;
     }
-    /**
-     * 
-     * @param fechaLlegada 
-     */
     public void setFechaLlegada(LocalDateTime fechaLlegada) {
         this.fechaLlegada = fechaLlegada;
     }

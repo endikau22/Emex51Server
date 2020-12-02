@@ -12,8 +12,13 @@ import java.io.Serializable;
  * @author Xabier Carnero
  */
 public enum SectorTipo implements Serializable{
-    
-   ARMAMENTO, //Para especificar que el sector es armamento
-   CRIATURA; //Para especificar que el sector es criatura
+    /**
+     * Para especificar que el sector es armamento
+     */
+   ARMAMENTO,
+   /**
+    * Para especificar que el sector es criatura
+    */
+   CRIATURA;
     
 }

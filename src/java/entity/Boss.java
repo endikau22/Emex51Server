@@ -25,16 +25,16 @@ public class Boss extends User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * el salario que gana el jefe
+     * El salario que gana el jefe
      */
     private float salario;
     /**
-     * arraylist de los empleados que esta al cargo del jefe
+     * Arraylist de los empleados que esta al cargo del jefe
      */
     @OneToMany(mappedBy="boss", fetch=EAGER) 
     private ArrayList <Employee> empleado;
     /**
-     * constructor vacio del jefe
+     * Constructor vacio del jefe
      */
     public Boss() {
     }
@@ -43,19 +43,22 @@ public class Boss extends User implements Serializable {
      * @param empleado 
      */
     public Boss(float salario, ArrayList<Employee> empleado) {
-        
         this.salario = salario;
         this.empleado = empleado;
     }
+    
     public float getSalario() {
         return salario;
     }
+    
     public void setSalario(float salario) {
         this.salario = salario;
     }
+    
     public ArrayList<Employee> getEmpleado() {
         return empleado;
     }
+    
     public void setEmpleado(ArrayList<Employee> empleado) {
         this.empleado = empleado;
     }

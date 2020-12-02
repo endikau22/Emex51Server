@@ -64,30 +64,38 @@ public class Army implements Serializable {
         this.sector = sector;
         this.fechaLlegada = fechaLlegada;
     }
+    
     public Integer getIdArmamento() {
         return idArmamento;
     }
+    
     public void setIdArmamento(Integer idArmamento) {
         this.idArmamento = idArmamento;
     }
+    
     public String getNombre() {
         return nombre;
     }
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
     public Sector getSector() {
         return sector;
     }
+    
     public void setSector(Sector sector) {
         this.sector = sector;
     }
     public LocalDateTime getFechaLlegada() {
         return fechaLlegada;
     }
+    
     public void setFechaLlegada(LocalDateTime fechaLlegada) {
         this.fechaLlegada = fechaLlegada;
     }
+    
     /**
      * 
      * @return representación entera para instanciar armamento

@@ -29,27 +29,26 @@ public class Employee extends User implements Serializable{
     private static final long serialVersionUID = 1L;
     
     /**
-     * 
+     * Guarda el salario que cobra el empleado
      */
     private float Salario;
     /**
-     * 
+     * Guarda el puesto en el que trabaja el empleado
      */
     private String puesto;
     /**
-     * 
+     * Guarda los sectores de los que se encarga el empleado
      */
     @ManyToMany(fetch=EAGER)//cascade = MERGE???
     @JoinTable(schema="emex51db", name="employee_sector")
     private ArrayList <Sector> sectors;
     /**
-     * 
+     * Guarda los visitantes de los que se hace cargo el empleado
      */
-    
     @OneToMany(mappedBy = "emloyee", fetch=EAGER)
     private ArrayList <Visitor> visitantes;
     /**
-     * 
+     * Guarda el jefe del empleado
      */
     @ManyToOne
     private Boss jefe;
@@ -117,13 +116,4 @@ public class Employee extends User implements Serializable{
     public void setJefe(Boss jefe) {
         this.jefe = jefe;
     }
-    /**
-     * Contructor lleno
-     * @param Salario
-     * @param puesto
-     * @param sector
-     * @param visitante
-     * @param jefe 
-     */
-
 }

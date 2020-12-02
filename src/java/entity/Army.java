@@ -152,5 +152,4 @@ public class Army implements Serializable {
     public String toString() {
         return "army.Army[ idArmamento=" + idArmamento + " ]";
     }
-    
 }

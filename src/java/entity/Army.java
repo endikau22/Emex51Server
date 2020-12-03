@@ -12,16 +12,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author 2dam
+ * Entity JPA class for Army data. The properties of this class are idArmamento , 
+ * name, arrivalDate. It also contains relational fields for getting the sector 
+ * where the army are storaged.
+ * @author Endika Ubierna, Markel Uralde, Xabier Carnero
+ * @version 1.0
+ * @since 01/12/2020
  */
 @Entity
 @Table(name="army",schema="emex51db")
-@XmlRootElement
+@NamedQueries ({
+    @NamedQuery(name="findAllArms",query = "SELECT a FROM Army a ORDER BY a.name DESC"),
+    @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.idArmy = :idArmy")
+})
 public class Army implements Serializable {
 
     private static final long serialVersionUID = 1L;

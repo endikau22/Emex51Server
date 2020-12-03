@@ -2,71 +2,100 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Pattern;
 
 /**
- * Representa un usuario de la aplicación.
- *
- * @since 23/10/2020
+ * Entity JPA class for user data. The properties of this class are id, login , 
+ * name, email, status, privilege, password, last password change, last access.
+ * @since 23/11/2020
  * @version 1.0
- * @author Eneko, Endika, Markel
+ * @author Endika Ubierna, Markel Uralde, Xabier Carnero.
  */
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+//Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
+@DiscriminatorColumn(name="tipo_usuario", discriminatorType=DiscriminatorType.STRING)
+@Table(name="usuario",schema="emex51db")
+@NamedQueries({
+    @NamedQuery(name="findAllUsers",
+            query="SELECT u FROM User u ORDER BY u.fullName DESC"
+    ),
+    @NamedQuery(name="findUsersBylogin",
+            query="SELECT u FROM User u WHERE u.login = :login"
+    )
+})
 public class User implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
-
+ private static final long serialVersionUID = 1L;
     /**
-     * Identificativo del usuario en la aplicación
+     * Id field of the Criature Entity. It is also the id value of the criature.
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**
-     * Nombre en la aplicación del usuario
+     *The login value for the user.
      */
     private String login;
     /**
-     * Email del usuario
+     * The email of the user.
      */
+    @Pattern(regexp = "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+        + "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+        + "(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9]"
+        + "(?:[A-Za-z0-9-]*[A-Za-z0-9])?")
     private String email;
     /**
-     * Nombre del usuario
+     * The name of the user.
      */
     private String fullName;
     /**
-     * Estado del usuario en la aplicación
+     * {@link UserStatus} of the user.
      */
     private UserStatus status = UserStatus.ENABLED;
     /**
-     * Privilegios del usuario en la aplicación
+     * {@link UserPrivilege} of the user.
      */
     private UserPrivilege privilege = UserPrivilege.USER;
     /**
-     * Contraseña del usuario
+     * Password of the user.
      */
     private String password;
     /**
-     * Fecha de último acceso
+     * Last access date of the user
      */
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastAccess;
     /**
-     * Fecha de último cambio de contraseña
+     * Last password change date of the user.
      */
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastPasswordChange;
 
     /**
-     * Constructor vacío.
+     * Class constructor.
      */
     public User() {
 
     }
 
     /**
-     * Constructor que recibe 2 parametros de la Ventana Sign In
+     * Class constructor with two parameters.
      *
-     * @param login String que identifica un usuario en la base de datos.
-     * @param password String que contiene la contraseña del usuario.
+     * @param login The login value.
+     * @param password The password value.
      */
     public User(String login, String password) {
         this.login = login;
@@ -74,12 +103,12 @@ public class User implements Serializable {
     }
 
     /**
-     * Constructor que recibe 4 parametros de la Ventana Sign Up
+     * Class constructor with four parameters
      *
-     * @param login String que identifica un usuario en la base de datos.
-     * @param email String que contiene el email del usuario.
-     * @param fullName String que contiene el nombre del usuario
-     * @param password String que contiene la contraseña del usuario
+     * @param login The login value.
+     * @param email The email value.
+     * @param fullName The name value.
+     * @param password The password value.
      */
     public User(String login, String email, String fullName, String password) {
         this.login = login;
@@ -91,179 +120,74 @@ public class User implements Serializable {
     }
 
     /**
-     * Recoge el nombre del usuario en la aplicación.
-     *
-     * @return el login
+     * Gets the login of the user.
+     * @return The login value.
      */
     public String getLogin() {
         return login;
     }
 
     /**
-     * Asigna el nombre de usuario
-     *
-     * @param login El nombre de usuario
+     * Sets the login of the user.
+     * @param login The login value.
      */
     public void setLogin(String login) {
         this.login = login;
     }
 
     /**
-     * Recoge el mail del usuario
-     *
-     * @return El email del usuario
+     * Gets the email value.
+     * @return The email value.
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Asigna el mail del usuario.
-     *
-     * @param email El email del usuario
+     * Sets the email of the user.
+     * @param email The email value.
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Recoge el nombre del usuario
-     *
-     * @return El nombre del usuario
+     *Gets the name of the user.
+     * @return The name value.
      */
     public String getFullName() {
         return fullName;
     }
 
     /**
-     * Registra el nombre del usuario
-     *
-     * @param fullName El nombre del usuario
+     * Sets the name of the user.
+     * @param fullName The name value.
      */
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
     /**
-     * Recoge el status del usuario
-     *
-     * @return El status del usuario
+     * Gets the {@link UserStatus} of the user.
+     * @return The {@link UserStatus} value.
      */
     public UserStatus getStatus() {
         return status;
     }
 
     /**
-     * Asigna el status del usuario
-     *
-     * @param status El status del usuario
+     * Sets the {@link UserStatus} of the user.
+     * @param status The {@link UserStatus} value.
      */
     public void setStatus(UserStatus status) {
         this.status = status;
     }
 
     /**
-     * Recoge los privilegios de usuario
-     *
-     * @return Los privilegios de usuario
+     * Gets the {@link UserPrivilege} of the user.
+     * @return The {@link UserPrivilege} value.
      */
     public UserPrivilege getPrivilege() {
         return privilege;
-    }
-
-    /**
-     * Asigna los privilegios de usuario
-     *
-     * @param privilege Los privilegios de usuario
-     */
-    public void setPrivilege(UserPrivilege privilege) {
-        this.privilege = privilege;
-    }
-
-    /**
-     * Recoge la contraseña del usuario
-     *
-     * @return La contraseña del usuario
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Asigna la contraseña del usuario
-     *
-     * @param password La contraseña del usuario
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * Recoge la fecha del último acceso del usuario
-     *
-     * @return La fecha del último acceso del usuario
-     */
-    public Date getLastAccess() {
-        return lastAccess;
-    }
-
-    /**
-     * Asigna la fecha del último acceso del usuario
-     *
-     * @param lastAccess La fecha del último acceso del usuario
-     */
-    public void setLastAccess(Date lastAccess) {
-        this.lastAccess = lastAccess;
-    }
-
-    /**
-     * Recoge la fecha del último cambio de contraseña
-     *
-     * @return Fecha del último cambio de conraseña.
-     */
-    public Date getLastPasswordChange() {
-        return lastPasswordChange;
-    }
-
-    /**
-     * Asigna la fecha del último cambio de contraseña
-     *
-     * @param lastPasswordChange Fecha del último cambio de conraseña.
-     */
-    public void setLastPasswordChange(Date lastPasswordChange) {
-        this.lastPasswordChange = lastPasswordChange;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-    /**
-     * Compares two Account objects for equality. This method consider a Account 
-     * equal to another Account if their id fields have the same value. 
-     * @param object The other Account object to compare to.
-     * @return true if ids are equals.
-     */
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
-            return false;
-        }
-        User other = (User) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-    /**
-     * Obtains a string representation of the Account.
-     * @return The String representing the Account.
-     */
-    @Override
-    public String toString() {
-        return "serverside.entity.Account[ id=" + id + " ]";
     }
 }

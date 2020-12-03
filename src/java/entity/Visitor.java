@@ -7,138 +7,176 @@ package entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Set;
+import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author 2dam
+ * Entity JPA class for visitor data. This class inherits of the superclass User.
+ * The property of this class is dni.
+ * @since 23/11/2020
+ * @version 1.0
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
 @Table(name="visitor",schema="emex51db")
-@XmlRootElement
 public class Visitor extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Guarda el dni del visitante
+     * The DNI of the visitor.
      */
     private String dni;
     /**
-     * Guarda la fecha de la visita solicitada 
-     * por el visitante
+     * The request date of the visit.
      */
     private LocalDateTime visitaSolicitada;
     /**
-     * Guarda la respuesta por parte del empleado
+     * The response. True or false. 
      */
-    private boolean visitaRespuesta;
+    private Boolean visitaRespuesta;
     /**
-     * Guarda si ha visitado o no anteriormente
+     * Visited value. True or false.
      */
-    private boolean visitado;
+    private Boolean visitado;
     /**
-     * Guarda la fecha de su visita
+     * The date of the visitors visit.
      */
     private LocalDateTime fechaVisita;
     /**
-     * Guarda que empleado esta a su cargo
+     * The {@link Employee} who manage the visitors visit.
      */
     @ManyToOne
     private Employee empleado;
     /**
-     * Guarda los sectores que va a vistar
+     * The Set of {@link Sector} visited by the visitor.
      */
-    @ManyToMany(fetch = EAGER)//cascade = MERGE???
-    @JoinTable(schema = "emex51db", name = "visitor_sector")
-    private ArrayList <Sector> sectores;
+    @ManyToMany(fetch = EAGER,cascade = MERGE)
+    @JoinTable(schema = "emex51db", name = "visited_sector")
+    private Set <Sector> sectoresvisitados;
     /**
-     * Contructor vacio
+     * Class constructor.
      */
     public Visitor() {
     }
-    /**
-     * Contructor lleno
-     * @param dni
-     * @param visitaSolicitada
-     * @param visitaRespuesta
-     * @param visitado
-     * @param fechaVisita
-     * @param empleado
-     * @param sectores 
-     */
-    public Visitor(String dni, LocalDateTime visitaSolicitada, boolean visitaRespuesta, boolean visitado, LocalDateTime fechaVisita, Employee empleado, ArrayList<Sector> sectores) {
-        this.dni = dni;
-        this.visitaSolicitada = visitaSolicitada;
-        this.visitaRespuesta = visitaRespuesta;
-        this.visitado = visitado;
-        this.fechaVisita = fechaVisita;
-        this.empleado = empleado;
-        this.sectores = sectores;
-    }
 
+    /**
+     * Gets the dni of the visitor.
+     * @return The dni value.
+     */
     public String getDni() {
         return dni;
     }
 
+    /**
+     * Sets the dni of the visitor.
+     * @param dni The dni value.
+     */
     public void setDni(String dni) {
         this.dni = dni;
     }
 
+    /**
+     * Gets the date of the requested visit.
+     * @return The date of the requested visit value.
+     */
     public LocalDateTime getVisitaSolicitada() {
         return visitaSolicitada;
     }
 
+    /**
+     * Sets the date of the requested visit.
+     * @param visitaSolicitada The date of the requested visit value.
+     */
     public void setVisitaSolicitada(LocalDateTime visitaSolicitada) {
         this.visitaSolicitada = visitaSolicitada;
     }
 
+    /**
+     * Gets the boolean value of the response to the visit date request.
+     * @return The visit response value. True or false.
+     */
     public boolean isVisitaRespuesta() {
         return visitaRespuesta;
     }
 
+    /**
+     * Sets the boolean value of the response to the visit date request.
+     * @param visitaRespuesta The visit response value. True or false.
+     */
     public void setVisitaRespuesta(boolean visitaRespuesta) {
         this.visitaRespuesta = visitaRespuesta;
     }
 
+    /**
+     * Gets the visited value
+     * @return The visited value. True or false.
+     */
     public boolean isVisitado() {
         return visitado;
     }
 
+    /**
+     * Sets the visited value.
+     * @param visitado The visited value. 
+     */
     public void setVisitado(boolean visitado) {
         this.visitado = visitado;
     }
 
+    /**
+     * Gets the date of the visit.
+     * @return The date of the visit value.
+     */
     public LocalDateTime getFechaVisita() {
         return fechaVisita;
     }
 
+    /**
+     * Sets the date of the visit.
+     * @param fechaVisita The date of the visit value.
+     */
     public void setFechaVisita(LocalDateTime fechaVisita) {
         this.fechaVisita = fechaVisita;
     }
 
+    /**
+     * Gets the {@link Employee} who manage the visit.
+     * @return The {@link Employee} who manage the visit value.
+     */
     public Employee getEmpleado() {
         return empleado;
     }
 
+    /**
+     * Sets the {@link Employee} who manage the visit.
+     * @param empleado The {@link Employee} who manage the visit value.
+     */
     public void setEmpleado(Employee empleado) {
         this.empleado = empleado;
     }
-    
+   
+    /**
+     * Gets the {@link Sector} visited by the visitor.
+     * @return The {@link Sector} value.
+     */
     @XmlTransient
-    public ArrayList<Sector> getSectores() {
-        return sectores;
+    public Set<Sector> getSectores() {
+        return sectoresvisitados;
     }
 
-    public void setSectores(ArrayList<Sector> sectores) {
-        this.sectores = sectores;
+    /**
+     * Sets the {@link Sector} visited by the visitor. 
+     * @param sectores The {@link Sector} value.
+     */
+    public void setSectores(Set<Sector> sectores) {
+        this.sectoresvisitados = sectores;
     } 
 }

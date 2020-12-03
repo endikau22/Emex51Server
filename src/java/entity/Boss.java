@@ -6,60 +6,83 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author 2dam
+ * Entity JPA class for Boss data. This class inherits from de class User.
+ * The property of this class is the boss wage.It also contains relational field 
+ * a set of {@link Employee} who the Boss manages.
+ * @since 23/11/2020
+ * @version 1.0
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
-@Table(name="boss",schema="emex51db")
-@XmlRootElement
+@Table(name="usuario",schema="emex51db")
+@NamedQueries({
+    @NamedQuery(name="findAllBosses",
+            query="SELECT b FROM Boss b ORDER BY b.fullName DESC"
+    ),
+    @NamedQuery(name="findBossBylogin",
+            query="SELECT b FROM Boss b WHERE b.login = :login"
+    )
+})
+//Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
+@DiscriminatorValue(value="Jefe")
 public class Boss extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * El salario que gana el jefe
+     * The wage of the boss.
      */
     private float salario;
     /**
-     * Arraylist de los empleados que esta al cargo del jefe
-     */
-    @OneToMany(mappedBy="boss", fetch=EAGER) 
-    private ArrayList <Employee> empleado;
+     * The list of {@link Employee} of the boss.
+     */ 
+    @OneToMany(mappedBy="jefe", fetch=EAGER) 
+    private Set <Employee> empleado;
     /**
-     * Constructor vacio del jefe
+     * Class constructor.
      */
     public Boss() {
     }
+
     /**
-     * @param salario
-     * @param empleado 
+     * Gets the wages of the boss.
+     * @return The wage value.
      */
-    public Boss(float salario, ArrayList<Employee> empleado) {
-        this.salario = salario;
-        this.empleado = empleado;
-    }
-    
     public float getSalario() {
         return salario;
     }
-    
+  
+    /**
+     * Sets the wages of the boss.
+     * @param salario The wage value.
+     */
     public void setSalario(float salario) {
         this.salario = salario;
     }
-    
-    public ArrayList<Employee> getEmpleado() {
+ 
+    /**
+     * Gets the list of {@link Employee} of the boss.
+     * @return The Set of {@link Employee} value.
+     */
+    public Set<Employee> getEmpleado() {
         return empleado;
     }
-    
-    public void setEmpleado(ArrayList<Employee> empleado) {
+   
+    /**
+     * Sets the list of {@link Employee} of the boss.
+     * @param empleado The Set of {@link Employee} value.
+     */
+    public void setEmpleado(Set<Employee> empleado) {
         this.empleado = empleado;
     }
 }

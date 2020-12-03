@@ -8,16 +8,18 @@ package entity;
 import java.io.Serializable;
 
 /**
- * Esta clase es para determinar el tipo de sector que es
- * @author Xabier Carnero
+ * This enumeration is for Sector types. Includes the values ARMAMENTO and CRIATURA
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
+ * @version 1.0
+ * @since 01/12/2020
  */
 public enum SectorTipo implements Serializable{
     /**
-     * Para especificar que el sector es armamento
+     * The sector is type Army.
      */
    ARMAMENTO,
    /**
-    * Para especificar que el sector es criatura
+    * The sector is type Criature.
     */
    CRIATURA;
     

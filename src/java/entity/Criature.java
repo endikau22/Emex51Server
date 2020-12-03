@@ -17,100 +17,106 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * Entity JPA class for Army data. The properties of this class are idArmamento , 
+ * Entity JPA class for Criature data. The properties of this class are idCriature , 
  * name, arrivalDate. It also contains relational fields for getting the sector 
- * where the army are storaged.
- * @author Endika Ubierna, Markel Uralde, Xabier Carnero
+ * where the criature is storaged.
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  * @version 1.0
  * @since 01/12/2020
  */
 @Entity
-@Table(name="army",schema="emex51db")
+@Table(name="criature",schema="emex51db")
 @NamedQueries ({
-    @NamedQuery(name="findAllArms",query = "SELECT a FROM Army a ORDER BY a.nombre DESC"),
-    @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.idArmamento = :idArmamento")
+    @NamedQuery(name="findAllCriatures",query = "SELECT c FROM Criature c ORDER BY c.nombre DESC"),
+    @NamedQuery(name="findCriatureById",query = "SELECT c FROM Criature c WHERE c.idCriatura = :idCriatura")
 })
-public class Army implements Serializable {
+public class Criature implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
     /**
-     * Id field of the Army Entity. It is also the id value of the army.
+     * Id field of the Criature Entity. It is also the id value of the criature.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idArmamento;
+    private Integer idCriatura;
     /**
-     * Name of the army.
+     * Name of the criature.
      */
     private String nombre;
     /**
-     * {@link Sector} of the army. 
+     * {@link Sector} of the criature
      */
     @ManyToOne
     private Sector sector;
     /**
-     * Arrival Date of the army.
+     * Arrival Date of the criature.
      */
-    //@Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime fechaLlegada;
     /**
      * Class constructor.
      */
-    public Army() {
+    public Criature() {
     }
+
     /**
-     * Gets id value for army.
+     * Gets id value for criature.
      * @return The id value.
      */
-    public Integer getIdArmamento() {
-        return idArmamento;
+    public Integer getIdCriatura() {
+        return idCriatura;
     }
+
     /**
-     * Sets id value for army.
-     * @param id_armamento  The id value.
+     * Sets id value for criature.
+     * @param idCriatura The id value.
      */
-    public void setIdArmamento(Integer idArmamento) {
-        this.idArmamento = idArmamento;
+    public void setIdCriatura(Integer idCriatura) {
+        this.idCriatura = idCriatura;
     }
+
     /**
-     * Gets name value for army.
+     * Gets name value for criature.
      * @return The name value.
      */
     public String getNombre() {
         return nombre;
     }
+
     /**
-     * Sets name value for army. 
+     * Sets name value for criature. 
      * @param nombre  The name value.
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     /**
-     * Gets Sector value for army.
+     * Gets Sector value for criature.
      * @return The sector value.
      */
     public Sector getSector() {
         return sector;
     }
+
     /**
-     * Sets Sector value for army.
+     * Sets Sector value for criature.
      * @param sector The sector value
      */
     public void setSector(Sector sector) {
         this.sector = sector;
     }
+
     /**
-     * Gets arrival date value for army.
+     * Gets arrival date value for criature.
      * @return The  arrival date value.
      */
     public LocalDateTime getFechaLlegada() {
         return fechaLlegada;
     }
+
     /**
-     * Sets arrival date value for army.
-     * @param fechaLlegada  The  arrival date value.
+     * Sets arrival date value for criature.
+     * @param fechaLlegada   The  arrival date value.
      */
     public void setFechaLlegada(LocalDateTime fechaLlegada) {
         this.fechaLlegada = fechaLlegada;
@@ -123,11 +129,12 @@ public class Army implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idArmamento != null ? idArmamento.hashCode() : 0);
+        hash += (idCriatura != null ? idCriatura.hashCode() : 0);
         return hash;
     }
+    
     /**
-     * This method compares two army entities for equality. This implementation
+     * This method compares two criature entities for equality. This implementation
      * compare id field value for equality.
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
@@ -135,21 +142,23 @@ public class Army implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Army)) {
+        if (!(object instanceof Criature)) {
             return false;
         }
-        Army other = (Army) object;
-        if ((this.idArmamento == null && other.idArmamento != null) || (this.idArmamento != null && !this.idArmamento.equals(other.idArmamento))) {
+        Criature other = (Criature) object;
+        if ((this.idCriatura == null && other.idCriatura != null) || (this.idCriatura != null && !this.idCriatura.equals(other.idCriatura))) {
             return false;
         }
         return true;
     }
+    
     /**
-     * This method returns a String representation for an army entity instance.
-     * @return The String representation for the Army object. 
+     * This method returns a String representation for a criature entity instance.
+     * @return The String representation for the Criature object. 
      */
     @Override
     public String toString() {
-        return "army.Army[ idArmamento=" + idArmamento + " ]";
+        return "creature.Creature[ idCriatura=" + idCriatura + " ]";
     }
+    
 }

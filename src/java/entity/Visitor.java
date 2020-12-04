@@ -9,11 +9,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import static javax.persistence.CascadeType.MERGE;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -27,6 +30,15 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name="visitor",schema="emex51db")
+@NamedQueries({
+    @NamedQuery(name="findAllVisitors",
+            query="SELECT v FROM Visitor v ORDER BY v.fullName DESC"
+    ),
+    @NamedQuery(name="findVisitorsBylogin",
+            query="SELECT v FROM Visitor v WHERE v.login = :login"
+    )
+})
+@DiscriminatorValue(value="Visitor")
 public class Visitor extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,30 +50,30 @@ public class Visitor extends User implements Serializable {
     /**
      * The request date of the visit.
      */
-    private LocalDateTime visitaSolicitada;
+    private LocalDateTime requestedVisit;
     /**
      * The response. True or false. 
      */
-    private Boolean visitaRespuesta;
+    private Boolean answerVisit;
     /**
      * Visited value. True or false.
      */
-    private Boolean visitado;
+    private Boolean visited;
     /**
      * The date of the visitors visit.
      */
-    private LocalDateTime fechaVisita;
+    private LocalDateTime visitDate;
     /**
      * The {@link Employee} who manage the visitors visit.
      */
     @ManyToOne
-    private Employee empleado;
+    private Employee employee;
     /**
      * The Set of {@link Sector} visited by the visitor.
      */
     @ManyToMany(fetch = EAGER,cascade = MERGE)
     @JoinTable(schema = "emex51db", name = "visited_sector")
-    private Set <Sector> sectoresvisitados;
+    private Set <Sector> visitedSector;
     
     /**
      * Class constructor.
@@ -89,16 +101,16 @@ public class Visitor extends User implements Serializable {
      * Gets the date of the requested visit.
      * @return The date of the requested visit value.
      */
-    public LocalDateTime getVisitaSolicitada() {
-        return visitaSolicitada;
+    public LocalDateTime getRequestedVisit() {
+        return requestedVisit;
     }
 
     /**
      * Sets the date of the requested visit.
-     * @param visitaSolicitada The date of the requested visit value.
+     * @param requestedVisit The date of the requested visit value.
      */
-    public void setVisitaSolicitada(LocalDateTime visitaSolicitada) {
-        this.visitaSolicitada = visitaSolicitada;
+    public void setRequestedVisit(LocalDateTime requestedVisit) {
+        this.requestedVisit = requestedVisit;
     }
 
     /**
@@ -106,7 +118,7 @@ public class Visitor extends User implements Serializable {
      * @return The visit response value. True or false.
      */
     public boolean isVisitaRespuesta() {
-        return visitaRespuesta;
+        return answerVisit;
     }
 
     /**
@@ -114,7 +126,7 @@ public class Visitor extends User implements Serializable {
      * @param visitaRespuesta The visit response value. True or false.
      */
     public void setVisitaRespuesta(boolean visitaRespuesta) {
-        this.visitaRespuesta = visitaRespuesta;
+        this.answerVisit = visitaRespuesta;
     }
 
     /**
@@ -122,7 +134,7 @@ public class Visitor extends User implements Serializable {
      * @return The visited value. True or false.
      */
     public boolean isVisitado() {
-        return visitado;
+        return visited;
     }
 
     /**
@@ -130,39 +142,39 @@ public class Visitor extends User implements Serializable {
      * @param visitado The visited value. 
      */
     public void setVisitado(boolean visitado) {
-        this.visitado = visitado;
+        this.visited = visitado;
     }
 
     /**
      * Gets the date of the visit.
      * @return The date of the visit value.
      */
-    public LocalDateTime getFechaVisita() {
-        return fechaVisita;
+    public LocalDateTime getVisitDate() {
+        return visitDate;
     }
 
     /**
      * Sets the date of the visit.
-     * @param fechaVisita The date of the visit value.
+     * @param visitDate The date of the visit value.
      */
-    public void setFechaVisita(LocalDateTime fechaVisita) {
-        this.fechaVisita = fechaVisita;
+    public void setVisitDate(LocalDateTime visitDate) {
+        this.visitDate = visitDate;
     }
 
     /**
      * Gets the {@link Employee} who manage the visit.
      * @return The {@link Employee} who manage the visit value.
      */
-    public Employee getEmpleado() {
-        return empleado;
+    public Employee getEmployee() {
+        return employee;
     }
 
     /**
      * Sets the {@link Employee} who manage the visit.
-     * @param empleado The {@link Employee} who manage the visit value.
+     * @param employee The {@link Employee} who manage the visit value.
      */
-    public void setEmpleado(Employee empleado) {
-        this.empleado = empleado;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
    
     /**
@@ -171,7 +183,7 @@ public class Visitor extends User implements Serializable {
      */
     @XmlTransient
     public Set<Sector> getSectores() {
-        return sectoresvisitados;
+        return visitedSector;
     }
 
     /**
@@ -179,6 +191,6 @@ public class Visitor extends User implements Serializable {
      * @param sectores The {@link Sector} value.
      */
     public void setSectores(Set<Sector> sectores) {
-        this.sectoresvisitados = sectores;
+        this.visitedSector = sectores;
     } 
 }

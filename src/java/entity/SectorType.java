@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @version 1.0
  * @since 01/12/2020
  */
-public enum SectorTipo implements Serializable{
+public enum SectorType implements Serializable{
     /**
      * The sector is type Army.
      */

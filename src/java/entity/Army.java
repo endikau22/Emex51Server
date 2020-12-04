@@ -17,9 +17,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * Entity JPA class for Army data. The properties of this class are idArmamento , 
- * name, arrivalDate. It also contains relational fields for getting the sector 
- * where the army are storaged.
+ * Entity JPA class for Army data. The properties of this class are idArmy , 
+ name, arrivalDate. It also contains relational fields for getting the sector 
+ where the army are storaged.
  * @author Endika Ubierna, Markel Uralde, Xabier Carnero
  * @version 1.0
  * @since 01/12/2020
@@ -39,11 +39,11 @@ public class Army implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idArmamento;
+    private Integer idArmy;
     /**
      * Name of the army.
      */
-    private String nombre;
+    private String name;
     /**
      * {@link Sector} where the army is stored.  
      */
@@ -52,7 +52,7 @@ public class Army implements Serializable {
     /**
      * Arrival Date of the army to the facilities.
      */
-    private LocalDateTime fechaLlegada;
+    private LocalDateTime arrivalDate;
     /**
      * Class constructor.
      */
@@ -62,29 +62,29 @@ public class Army implements Serializable {
      * Gets id value for army.
      * @return The id value.
      */
-    public Integer getIdArmamento() {
-        return idArmamento;
+    public Integer getIdArmy() {
+        return idArmy;
     }
     /**
      * Sets id value for army.
-     * @param id_armamento  The id value.
+     * @param idArmy
      */
-    public void setIdArmamento(Integer idArmamento) {
-        this.idArmamento = idArmamento;
+    public void setIdArmy(Integer idArmy) {
+        this.idArmy = idArmy;
     }
     /**
      * Gets name value for army.
      * @return The name value.
      */
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
     /**
      * Sets name value for army. 
-     * @param nombre  The name value.
+     * @param name
      */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
     /**
      * Gets Sector value for army.
@@ -104,15 +104,15 @@ public class Army implements Serializable {
      * Gets arrival date value for army.
      * @return The  arrival date value.
      */
-    public LocalDateTime getFechaLlegada() {
-        return fechaLlegada;
+    public LocalDateTime getArrivalDate() {
+        return arrivalDate;
     }
     /**
      * Sets arrival date value for army.
-     * @param fechaLlegada  The  arrival date value.
+     * @param arrivalDate
      */
-    public void setFechaLlegada(LocalDateTime fechaLlegada) {
-        this.fechaLlegada = fechaLlegada;
+    public void setArrivalDate(LocalDateTime arrivalDate) {
+        this.arrivalDate = arrivalDate;
     }
     
     /**
@@ -122,13 +122,14 @@ public class Army implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idArmamento != null ? idArmamento.hashCode() : 0);
+        hash += (idArmy != null ? idArmy.hashCode() : 0);
         return hash;
     }
     /**
      * This method compares two army entities for equality. This implementation
      * compare id field value for equality.
-     * @param obj The object to compare to.
+     * @param object
+     * @
      * @return True if objects are equals, otherwise false.
      */
     @Override
@@ -138,7 +139,7 @@ public class Army implements Serializable {
             return false;
         }
         Army other = (Army) object;
-        if ((this.idArmamento == null && other.idArmamento != null) || (this.idArmamento != null && !this.idArmamento.equals(other.idArmamento))) {
+        if ((this.idArmy == null && other.idArmy != null) || (this.idArmy != null && !this.idArmy.equals(other.idArmy))) {
             return false;
         }
         return true;
@@ -149,6 +150,6 @@ public class Army implements Serializable {
      */
     @Override
     public String toString() {
-        return "army.Army[ idArmamento=" + idArmamento + " ]";
+        return "army.Army[ idArmamento=" + idArmy + " ]";
     }
 }

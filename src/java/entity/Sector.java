@@ -51,7 +51,7 @@ public class Sector implements Serializable {
      * List of {@link Visitor} belonging to the sector.
      */
     @ManyToMany(mappedBy="sectoresvisitados",fetch=EAGER)
-    private Set<Visitor> visitante;
+    private Set<Visitor> visitor;
     /**
      * List of {@link EmployeeSectorManagement} belonging to the Sector.
      */
@@ -61,13 +61,13 @@ public class Sector implements Serializable {
      * List of {@link Criature} or {@link Army} belonging to the Sector.
      */
     @OneToMany
-    private Set <Object> contenidoSector;
+    private Set <Object> sectorContent;
 
     /**
      * {@link Type} of the sector.
      */
     @Enumerated(EnumType.STRING)
-    private SectorTipo tipo;
+    private SectorType type;
 
     /**
      * Class constructor.
@@ -93,18 +93,19 @@ public class Sector implements Serializable {
 
     /**
      * Gets visitors of the sector.
+     * @return 
      */
     @XmlTransient
-    public Set<Visitor> getVisitante() {
-        return visitante;
+    public Set<Visitor> getVisitor() {
+        return visitor;
     }
 
     /**
      * Sets the visitors of the sector. 
-     * @param visitante The visitors collection value.
+     * @param visitor The visitors collection value.
      */
-    public void setVisitante(Set<Visitor> visitante) {
-        this.visitante = visitante;
+    public void setVisitor(Set<Visitor> visitor) {
+        this.visitor = visitor;
     }
 
     /**
@@ -128,16 +129,16 @@ public class Sector implements Serializable {
      * Gets the type of the sector.
      * @return The type of the sector value.
      */
-    public SectorTipo getTipo() {
-        return tipo;
+    public SectorType getType() {
+        return type;
     }
 
     /**
      * Sets the type of the sector.
-     * @param tipo The type value.
+     * @param type The type value.
      */
-    public void setTipo(SectorTipo tipo) {
-        this.tipo = tipo;
+    public void setType(SectorType type) {
+        this.type = type;
     }
     /**
      * Gets a set of {@link Employee} who work in the sector. 
@@ -159,16 +160,16 @@ public class Sector implements Serializable {
      * Gets a set of {@link Criature} or {@link Army} belonging to the sector.
      * @return The set of {@link Criature} or {@link Army} value.
      */
-    public Set<Object> getContenidoSector() {
-        return contenidoSector;
+    public Set<Object> getSectorContent() {
+        return sectorContent;
     }
 
     /**
      * Sets a set of {@link Criature} or {@link Army} belonging to the sector.
-     * @param contenidoSector The set of {@link Criature} or {@link Army} value.
+     * @param sectorContent The set of {@link Criature} or {@link Army} value.
      */
-    public void setContenidoSector(Set<Object> contenidoSector) {
-        this.contenidoSector = contenidoSector;
+    public void setSectorContent(Set<Object> sectorContent) {
+        this.sectorContent = sectorContent;
     }
     /**
      * HashCode method implementation for the entity.

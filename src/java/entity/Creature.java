@@ -30,11 +30,11 @@ public class Creature implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idCriatura;
+    private Integer idCreature;
     /**
-     * El nombre de la criatura
+     * El name de la criatura
      */
-    private String nombre;
+    private String name;
     /**
      * El sector en el que esta la criatura
      */
@@ -43,40 +43,27 @@ public class Creature implements Serializable {
     /**
      * Fecha en la que llega la criatura
      */
-    private LocalDateTime fechaLlegada;
+    private LocalDateTime arrivalDate;
     /**
      * Constructor vacio
      */
     public Creature() {
     }
-    /**
-     * Constructor lleno
-     * @param idCriatura
-     * @param nombre
-     * @param sector
-     * @param fechaLlegada 
-     */
-    public Creature(Integer idCriatura, String nombre, Sector sector, LocalDateTime fechaLlegada) {
-        this.idCriatura = idCriatura;
-        this.nombre = nombre;
-        this.sector = sector;
-        this.fechaLlegada = fechaLlegada;
+
+    public Integer getidCreature() {
+        return idCreature;
     }
 
-    public Integer getIdCriatura() {
-        return idCriatura;
+    public void setidCreature(Integer idCreature) {
+        this.idCreature = idCreature;
     }
 
-    public void setIdCriatura(Integer idCriatura) {
-        this.idCriatura = idCriatura;
+    public String getName() {
+        return name;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Sector getSector() {
@@ -87,12 +74,12 @@ public class Creature implements Serializable {
         this.sector = sector;
     }
 
-    public LocalDateTime getFechaLlegada() {
-        return fechaLlegada;
+    public LocalDateTime getArrivalDate() {
+        return arrivalDate;
     }
 
-    public void setFechaLlegada(LocalDateTime fechaLlegada) {
-        this.fechaLlegada = fechaLlegada;
+    public void setArrivalDate(LocalDateTime arrivalDate) {
+        this.arrivalDate = arrivalDate;
     }
     /**
      * 
@@ -101,7 +88,7 @@ public class Creature implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idCriatura != null ? idCriatura.hashCode() : 0);
+        hash += (idCreature != null ? idCreature.hashCode() : 0);
         return hash;
     }
     /**
@@ -116,7 +103,7 @@ public class Creature implements Serializable {
             return false;
         }
         Creature other = (Creature) object;
-        if ((this.idCriatura == null && other.idCriatura != null) || (this.idCriatura != null && !this.idCriatura.equals(other.idCriatura))) {
+        if ((this.idCreature == null && other.idCreature != null) || (this.idCreature != null && !this.idCreature.equals(other.idCreature))) {
             return false;
         }
         return true;
@@ -127,6 +114,6 @@ public class Creature implements Serializable {
      */
     @Override
     public String toString() {
-        return "creature.Creature[ idCriatura=" + idCriatura + " ]";
+        return "creature.Creature[ idCriatura=" + idCreature + " ]";
     }
 }

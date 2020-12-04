@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     )
 })
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="Empleado")
+@DiscriminatorValue(value="Employee")
 public class Employee extends User implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -46,11 +46,11 @@ public class Employee extends User implements Serializable{
     /**
      * Wage of the employee.
      */
-    private float Salario;
+    private float wage;
     /**
      * Position of the employee.
      */
-    private String puesto;
+    private String workstation;
     /**
      * List of {@link Sector} where the employee works.
      */
@@ -59,49 +59,49 @@ public class Employee extends User implements Serializable{
     /**
      * List of {@link Visitor} the employee manages.
      */
-    @OneToMany(mappedBy = "empleado", fetch=EAGER, cascade = CascadeType.MERGE)
-    private Set <Visitor> visitantes;
+    @OneToMany(mappedBy = "employee", fetch=EAGER, cascade = CascadeType.MERGE)
+    private Set <Visitor> visitors;
     /**
      * The Boss of the employee.
      */
     @ManyToOne
-    private Boss jefe;
+    private Boss boss;
     /**
      * Class constructor.
      */
     public Employee() {
     }
-
+    
     /**
      * Gets the wages of the employee.
      * @return The wage value.
      */
-    public float getSalario() {
-        return Salario;
+    public float getWage() {
+        return wage;
     }
 
     /**
      * Sets the wages of the employee.
-     * @param Salario The wage value.
+     * @param wage
      */
-    public void setSalario(float Salario) {
-        this.Salario = Salario;
+    public void setWage(float wage) {
+        this.wage = wage;
     }
 
     /**
      * Gets the position of the employee.
      * @return The position value.
      */
-    public String getPuesto() {
-        return puesto;
+    public String getWorkstation() {
+        return workstation;
     }
 
     /**
      * Sets the position of the employee.
-     * @param puesto The position value.
+     * @param workstation The position value.
      */
-    public void setPuesto(String puesto) {
-        this.puesto = puesto;
+    public void setWorkstation(String workstation) {
+        this.workstation = workstation;
     }
     
     /**
@@ -115,7 +115,7 @@ public class Employee extends User implements Serializable{
 
     /**
      * Sets a list of {@link Sector} managed by the employee.
-     * @param sector The list {@link Sector} value.
+     * @param sectors
      */
     public void setSectors(Set<EmployeeSectorManagement> sectors) {
         this.sectorsManaged = sectors;
@@ -125,31 +125,31 @@ public class Employee extends User implements Serializable{
      * Gets a list of {@link Visitor} managed by  the employee.
      * @return The list {@link Visitor} value.
      */
-    public Set<Visitor> getVisitantes() {
-        return visitantes;
+    public Set<Visitor> getVisitors() {
+        return visitors;
     }
 
     /**
      * Sets a list of {@link Visitor} managed by  the employee.
-     * @param visitante The list {@link Visitor} value.
+     * @param visitors
      */
-    public void setVisitantes(Set<Visitor> visitantes) {
-        this.visitantes = visitantes;
+    public void setVisitors(Set<Visitor> visitors) {
+        this.visitors = visitors;
     }
 
     /**
      * Gets the {@link Boss} of the employee.
      * @return The {@link Boss} value.
      */
-    public Boss getJefe() {
-        return jefe;
+    public Boss getBoss() {
+        return boss;
     }
 
     /**
      * Sets the {@link Boss} of the employee.
-     * @param jefe The {@link Boss} value.
+     * @param boss The {@link Boss} value.
      */
-    public void setJefe(Boss jefe) {
-        this.jefe = jefe;
+    public void setBoss(Boss boss) {
+        this.boss = boss;
     }
 }

@@ -35,7 +35,7 @@ import javax.persistence.Table;
     )
 })
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="Jefe")
+@DiscriminatorValue(value="Boss")
 public class Boss extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,12 +43,12 @@ public class Boss extends User implements Serializable {
     /**
      * The wage of the boss.
      */
-    private float salario;
+    private float wage;
     /**
      * The list of {@link Employee} of the boss.
      */ 
-    @OneToMany(mappedBy="jefe", fetch=EAGER, cascade = CascadeType.MERGE) 
-    private Set <Employee> empleados;
+    @OneToMany(mappedBy="boss", fetch=EAGER, cascade = CascadeType.MERGE) 
+    private Set <Employee> employees;
     
     /**
      * Class constructor.
@@ -60,31 +60,31 @@ public class Boss extends User implements Serializable {
      * Gets the wages of the boss.
      * @return The wage value.
      */
-    public float getSalario() {
-        return salario;
+    public float getWage() {
+        return wage;
     }
   
     /**
      * Sets the wages of the boss.
-     * @param salario The wage value.
+     * @param wage
      */
-    public void setSalario(float salario) {
-        this.salario = salario;
+    public void setWage(float wage) {
+        this.wage = wage;
     }
  
     /**
      * Gets the list of {@link Employee} of the boss.
      * @return The Set of {@link Employee} value.
      */
-    public Set<Employee> getEmpleado() {
-        return empleados;
+    public Set<Employee> getEmployees() {
+        return employees;
     }
    
     /**
      * Sets the list of {@link Employee} of the boss.
-     * @param empleado The Set of {@link Employee} value.
+     * @param employees
      */
-    public void setEmpleado(Set<Employee> empleado) {
-        this.empleados = empleado;
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
 }

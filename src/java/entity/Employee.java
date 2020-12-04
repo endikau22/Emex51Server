@@ -7,8 +7,10 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -52,12 +54,12 @@ public class Employee extends User implements Serializable{
     /**
      * List of {@link Sector} where the employee works.
      */
-    @OneToMany
-    private Set <Sector> sectors;
+    @OneToMany(mappedBy = "employees",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set <EmployeeSectorManagement> sectorsManaged;
     /**
      * List of {@link Visitor} the employee manages.
      */
-    @OneToMany(mappedBy = "empleado", fetch=EAGER)
+    @OneToMany(mappedBy = "empleado", fetch=EAGER, cascade = CascadeType.MERGE)
     private Set <Visitor> visitantes;
     /**
      * The Boss of the employee.
@@ -107,16 +109,16 @@ public class Employee extends User implements Serializable{
      * @return The list Sector value.
      */
     @XmlTransient
-    public Set<Sector> getSectors() {
-        return sectors;
+    public Set<EmployeeSectorManagement> getSectors() {
+        return sectorsManaged;
     }
 
     /**
      * Sets a list of {@link Sector} managed by the employee.
      * @param sector The list {@link Sector} value.
      */
-    public void setSectors(Set<Sector> sectors) {
-        this.sectors = sectors;
+    public void setSectors(Set<EmployeeSectorManagement> sectors) {
+        this.sectorsManaged = sectors;
     }
 
     /**

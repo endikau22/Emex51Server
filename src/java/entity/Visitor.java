@@ -19,7 +19,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity JPA class for visitor data. This class inherits of the superclass User.
- * The property of this class is dni.
+ * The property of this class is dni,requested visit, visited, visit date.
+ * It also contains relational fields for getting the {@link Employee} and the {@link Sector}.
  * @since 23/11/2020
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
@@ -61,6 +62,7 @@ public class Visitor extends User implements Serializable {
     @ManyToMany(fetch = EAGER,cascade = MERGE)
     @JoinTable(schema = "emex51db", name = "visited_sector")
     private Set <Sector> sectoresvisitados;
+    
     /**
      * Class constructor.
      */

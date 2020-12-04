@@ -45,14 +45,13 @@ public class Army implements Serializable {
      */
     private String nombre;
     /**
-     * {@link Sector} of the army. 
+     * {@link Sector} where the army is stored.  
      */
     @ManyToOne
     private Sector sector;
     /**
-     * Arrival Date of the army.
+     * Arrival Date of the army to the facilities.
      */
-    //@Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime fechaLlegada;
     /**
      * Class constructor.

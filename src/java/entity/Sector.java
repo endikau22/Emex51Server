@@ -6,10 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,7 +42,7 @@ public class Sector implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Id field of the Criature Entity. It is also the id value of the criature.
+     * Id field of the Sector Entity. It is also the id value of the sector.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,8 +55,14 @@ public class Sector implements Serializable {
     /**
      * List of {@link EmployeeSectorManagement} belonging to the Sector.
      */
-    @OneToMany
+    @OneToMany(mappedBy = "sectorsManaged",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set <EmployeeSectorManagement> employees;
+    /**
+     * List of {@link Criature} or {@link Army} belonging to the Sector.
+     */
+    @OneToMany
+    private Set <Object> contenidoSector;
+
     /**
      * {@link Type} of the sector.
      */
@@ -129,6 +138,37 @@ public class Sector implements Serializable {
      */
     public void setTipo(SectorTipo tipo) {
         this.tipo = tipo;
+    }
+    /**
+     * Gets a set of {@link Employee} who work in the sector. 
+     * @return The set of {@link Employee} value.
+     */
+    public Set<EmployeeSectorManagement> getEmployees() {
+        return employees;
+    }
+
+    /**
+     * Sets a set of {@link Employee} who work in the sector.
+     * @param employees The set of {@link Employee} value.
+     */
+    public void setEmployees(Set<EmployeeSectorManagement> employees) {
+        this.employees = employees;
+    }
+
+    /**
+     * Gets a set of {@link Criature} or {@link Army} belonging to the sector.
+     * @return The set of {@link Criature} or {@link Army} value.
+     */
+    public Set<Object> getContenidoSector() {
+        return contenidoSector;
+    }
+
+    /**
+     * Sets a set of {@link Criature} or {@link Army} belonging to the sector.
+     * @param contenidoSector The set of {@link Criature} or {@link Army} value.
+     */
+    public void setContenidoSector(Set<Object> contenidoSector) {
+        this.contenidoSector = contenidoSector;
     }
     /**
      * HashCode method implementation for the entity.

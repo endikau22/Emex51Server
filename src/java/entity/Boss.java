@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 /**
  * Entity JPA class for Boss data. This class inherits from de class User.
  * The property of this class is the boss wage.It also contains relational field 
- * a set of {@link Employee} who the Boss manages.
+ * a set of {@link Employee} managed by the Boss.
  * @since 23/11/2020
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
@@ -46,8 +47,9 @@ public class Boss extends User implements Serializable {
     /**
      * The list of {@link Employee} of the boss.
      */ 
-    @OneToMany(mappedBy="jefe", fetch=EAGER) 
-    private Set <Employee> empleado;
+    @OneToMany(mappedBy="jefe", fetch=EAGER, cascade = CascadeType.MERGE) 
+    private Set <Employee> empleados;
+    
     /**
      * Class constructor.
      */
@@ -75,7 +77,7 @@ public class Boss extends User implements Serializable {
      * @return The Set of {@link Employee} value.
      */
     public Set<Employee> getEmpleado() {
-        return empleado;
+        return empleados;
     }
    
     /**
@@ -83,6 +85,6 @@ public class Boss extends User implements Serializable {
      * @param empleado The Set of {@link Employee} value.
      */
     public void setEmpleado(Set<Employee> empleado) {
-        this.empleado = empleado;
+        this.empleados = empleado;
     }
 }

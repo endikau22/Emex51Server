@@ -190,4 +190,72 @@ public class User implements Serializable {
     public UserPrivilege getPrivilege() {
         return privilege;
     }
+
+    /**
+     * Gets the id of the user.
+     * @return The id value.
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id of the user.
+     * @param id The id value.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets the password of the user
+     * @return The password value.
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Sets the password of the user.
+     * @param password The password value.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Gets the last access date of the user into the application.
+     * The Date is registered at the time the user exits the application.
+     * @return The date value.
+     */
+    public Date getLastAccess() {
+        return lastAccess;
+    }
+
+    /**
+     * Sets the last access date of the user into the application.
+     * The Date is registered at the time the user exits the application.
+     * @param lastAccess The date value.
+     */
+    public void setLastAccess(Date lastAccess) {
+        this.lastAccess = lastAccess;
+    }
+
+    /**
+     * Gets the last time the user changed the password.
+     * @return The date value.
+     */
+    public Date getLastPasswordChange() {
+        return lastPasswordChange;
+    }
+
+    /**
+     * Sets the last time the user changed the password.
+     * @param lastPasswordChange The date value.
+     */
+    public void setLastPasswordChange(Date lastPasswordChange) {
+        this.lastPasswordChange = lastPasswordChange;
+    }
+    
+    
 }

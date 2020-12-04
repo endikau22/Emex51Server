@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
-public enum UserPrivilege implements Serializable{
+public enum UserPrivilege{
     /**
      * The user is a regular user.
      */

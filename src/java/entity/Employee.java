@@ -6,113 +6,149 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author 2dam
+ * Entity JPA class for Employee data. This class inherits of the superclass User.
+ * The properties of this class are salary, position , sector, visitor and boss.
+ * It also contains relational fields for getting the {@link Sector} management and the {@link Visit} management.
+ * @since 23/11/2020
+ * @version 1.0
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
-@Table(name="employee",schema="emex51db")
-@XmlRootElement
+@Table(name="usuario",schema="emex51db")
+@NamedQueries({
+    @NamedQuery(name="findAllEmployees",
+            query="SELECT e FROM Employee e ORDER BY e.fullName DESC"
+    ),
+    @NamedQuery(name="findEmployeeBylogin",
+            query="SELECT e FROM Employee e WHERE e.login = :login"
+    )
+})
+//Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
+@DiscriminatorValue(value="Empleado")
 public class Employee extends User implements Serializable{
 
     private static final long serialVersionUID = 1L;
     
     /**
-     * Guarda el salario que cobra el empleado
+     * Wage of the employee.
      */
     private float Salario;
     /**
-     * Guarda el puesto en el que trabaja el empleado
+     * Position of the employee.
      */
     private String puesto;
     /**
-     * Guarda los sectores de los que se encarga el empleado
+     * List of {@link Sector} where the employee works.
      */
-    @ManyToMany(fetch=EAGER)//cascade = MERGE???
-    @JoinTable(schema="emex51db", name="employee_sector")
-    private ArrayList <Sector> sectors;
+    @OneToMany(mappedBy = "employees",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set <EmployeeSectorManagement> sectorsManaged;
     /**
-     * Guarda los visitantes de los que se hace cargo el empleado
+     * List of {@link Visitor} the employee manages.
      */
-    @OneToMany(mappedBy = "emloyee", fetch=EAGER)
-    private ArrayList <Visitor> visitantes;
+    @OneToMany(mappedBy = "empleado", fetch=EAGER, cascade = CascadeType.MERGE)
+    private Set <Visitor> visitantes;
     /**
-     * Guarda el jefe del empleado
+     * The Boss of the employee.
      */
     @ManyToOne
     private Boss jefe;
     /**
-     * Constructor vacio
+     * Class constructor.
      */
     public Employee() {
     }
+
     /**
-     * Constructor lleno
-     * @param Salario
-     * @param puesto
-     * @param sectors
-     * @param visitantes
-     * @param jefe
-     * @param login
-     * @param email
-     * @param fullName
-     * @param password 
+     * Gets the wages of the employee.
+     * @return The wage value.
      */
-    public Employee(float Salario, String puesto, ArrayList<Sector> sectors, ArrayList<Visitor> visitantes, Boss jefe, String login, String email, String fullName, String password) {
-        super(login, email, fullName, password);
-        this.Salario = Salario;
-        this.puesto = puesto;
-        this.sectors = sectors;
-        this.visitantes = visitantes;
-        this.jefe = jefe;
-    }
     public float getSalario() {
         return Salario;
     }
 
+    /**
+     * Sets the wages of the employee.
+     * @param Salario The wage value.
+     */
     public void setSalario(float Salario) {
         this.Salario = Salario;
     }
 
+    /**
+     * Gets the position of the employee.
+     * @return The position value.
+     */
     public String getPuesto() {
         return puesto;
     }
 
+    /**
+     * Sets the position of the employee.
+     * @param puesto The position value.
+     */
     public void setPuesto(String puesto) {
         this.puesto = puesto;
     }
+    
+    /**
+     * Gets a list of {@link Sector} managed by the employee.
+     * @return The list Sector value.
+     */
     @XmlTransient
-    public ArrayList<Sector> getSectors() {
-        return sectors;
+    public Set<EmployeeSectorManagement> getSectors() {
+        return sectorsManaged;
     }
 
-    public void setSectors(ArrayList<Sector> sectors) {
-        this.sectors = sectors;
+    /**
+     * Sets a list of {@link Sector} managed by the employee.
+     * @param sector The list {@link Sector} value.
+     */
+    public void setSectors(Set<EmployeeSectorManagement> sectors) {
+        this.sectorsManaged = sectors;
     }
 
-    public ArrayList<Visitor> getVisitantes() {
+    /**
+     * Gets a list of {@link Visitor} managed by  the employee.
+     * @return The list {@link Visitor} value.
+     */
+    public Set<Visitor> getVisitantes() {
         return visitantes;
     }
 
-    public void setVisitantes(ArrayList<Visitor> visitantes) {
+    /**
+     * Sets a list of {@link Visitor} managed by  the employee.
+     * @param visitante The list {@link Visitor} value.
+     */
+    public void setVisitantes(Set<Visitor> visitantes) {
         this.visitantes = visitantes;
     }
 
+    /**
+     * Gets the {@link Boss} of the employee.
+     * @return The {@link Boss} value.
+     */
     public Boss getJefe() {
         return jefe;
     }
 
+    /**
+     * Sets the {@link Boss} of the employee.
+     * @param jefe The {@link Boss} value.
+     */
     public void setJefe(Boss jefe) {
         this.jefe = jefe;
     }

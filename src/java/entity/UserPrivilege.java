@@ -4,18 +4,18 @@ package entity;
 import java.io.Serializable;
 
 /**
- * Contiene los distintos privilegios de un usuario.
- * @since 23/10/2020
+ * This enumeration is for users profiles. Includes the values USER and ADMIN. 
+ * @since 23/11/2020
  * @version 1.0
- * @author Eneko, Endika, Markel
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
-public enum UserPrivilege implements Serializable{
+public enum UserPrivilege{
     /**
-     * Privilegios de usuario.
+     * The user is a regular user.
      */
     USER,
     /**
-     * Privilegios de administrador.
+     * The user is a privileged user.
      */
     ADMIN
 }

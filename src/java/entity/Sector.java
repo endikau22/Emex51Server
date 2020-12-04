@@ -6,111 +6,173 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.lang.ProcessBuilder.Redirect.Type;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author 2dam
+ * Entity JPA class for Sector data. The properties of this class are idSector, name and type.
+ * It also contains relational fields for getting the visitors and the employees who manage the sector. 
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
+ * @version 1.0
+ * @since 01/12/2020
  */
 @Entity
 @Table(name = "sector", schema = "emex51db")
-@XmlRootElement
+@NamedQueries ({
+    @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.idSector DESC"),
+    @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.idSector = :idSector")
+})
 public class Sector implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Guarda el identificativo unico de sector
+     * Id field of the Sector Entity. It is also the id value of the sector.
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idSector;
     /**
-     * Guarda los visitantes que van a visitar el sector
+     * List of {@link Visitor} belonging to the sector.
      */
-    @ManyToMany(fetch = EAGER)//cascade = MERGE???
-    @JoinTable(schema = "emex51db", name = "visitor_sector")
-    private ArrayList<Visitor> visitante;
+    @ManyToMany(mappedBy="sectoresvisitados",fetch=EAGER)
+    private Set<Visitor> visitante;
     /**
-     * Guarda los empleados que trabajan en ese sector
+     * List of {@link EmployeeSectorManagement} belonging to the Sector.
      */
-    @ManyToMany(fetch = EAGER)//cascade = MERGE???
-    @JoinTable(schema = "emex51db", name = "employee_sector")
-    private ArrayList<Employee> empleado;
+    @OneToMany(mappedBy = "sectorsManaged",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set <EmployeeSectorManagement> employees;
     /**
-     * Guarda el tipo de sector que es. Puede ser
-     * o armamento o criatura
+     * List of {@link Criature} or {@link Army} belonging to the Sector.
      */
-    @Enumerated(EnumType.ORDINAL)
+    @OneToMany
+    private Set <Object> contenidoSector;
+
+    /**
+     * {@link Type} of the sector.
+     */
+    @Enumerated(EnumType.STRING)
     private SectorTipo tipo;
 
     /**
-     * Constructor vacio
-     */
+     * Class constructor.
+    */
     public Sector() {
     }
 
     /**
-     * Contructor lleno
-     *
-     * @param idSector
-     * @param visitante
-     * @param empleado
-     * @param tipo
-     */
-    public Sector(Integer idSector, ArrayList<Visitor> visitante, ArrayList<Employee> empleado, SectorTipo tipo) {
-        this.idSector = idSector;
-        this.visitante = visitante;
-        this.empleado = empleado;
-        this.tipo = tipo;
-    }
-
+     * Gets the id of the sector.
+     * @return The id value.
+    */ 
     public Integer getIdSector() {
         return idSector;
     }
 
+    /**
+     * Sets the id of the sector.
+     * @param idSector The id of the sector.
+     */
     public void setIdSector(Integer idSector) {
         this.idSector = idSector;
     }
 
+    /**
+     * Gets visitors of the sector.
+     */
     @XmlTransient
-    public ArrayList<Visitor> getVisitante() {
+    public Set<Visitor> getVisitante() {
         return visitante;
     }
 
-    public void setVisitante(ArrayList<Visitor> visitante) {
+    /**
+     * Sets the visitors of the sector. 
+     * @param visitante The visitors collection value.
+     */
+    public void setVisitante(Set<Visitor> visitante) {
         this.visitante = visitante;
     }
 
+    /**
+     * Gets the employees who manage the sector.
+     * @return The employee collection value.
+     */
     @XmlTransient
-    public ArrayList<Employee> getEmpleado() {
-        return empleado;
+    public Set<EmployeeSectorManagement> getEmpleado() {
+        return employees;
     }
 
-    public void setEmpleado(ArrayList<Employee> empleado) {
-        this.empleado = empleado;
+    /**
+     * Sets the employees who manage the sector.
+     * @param empleado The employee collection value.
+     */
+    public void setEmpleado(Set<EmployeeSectorManagement> empleado) {
+        this.employees = empleado;
     }
 
+    /**
+     * Gets the type of the sector.
+     * @return The type of the sector value.
+     */
     public SectorTipo getTipo() {
         return tipo;
     }
 
+    /**
+     * Sets the type of the sector.
+     * @param tipo The type value.
+     */
     public void setTipo(SectorTipo tipo) {
         this.tipo = tipo;
     }
     /**
-     * 
-     * @return representación entera para instanciar sector
+     * Gets a set of {@link Employee} who work in the sector. 
+     * @return The set of {@link Employee} value.
+     */
+    public Set<EmployeeSectorManagement> getEmployees() {
+        return employees;
+    }
+
+    /**
+     * Sets a set of {@link Employee} who work in the sector.
+     * @param employees The set of {@link Employee} value.
+     */
+    public void setEmployees(Set<EmployeeSectorManagement> employees) {
+        this.employees = employees;
+    }
+
+    /**
+     * Gets a set of {@link Criature} or {@link Army} belonging to the sector.
+     * @return The set of {@link Criature} or {@link Army} value.
+     */
+    public Set<Object> getContenidoSector() {
+        return contenidoSector;
+    }
+
+    /**
+     * Sets a set of {@link Criature} or {@link Army} belonging to the sector.
+     * @param contenidoSector The set of {@link Criature} or {@link Army} value.
+     */
+    public void setContenidoSector(Set<Object> contenidoSector) {
+        this.contenidoSector = contenidoSector;
+    }
+    /**
+     * HashCode method implementation for the entity.
+     * @return An integer value as hashcode for the object. 
      */
     @Override
     public int hashCode() {
@@ -118,10 +180,12 @@ public class Sector implements Serializable {
         hash += (idSector != null ? idSector.hashCode() : 0);
         return hash;
     }
+    
     /**
-     * Sirve para coparar dos sectores 
-     * @param object
-     * @return 
+     * This method compares two sector entities for equality. This implementation
+     * compare id field value for equality.
+     * @param obj The object to compare to.
+     * @return True if objects are equals, otherwise false.
      */
     @Override
     public boolean equals(Object object) {
@@ -135,9 +199,10 @@ public class Sector implements Serializable {
         }
         return true;
     }
+    
     /**
-     * obtiene el string de sector 
-     * @return 
+     * This method returns a String representation for a sector entity instance.
+     * @return The String representation for the Sector object. 
      */
     @Override
     public String toString() {

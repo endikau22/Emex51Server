@@ -4,18 +4,18 @@ package entity;
 import java.io.Serializable;
 
 /**
- * Representa los distintos estados de un cliente. 
- * @since 23/10/2020
+ * This enumeration is for users status. Includes the values ENABLED and DISABLED 
+ * @since 23/11/2020
  * @version 1.0
- * @author Eneko, Endika, Markel
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
-public enum UserStatus implements Serializable{
+public enum UserStatus{
     /**
-     * Estado usuario habilitado
+     * The user is enabled.
      */
     ENABLED,
     /**
-     * Estado usuario deshabilitado
+     * The user is disabled.
      */
     DISABLED;
 }

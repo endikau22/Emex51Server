@@ -255,7 +255,5 @@ public class User implements Serializable {
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
-    }
-    
-    
+    } 
 }

@@ -22,5 +22,4 @@ public enum SectorTipo implements Serializable{
     * The sector is type Criature.
     */
    CRIATURA;
-    
 }

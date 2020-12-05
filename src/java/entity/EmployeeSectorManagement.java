@@ -7,10 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -25,14 +24,16 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="employeesectormanagement",schema="emex51db")
+//Esta clase es la clase relacional que se forma en la relación N:M con atributos. La clave primaria son las dos tanto la
+//de sector como empleado embebidas en EmployeeeSectorId. 
+//Lo que hace esta clase es divide el N:M entre las entidades Empleado y Sector y las convierte en dos 1:N. De Empleado a esta y de Sector a esta clase. 
 public class EmployeeSectorManagement implements Serializable{
     private static final long serialVersionUID = 1L;
     /**
      * Id field of the EmployeeSectorManagement class. It is build with the id values of the class
      * {@link Employee} and the class {@link Sector}
      */
-    @Embedded
-    @Id
+    @EmbeddedId
     private EmployeeSectorId id;
     /**
      * The {@link Employee} who manage the {@link Sector}.

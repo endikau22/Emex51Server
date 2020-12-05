@@ -14,6 +14,9 @@ import javax.persistence.Embeddable;
  * @version 1.0
  * @since 01/12/2020
  */
+//Esta clase contiene las claves primaria de empleado y sector. Es parte de lo que hay que hacer en una relación N:M con atributos
+//Da igual el nombre de los atributos lo importante es que el tipo en este caso integer sea igual que el de la pk de empleado y sector.
+//Esta clase será luego embebida por employeesectormanagement
 @Embeddable
 public class EmployeeSectorId implements Serializable{
     private static final long serialVersionUID = 1L;

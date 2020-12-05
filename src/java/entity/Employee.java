@@ -16,19 +16,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity JPA class for Employee data. This class inherits of the superclass User.
- * The properties of this class are salary, position , sector, visitor and boss.
- * It also contains relational fields for getting the {@link Sector} management and the {@link Visit} management.
+ * The properties of this class are wage and job.
+ * It also contains relational fields for getting the {@link Sector} managed and the {@link Visitor} management
+ * and a reference to his {@link Boss}.
  * @since 23/11/2020
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
-@Table(name="usuario",schema="emex51db")
 @NamedQueries({
     @NamedQuery(name="findAllEmployees",
             query="SELECT e FROM Employee e ORDER BY e.fullName DESC"
@@ -46,26 +45,26 @@ public class Employee extends User implements Serializable{
     /**
      * Wage of the employee.
      */
-    private float Salario;
+    private float wage;
     /**
      * Position of the employee.
      */
-    private String puesto;
+    private String job;
     /**
      * List of {@link Sector} where the employee works.
      */
-    @OneToMany(mappedBy = "employees",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set <EmployeeSectorManagement> sectorsManaged;
     /**
      * List of {@link Visitor} the employee manages.
      */
-    @OneToMany(mappedBy = "empleado", fetch=EAGER, cascade = CascadeType.MERGE)
-    private Set <Visitor> visitantes;
+    @OneToMany(mappedBy = "employee", fetch=EAGER, cascade = CascadeType.MERGE)
+    private Set <Visitor> visitors;
     /**
      * The Boss of the employee.
      */
     @ManyToOne
-    private Boss jefe;
+    private Boss boss;
     /**
      * Class constructor.
      */
@@ -74,34 +73,34 @@ public class Employee extends User implements Serializable{
 
     /**
      * Gets the wages of the employee.
-     * @return The wage value.
+     * @return The Boss value.
      */
-    public float getSalario() {
-        return Salario;
+    public float getWage() {
+        return wage;
     }
 
     /**
      * Sets the wages of the employee.
-     * @param Salario The wage value.
+     * @param Salario The Boss value.
      */
-    public void setSalario(float Salario) {
-        this.Salario = Salario;
+    public void setWage(float Salario) {
+        this.wage = Salario;
     }
 
     /**
      * Gets the position of the employee.
      * @return The position value.
      */
-    public String getPuesto() {
-        return puesto;
+    public String getJob() {
+        return job;
     }
 
     /**
      * Sets the position of the employee.
      * @param puesto The position value.
      */
-    public void setPuesto(String puesto) {
-        this.puesto = puesto;
+    public void setJob(String puesto) {
+        this.job = puesto;
     }
     
     /**
@@ -125,31 +124,32 @@ public class Employee extends User implements Serializable{
      * Gets a list of {@link Visitor} managed by  the employee.
      * @return The list {@link Visitor} value.
      */
-    public Set<Visitor> getVisitantes() {
-        return visitantes;
+    @XmlTransient
+    public Set<Visitor> getVisitors() {
+        return visitors;
     }
 
     /**
      * Sets a list of {@link Visitor} managed by  the employee.
      * @param visitante The list {@link Visitor} value.
      */
-    public void setVisitantes(Set<Visitor> visitantes) {
-        this.visitantes = visitantes;
+    public void setVisitors(Set<Visitor> visitantes) {
+        this.visitors = visitantes;
     }
 
     /**
      * Gets the {@link Boss} of the employee.
      * @return The {@link Boss} value.
      */
-    public Boss getJefe() {
-        return jefe;
+    public Boss getBoss() {
+        return boss;
     }
 
     /**
      * Sets the {@link Boss} of the employee.
      * @param jefe The {@link Boss} value.
      */
-    public void setJefe(Boss jefe) {
-        this.jefe = jefe;
+    public void setBoss(Boss jefe) {
+        this.boss = jefe;
     }
 }

@@ -1,8 +1,6 @@
 
 package entity;
 
-import java.io.Serializable;
-
 /**
  * This enumeration is for users status. Includes the values ENABLED and DISABLED 
  * @since 23/11/2020

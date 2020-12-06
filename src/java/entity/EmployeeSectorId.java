@@ -60,4 +60,52 @@ public class EmployeeSectorId implements Serializable{
     public void setSectorId(Integer sectorId) {
         this.sectorId = sectorId;
     }
+    
+        /**
+     * HashCode method implementation for the entity.
+     * @return An integer value as hashcode for the object. 
+     */
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        //Si idArmamento es nulo devuelve 0 sino devuelve su valor numérico.
+        hash += (employeeId!= null ? employeeId.hashCode() : 0);
+        hash += (sectorId!= null ? sectorId.hashCode() : 0);
+        return hash;
+    }
+
+    /**
+     * This method compares two employeeSectorId objects for equality. This implementation
+     * compare id field value for equality, in this case the id is a composite id.
+     * @param obj The object to compare to.
+     * @return True if objects are equals, otherwise false.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        //Comprobar que el objeto recibido como parámetro es una instancia de arma
+        if (!(obj instanceof EmployeeSectorId)) {
+            return false;
+        }
+        EmployeeSectorId other = (EmployeeSectorId) obj;
+        if ((this.employeeId == null && other.employeeId != null) || 
+                (this.employeeId != null && !this.employeeId.equals(other.employeeId))) {
+            return false;
+        }
+        if ((this.sectorId == null && other.sectorId != null) || 
+                (this.sectorId != null && !this.sectorId.equals(other.sectorId))) {
+            return false;
+        }
+        return true;
+    } 
+
+    /**
+     * This method returns a String representation for a  employeeSectorId instance.
+     * @return The String representation for the sectorContent object. 
+     */
+    @Override
+    public String toString() {
+        return "EmployeeSectorId{" + "employeeId=" + employeeId + ", sectorId=" + sectorId + '}';
+    }
+    
+    
 }

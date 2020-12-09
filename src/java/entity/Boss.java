@@ -25,7 +25,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="Jefe")
+@DiscriminatorValue(value="Boss")
 public class Boss extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,9 +72,9 @@ public class Boss extends User implements Serializable {
    
     /**
      * Sets the list of {@link Employee} of the boss.
-     * @param empleado The Set of {@link Employee} value.
+     * @param employees
      */
-    public void setEmployees(Set<Employee> empleado) {
-        this.employees = empleado;
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
 }

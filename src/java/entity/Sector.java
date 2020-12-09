@@ -50,12 +50,12 @@ public class Sector implements Serializable {
     /**
      * List of {@link Visitor} belonging to the sector.
      */
-    @ManyToMany(mappedBy="sectoresvisitados",fetch=EAGER)
+    @ManyToMany(mappedBy="visitedSector",fetch=EAGER)
     private Set<Visitor> visitor;
     /**
      * List of {@link EmployeeSectorManagement} belonging to the Sector.
      */
-    @OneToMany(mappedBy = "sectorsManaged",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sector",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set <EmployeeSectorManagement> employees;
     /**
      * List of {@link Criature} or {@link Army} belonging to the Sector.
@@ -144,6 +144,7 @@ public class Sector implements Serializable {
      * Gets a set of {@link Employee} who work in the sector. 
      * @return The set of {@link Employee} value.
      */
+    @XmlTransient
     public Set<EmployeeSectorManagement> getEmployees() {
         return employees;
     }
@@ -160,6 +161,7 @@ public class Sector implements Serializable {
      * Gets a set of {@link Criature} or {@link Army} belonging to the sector.
      * @return The set of {@link Criature} or {@link Army} value.
      */
+    @XmlTransient
     public Set<Object> getSectorContent() {
         return sectorContent;
     }

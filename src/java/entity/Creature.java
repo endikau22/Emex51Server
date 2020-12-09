@@ -13,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -21,7 +20,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name="creature",schema="emex51db")
-@XmlRootElement
 public class Creature implements Serializable {
 
     private static final long serialVersionUID = 1L;

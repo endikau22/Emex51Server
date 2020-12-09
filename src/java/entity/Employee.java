@@ -125,6 +125,7 @@ public class Employee extends User implements Serializable{
      * Gets a list of {@link Visitor} managed by  the employee.
      * @return The list {@link Visitor} value.
      */
+    @XmlTransient
     public Set<Visitor> getVisitors() {
         return visitors;
     }

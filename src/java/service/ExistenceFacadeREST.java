@@ -5,7 +5,7 @@
  */
 package service;
 
-import entity.Existence;
+import entity.SectorContent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -22,7 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * RESTful service for Existence entity. Includes CRUD operations.
+ * RESTful service for SectorContent entity. Includes CRUD operations.
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde
  * @since 04/12/2020
  * @version 1.0
@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("entity.existence")
 //Los @consume y @produce xml es que recibe o envia en formato xml por http.
-public class ExistenceFacadeREST extends AbstractFacade<Existence> {
+public class ExistenceFacadeREST extends AbstractFacade<SectorContent> {
     /**
      * Logger for this class.
      */
@@ -45,7 +45,7 @@ public class ExistenceFacadeREST extends AbstractFacade<Existence> {
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public ExistenceFacadeREST() {
-        super(Existence.class);
+        super(SectorContent.class);
     }
     
     /**
@@ -55,7 +55,7 @@ public class ExistenceFacadeREST extends AbstractFacade<Existence> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
-    public void create(Existence entity) {
+    public void create(SectorContent entity) {
         LOGGER.log(Level.INFO,"Metodo create de la clase ExistenceFacade");
         super.create(entity);
     }
@@ -67,14 +67,14 @@ public class ExistenceFacadeREST extends AbstractFacade<Existence> {
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
-    public void edit(Existence entity) {
+    public void edit(SectorContent entity) {
         LOGGER.log(Level.INFO,"Metodo edit de la clase ExistenceFacade");
         super.edit(entity);
     }
 
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order. 
-     * @param id An id value of a Existence.
+     * @param id An id value of a SectorContent.
      */
     @DELETE
     @Path("{id}")
@@ -91,7 +91,7 @@ public class ExistenceFacadeREST extends AbstractFacade<Existence> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public Existence find(@PathParam("id") Integer id) {
+    public SectorContent find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase ExistenceFacade");
         return super.find(id);
     }

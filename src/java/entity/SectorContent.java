@@ -16,12 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * Entity JPA class for Existence data. The properties of this class are id, 
+ * Entity JPA class for SectorContent data. The properties of this class are id, 
  * name, arrivalDate. It also contains relational fields for getting the {@link Sector} 
  * where the content are storaged.
  * @author Endika Ubierna, Markel Uralde, Xabier Carnero
@@ -29,19 +27,19 @@ import javax.persistence.Table;
  * @since 01/12/2020
  */
 @Entity
-@Table(name="existencias",schema="emex51db")
+@Table(name="SECTOR_CONTENT",schema="emex51db")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
 @DiscriminatorColumn(name="Tipo", discriminatorType=DiscriminatorType.STRING)/*
 @NamedQueries({
     @NamedQuery(name="findAllExistences",
-            query="SELECT e FROM Existence e ORDER BY e.name DESC"
+            query="SELECT e FROM SectorContent e ORDER BY e.name DESC"
     ),
     @NamedQuery(name="findExistencebyId",
-            query="SELECT e FROM Existence e WHERE e.id = :id"
+            query="SELECT e FROM SectorContent e WHERE e.id = :id"
     ),
 })*/
-public class Existence implements Serializable{
+public class SectorContent implements Serializable{
    private static final long serialVersionUID = 1L;
     /**
      * Id field of the Criature Entity. It is also the id value of the criature.
@@ -66,7 +64,7 @@ public class Existence implements Serializable{
     /**
      * Class constructor
      */
-    public Existence() {
+    public SectorContent() {
     }
 
     /**
@@ -147,7 +145,7 @@ public class Existence implements Serializable{
     }
     
     /**
-     * This method compares two Existence entities for equality. This implementation
+     * This method compares two SectorContent entities for equality. This implementation
      * compare id field value for equality.
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
@@ -158,7 +156,7 @@ public class Existence implements Serializable{
         if (!(object instanceof Creature)) {
             return false;
         }
-        Existence other = (Existence) object;
+        SectorContent other = (SectorContent) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

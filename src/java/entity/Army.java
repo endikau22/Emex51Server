@@ -8,12 +8,10 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 /**
- * Entity JPA class for Army data. This class inherits from de class Existence.
- * The properties of this class is the ammunition. 
+ * Entity JPA class for Army data. This class inherits from de class SectorContent.
+ The properties of this class is the ammunition. 
  * @author Endika Ubierna, Markel Uralde, Xabier Carnero
  * @version 1.0
  * @since 01/12/2020
@@ -24,7 +22,7 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.id = :id")
 })*/
 @DiscriminatorValue(value="Army")
-public class Army extends Existence implements Serializable {
+public class Army extends SectorContent implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

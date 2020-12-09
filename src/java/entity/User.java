@@ -26,7 +26,7 @@ import javax.validation.constraints.Pattern;
  */
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@Table(name="usuario",schema="emex51db")
+@Table(name="USER",schema="emex51db")
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
 @DiscriminatorColumn(name="tipo_usuario", discriminatorType=DiscriminatorType.STRING)/*
 @NamedQueries({

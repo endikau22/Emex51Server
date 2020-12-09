@@ -28,14 +28,14 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  * Entity JPA class for Sector data. The properties of this class are idSector, name and type.
  * It also contains relational fields for getting the {@link Visitor} who visit the sector
- * the {@link Existence} which are storaged in the sector, this {@link Existence} can be {@link Creature} or
+ * the {@link SectorContent} which are storaged in the sector, this {@link SectorContent} can be {@link Creature} or
  * {@link Army} and the {@link Employee} who manage the sector. 
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  * @version 1.0
  * @since 01/12/2020
  */
 @Entity
-@Table(name = "sector", schema = "emex51db")/*
+@Table(name = "SECTOR", schema = "emex51db")/*
 @NamedQueries ({
     @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.id DESC"),
     @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.id = :id")
@@ -65,7 +65,7 @@ public class Sector implements Serializable {
      * List of {@link Criature} or {@link Army} belonging to the Sector.
      */
     @OneToMany(mappedBy = "sector",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set <Existence> sectorContent;
+    private Set <SectorContent> sectorContent;
 
     /**
      * {@link Type} of the sector.
@@ -149,7 +149,7 @@ public class Sector implements Serializable {
      * @return The set of {@link Criature} or {@link Army} value.
      */
     @XmlTransient
-    public Set<Existence> getSectorContent() {
+    public Set<SectorContent> getSectorContent() {
         return sectorContent;
     }
 
@@ -157,7 +157,7 @@ public class Sector implements Serializable {
      * Sets a set of {@link Criature} or {@link Army} belonging to the sector.
      * @param sectorContent The set of {@link Criature} or {@link Army} value.
      */
-    public void setSectorContent(Set<Existence> sectorContent) {
+    public void setSectorContent(Set<SectorContent> sectorContent) {
         this.sectorContent = sectorContent;
     }
     /**

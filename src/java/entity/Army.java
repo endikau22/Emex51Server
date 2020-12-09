@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity JPA class for Army data. The properties of this class are idArmy , 
@@ -30,6 +31,7 @@ import javax.persistence.Table;
     @NamedQuery(name="findAllArms",query = "SELECT a FROM Army a ORDER BY a.nombre DESC"),
     @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.idArmamento = :idArmamento")
 })
+@XmlRootElement
 public class Army implements Serializable {
 
     private static final long serialVersionUID = 1L;

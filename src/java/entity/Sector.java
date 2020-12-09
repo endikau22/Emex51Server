@@ -22,6 +22,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.idSector DESC"),
     @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.idSector = :idSector")
 })
+@XmlRootElement
 public class Sector implements Serializable {
 
     private static final long serialVersionUID = 1L;

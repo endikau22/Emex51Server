@@ -16,6 +16,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This class contains the relation between the class {@link Employee} and the class {@link Sector}.
@@ -25,6 +26,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="employeesectormanagement",schema="emex51db")
+@XmlRootElement
 public class EmployeeSectorManagement implements Serializable{
     private static final long serialVersionUID = 1L;
     /**

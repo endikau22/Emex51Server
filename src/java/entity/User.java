@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity JPA class for user data. The properties of this class are id, login , 
@@ -37,6 +38,7 @@ import javax.validation.constraints.Pattern;
             query="SELECT u FROM User u WHERE u.login = :login"
     )
 })
+@XmlRootElement
 public class User implements Serializable {
  private static final long serialVersionUID = 1L;
     /**

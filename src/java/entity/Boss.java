@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -37,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
 @DiscriminatorValue(value="Boss")
+@XmlRootElement
 public class Boss extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;

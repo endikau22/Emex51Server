@@ -15,30 +15,23 @@ import static javax.persistence.FetchType.EAGER;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity JPA class for visitor data. This class inherits of the superclass User.
- * The property of this class is dni,requested visit, visited, visit date.
+ * The property of this class is dni,requested visitReply, visited, visitReply date.
  * It also contains relational fields for getting the {@link Employee} and the {@link Sector}.
  * @since 23/11/2020
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
-@Entity
-@Table(name="visitor",schema="emex51db")
-@NamedQueries({
-    @NamedQuery(name="findAllVisitors",
-            query="SELECT v FROM Visitor v ORDER BY v.fullName DESC"
-    ),
-    @NamedQuery(name="findVisitorsBylogin",
-            query="SELECT v FROM Visitor v WHERE v.login = :login"
-    )
-})
-@DiscriminatorValue(value="Visitor")
+@Entity/*
+@NamedQueries ({
+    @NamedQuery(name="findAllVisitors",query = "SELECT v FROM Visitor v ORDER BY v.fullName DESC"),
+    @NamedQuery(name="findVisitorById",query = "SELECT v FROM Visitor v WHERE v.id = :id")
+})*/
+//Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
+@DiscriminatorValue(value="Visitante")
 public class Visitor extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,23 +41,23 @@ public class Visitor extends User implements Serializable {
      */
     private String dni;
     /**
-     * The request date of the visit.
+     * The request date of the visitReply.
      */
-    private LocalDateTime requestedVisit;
+    private LocalDateTime requestedVisitDate;
     /**
      * The response. True or false. 
      */
-    private Boolean answerVisit;
+    private Boolean visitReply;
     /**
      * Visited value. True or false.
      */
     private Boolean visited;
     /**
-     * The date of the visitors visit.
+     * The date of the visitors visitReply.
      */
     private LocalDateTime visitDate;
     /**
-     * The {@link Employee} who manage the visitors visit.
+     * The {@link Employee} who manage the visitors visitReply.
      */
     @ManyToOne
     private Employee employee;
@@ -73,7 +66,7 @@ public class Visitor extends User implements Serializable {
      */
     @ManyToMany(fetch = EAGER,cascade = MERGE)
     @JoinTable(schema = "emex51db", name = "visited_sector")
-    private Set <Sector> visitedSector;
+    private Set <Sector> visitedSectors;
     
     /**
      * Class constructor.
@@ -98,35 +91,35 @@ public class Visitor extends User implements Serializable {
     }
 
     /**
-     * Gets the date of the requested visit.
-     * @return The date of the requested visit value.
+     * Gets the date of the requested visitReply.
+     * @return The date of the requested visitReply value.
      */
-    public LocalDateTime getRequestedVisit() {
-        return requestedVisit;
+    public LocalDateTime getRequestedVisitDate() {
+        return requestedVisitDate;
     }
 
     /**
-     * Sets the date of the requested visit.
-     * @param requestedVisit The date of the requested visit value.
+     * Sets the date of the requested visitReply.
+     * @param requestedVisit The date of the requested visitReply value.
      */
-    public void setRequestedVisit(LocalDateTime requestedVisit) {
-        this.requestedVisit = requestedVisit;
+    public void setVisitaSolicitada(LocalDateTime requestedVisit) {
+        this.requestedVisitDate = requestedVisit;
     }
 
     /**
-     * Gets the boolean value of the response to the visit date request.
-     * @return The visit response value. True or false.
+     * Gets the boolean value of the response to the visitReply date request.
+     * @return The visitReply response value. True or false.
      */
     public boolean isVisitaRespuesta() {
-        return answerVisit;
+        return visitReply;
     }
 
     /**
-     * Sets the boolean value of the response to the visit date request.
-     * @param visitaRespuesta The visit response value. True or false.
+     * Sets the boolean value of the response to the visitReply date request.
+     * @param visitaRespuesta The visitReply response value. True or false.
      */
     public void setVisitaRespuesta(boolean visitaRespuesta) {
-        this.answerVisit = visitaRespuesta;
+        this.visitReply = visitaRespuesta;
     }
 
     /**
@@ -146,35 +139,35 @@ public class Visitor extends User implements Serializable {
     }
 
     /**
-     * Gets the date of the visit.
-     * @return The date of the visit value.
+     * Gets the date of the visitReply.
+     * @return The date of the visitReply value.
      */
-    public LocalDateTime getVisitDate() {
+    public LocalDateTime getFechaVisita() {
         return visitDate;
     }
 
     /**
-     * Sets the date of the visit.
-     * @param visitDate The date of the visit value.
+     * Sets the date of the visitReply.
+     * @param fechaVisita The date of the visitReply value.
      */
-    public void setVisitDate(LocalDateTime visitDate) {
-        this.visitDate = visitDate;
+    public void setFechaVisita(LocalDateTime fechaVisita) {
+        this.visitDate = fechaVisita;
     }
 
     /**
-     * Gets the {@link Employee} who manage the visit.
-     * @return The {@link Employee} who manage the visit value.
+     * Gets the {@link Employee} who manage the visitReply.
+     * @return The {@link Employee} who manage the visitReply value.
      */
-    public Employee getEmployee() {
+    public Employee getEmpleado() {
         return employee;
     }
 
     /**
-     * Sets the {@link Employee} who manage the visit.
-     * @param employee The {@link Employee} who manage the visit value.
+     * Sets the {@link Employee} who manage the visitReply.
+     * @param empleado The {@link Employee} who manage the visitReply value.
      */
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmpleado(Employee empleado) {
+        this.employee = empleado;
     }
    
     /**
@@ -183,7 +176,7 @@ public class Visitor extends User implements Serializable {
      */
     @XmlTransient
     public Set<Sector> getSectores() {
-        return visitedSector;
+        return visitedSectors;
     }
 
     /**
@@ -191,6 +184,6 @@ public class Visitor extends User implements Serializable {
      * @param sectores The {@link Sector} value.
      */
     public void setSectores(Set<Sector> sectores) {
-        this.visitedSector = sectores;
+        this.visitedSectors = sectores;
     } 
 }

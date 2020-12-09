@@ -14,26 +14,16 @@ import static javax.persistence.FetchType.EAGER;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * Entity JPA class for Boss data. This class inherits from de class User.
- * The property of this class is the boss wage.It also contains relational field 
+ * The property of this class is the wage of the boss.It also contains a relational field, 
  * a set of {@link Employee} managed by the Boss.
  * @since 23/11/2020
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
-@Table(name="usuario",schema="emex51db")
-@NamedQueries({
-    @NamedQuery(name="findAllBosses",
-            query="SELECT b FROM Boss b ORDER BY b.fullName DESC"
-    ),
-    @NamedQuery(name="findBossBylogin",
-            query="SELECT b FROM Boss b WHERE b.login = :login"
-    )
-})
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
 @DiscriminatorValue(value="Boss")
 public class Boss extends User implements Serializable {
@@ -41,7 +31,7 @@ public class Boss extends User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The wage of the boss.
+     * The Boss of the boss.
      */
     private float wage;
     /**
@@ -58,7 +48,7 @@ public class Boss extends User implements Serializable {
 
     /**
      * Gets the wages of the boss.
-     * @return The wage value.
+     * @return The Boss value.
      */
     public float getWage() {
         return wage;
@@ -66,7 +56,7 @@ public class Boss extends User implements Serializable {
   
     /**
      * Sets the wages of the boss.
-     * @param wage
+     * @param wage The Boss value.
      */
     public void setWage(float wage) {
         this.wage = wage;

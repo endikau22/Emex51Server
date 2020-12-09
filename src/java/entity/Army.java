@@ -6,150 +6,49 @@
 package entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
- * Entity JPA class for Army data. The properties of this class are idArmy , 
- name, arrivalDate. It also contains relational fields for getting the sector 
- where the army are storaged.
+ * Entity JPA class for Army data. This class inherits from de class SectorContent.
+ The properties of this class is the ammunition. 
  * @author Endika Ubierna, Markel Uralde, Xabier Carnero
  * @version 1.0
  * @since 01/12/2020
  */
-@Entity
-@Table(name="army",schema="emex51db")
+@Entity/*
 @NamedQueries ({
-    @NamedQuery(name="findAllArms",query = "SELECT a FROM Army a ORDER BY a.nombre DESC"),
-    @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.idArmamento = :idArmamento")
-})
-public class Army implements Serializable {
+    @NamedQuery(name="findAllArms",query = "SELECT a FROM Army a ORDER BY a.name DESC"),
+    @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.id = :id")
+})*/
+@DiscriminatorValue(value="Army")
+public class Army extends SectorContent implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    /**
-     * Id field of the Army Entity. It is also the id value of the army.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idArmy;
-    /**
-     * Name of the army.
-     */
-    private String name;
-    /**
-     * {@link Sector} where the army is stored.  
-     */
-    @ManyToOne
-    private Sector sector;
-    /**
-     * Arrival Date of the army to the facilities.
-     */
-    private LocalDateTime arrivalDate;
+    private Integer ammunition;
+
     /**
      * Class constructor.
      */
     public Army() {
     }
+
     /**
-     * Gets id value for army.
-     * @return The id value.
+     * Gets the quantity of ammunition of the army.
+     * @return The ammunition value.
      */
-    public Integer getIdArmy() {
-        return idArmy;
+    public int getAmmunition() {
+        return ammunition;
     }
+
     /**
-     * Sets id value for army.
-     * @param idArmy
+     * Sets the quantity of ammunition of the army.
+     * @param ammunition The ammunition value.
      */
-    public void setIdArmy(Integer idArmy) {
-        this.idArmy = idArmy;
-    }
-    /**
-     * Gets name value for army.
-     * @return The name value.
-     */
-    public String getName() {
-        return name;
-    }
-    /**
-     * Sets name value for army. 
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * Gets Sector value for army.
-     * @return The sector value.
-     */
-    public Sector getSector() {
-        return sector;
-    }
-    /**
-     * Sets Sector value for army.
-     * @param sector The sector value
-     */
-    public void setSector(Sector sector) {
-        this.sector = sector;
-    }
-    /**
-     * Gets arrival date value for army.
-     * @return The  arrival date value.
-     */
-    public LocalDateTime getArrivalDate() {
-        return arrivalDate;
-    }
-    /**
-     * Sets arrival date value for army.
-     * @param arrivalDate
-     */
-    public void setArrivalDate(LocalDateTime arrivalDate) {
-        this.arrivalDate = arrivalDate;
+    public void setAmmunition(int ammunition) {
+        this.ammunition = ammunition;
     }
     
-    /**
-     * HashCode method implementation for the entity.
-     * @return An integer value as hashcode for the object. 
-     */
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idArmy != null ? idArmy.hashCode() : 0);
-        return hash;
-    }
-    /**
-     * This method compares two army entities for equality. This implementation
-     * compare id field value for equality.
-     * @param object
-     * @
-     * @return True if objects are equals, otherwise false.
-     */
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Army)) {
-            return false;
-        }
-        Army other = (Army) object;
-        if ((this.idArmy == null && other.idArmy != null) || (this.idArmy != null && !this.idArmy.equals(other.idArmy))) {
-            return false;
-        }
-        return true;
-    }
-    /**
-     * This method returns a String representation for an army entity instance.
-     * @return The String representation for the Army object. 
-     */
-    @Override
-    public String toString() {
-        return "army.Army[ idArmamento=" + idArmy + " ]";
-    }
+    
 }

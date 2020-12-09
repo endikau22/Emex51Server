@@ -6,114 +6,50 @@
 package entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author 2dam
+ * Entity JPA class for Creature data. This class inherits from de class SectorContent.
+ The property of this class is species.
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
+ * @version 1.0
+ * @since 01/12/2020
  */
-@Entity
-@Table(name="creature",schema="emex51db")
-@XmlRootElement
-public class Creature implements Serializable {
+@Entity/*
+@NamedQueries ({
+    @NamedQuery(name="findAllCriatures",query = "SELECT c FROM Creature c ORDER BY c.name DESC"),
+    @NamedQuery(name="findCriatureById",query = "SELECT c FROM Creature c WHERE c.id = :id")
+})*/
+@DiscriminatorValue(value="Creature")
+public class Creature extends SectorContent implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
-     * Identificativo unico para criatura
+     * The species of the creature.
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idCreature;
+    private String species;
+
     /**
-     * El name de la criatura
-     */
-    private String name;
-    /**
-     * El sector en el que esta la criatura
-     */
-    @ManyToOne
-    private Sector sector;
-    /**
-     * Fecha en la que llega la criatura
-     */
-    private LocalDateTime arrivalDate;
-    /**
-     * Constructor vacio
+     * Class constructor.
      */
     public Creature() {
+        super();
     }
 
-    public Integer getidCreature() {
-        return idCreature;
-    }
-
-    public void setidCreature(Integer idCreature) {
-        this.idCreature = idCreature;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Sector getSector() {
-        return sector;
-    }
-
-    public void setSector(Sector sector) {
-        this.sector = sector;
-    }
-
-    public LocalDateTime getArrivalDate() {
-        return arrivalDate;
-    }
-
-    public void setArrivalDate(LocalDateTime arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
     /**
-     * 
-     * @return representación entera para instanciar criatura
+     * Gets the species of the creature
+     * @return The species value.
      */
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idCreature != null ? idCreature.hashCode() : 0);
-        return hash;
+    public String getSpecies() {
+        return species;
     }
+
     /**
-     * Sirve para comparar dos criaturas
-     * @param object
-     * @return 
+     * Sets the species of the creature
+     * @param species The species value.
      */
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Creature)) {
-            return false;
-        }
-        Creature other = (Creature) object;
-        if ((this.idCreature == null && other.idCreature != null) || (this.idCreature != null && !this.idCreature.equals(other.idCreature))) {
-            return false;
-        }
-        return true;
-    }
-    /**
-     * obtiene el string de la criatura
-     * @return 
-     */
-    @Override
-    public String toString() {
-        return "creature.Creature[ idCriatura=" + idCreature + " ]";
+    public void setSpecies(String species) {
+        this.species = species;
     }
 }

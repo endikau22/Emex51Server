@@ -22,21 +22,25 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity JPA class for Sector data. The properties of this class are idSector, name and type.
- * It also contains relational fields for getting the visitors and the employees who manage the sector. 
+ * It also contains relational fields for getting the {@link Visitor} who visit the sector
+ * the {@link SectorContent} which are storaged in the sector, this {@link SectorContent} can be {@link Creature} or
+ * {@link Army} and the {@link Employee} who manage the sector. 
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  * @version 1.0
  * @since 01/12/2020
  */
 @Entity
-@Table(name = "sector", schema = "emex51db")
+@Table(name = "SECTOR", schema = "emex51db")/*
 @NamedQueries ({
-    @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.idSector DESC"),
-    @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.idSector = :idSector")
-})
+    @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.id DESC"),
+    @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.id = :id")
+})*/
+@XmlRootElement
 public class Sector implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,22 +50,22 @@ public class Sector implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idSector;
+    private Integer id;
     /**
      * List of {@link Visitor} belonging to the sector.
      */
-    @ManyToMany(mappedBy="sectoresvisitados",fetch=EAGER)
-    private Set<Visitor> visitor;
+    @ManyToMany(mappedBy="visitedSectors",fetch=EAGER,cascade = CascadeType.ALL)
+    private Set<Visitor> visitors;
     /**
      * List of {@link EmployeeSectorManagement} belonging to the Sector.
      */
-    @OneToMany(mappedBy = "sectorsManaged",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sector",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set <EmployeeSectorManagement> employees;
     /**
      * List of {@link Criature} or {@link Army} belonging to the Sector.
      */
-    @OneToMany
-    private Set <Object> sectorContent;
+    @OneToMany(mappedBy = "sector",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set <SectorContent> sectorContent;
 
     /**
      * {@link Type} of the sector.
@@ -80,7 +84,7 @@ public class Sector implements Serializable {
      * @return The id value.
     */ 
     public Integer getIdSector() {
-        return idSector;
+        return id;
     }
 
     /**
@@ -88,24 +92,23 @@ public class Sector implements Serializable {
      * @param idSector The id of the sector.
      */
     public void setIdSector(Integer idSector) {
-        this.idSector = idSector;
+        this.id = idSector;
     }
 
     /**
      * Gets visitors of the sector.
-     * @return 
      */
     @XmlTransient
-    public Set<Visitor> getVisitor() {
-        return visitor;
+    public Set<Visitor> getVisitors() {
+        return visitors;
     }
 
     /**
      * Sets the visitors of the sector. 
-     * @param visitor The visitors collection value.
+     * @param visitors The visitors collection value.
      */
-    public void setVisitor(Set<Visitor> visitor) {
-        this.visitor = visitor;
+    public void setVisitors(Set<Visitor> visitors) {
+        this.visitors = visitors;
     }
 
     /**
@@ -113,16 +116,16 @@ public class Sector implements Serializable {
      * @return The employee collection value.
      */
     @XmlTransient
-    public Set<EmployeeSectorManagement> getEmpleado() {
+    public Set<EmployeeSectorManagement> getEmployees() {
         return employees;
     }
 
     /**
      * Sets the employees who manage the sector.
-     * @param empleado The employee collection value.
+     * @param empleados The employee collection value.
      */
-    public void setEmpleado(Set<EmployeeSectorManagement> empleado) {
-        this.employees = empleado;
+    public void setEmployees(Set<EmployeeSectorManagement> empleados) {
+        this.employees = empleados;
     }
 
     /**
@@ -140,27 +143,13 @@ public class Sector implements Serializable {
     public void setType(SectorType type) {
         this.type = type;
     }
-    /**
-     * Gets a set of {@link Employee} who work in the sector. 
-     * @return The set of {@link Employee} value.
-     */
-    public Set<EmployeeSectorManagement> getEmployees() {
-        return employees;
-    }
-
-    /**
-     * Sets a set of {@link Employee} who work in the sector.
-     * @param employees The set of {@link Employee} value.
-     */
-    public void setEmployees(Set<EmployeeSectorManagement> employees) {
-        this.employees = employees;
-    }
 
     /**
      * Gets a set of {@link Criature} or {@link Army} belonging to the sector.
      * @return The set of {@link Criature} or {@link Army} value.
      */
-    public Set<Object> getSectorContent() {
+    @XmlTransient
+    public Set<SectorContent> getSectorContent() {
         return sectorContent;
     }
 
@@ -168,7 +157,7 @@ public class Sector implements Serializable {
      * Sets a set of {@link Criature} or {@link Army} belonging to the sector.
      * @param sectorContent The set of {@link Criature} or {@link Army} value.
      */
-    public void setSectorContent(Set<Object> sectorContent) {
+    public void setSectorContent(Set<SectorContent> sectorContent) {
         this.sectorContent = sectorContent;
     }
     /**
@@ -178,7 +167,7 @@ public class Sector implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idSector != null ? idSector.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
     
@@ -195,7 +184,7 @@ public class Sector implements Serializable {
             return false;
         }
         Sector other = (Sector) object;
-        if ((this.idSector == null && other.idSector != null) || (this.idSector != null && !this.idSector.equals(other.idSector))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -207,6 +196,6 @@ public class Sector implements Serializable {
      */
     @Override
     public String toString() {
-        return "Sector{" + "idSector=" + idSector + '}';
+        return "Sector{" + "idSector=" + id + '}';
     }
 }

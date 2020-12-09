@@ -13,32 +13,22 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity JPA class for Employee data. This class inherits of the superclass User.
- * The properties of this class are salary, position , sector, visitor and boss.
- * It also contains relational fields for getting the {@link Sector} management and the {@link Visit} management.
+ * The properties of this class are wage and job.
+ * It also contains relational fields for getting the {@link Sector} managed and the {@link Visitor} management
+ * and a reference to his {@link Boss}.
  * @since 23/11/2020
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
-@Table(name="usuario",schema="emex51db")
-@NamedQueries({
-    @NamedQuery(name="findAllEmployees",
-            query="SELECT e FROM Employee e ORDER BY e.fullName DESC"
-    ),
-    @NamedQuery(name="findEmployeeBylogin",
-            query="SELECT e FROM Employee e WHERE e.login = :login"
-    )
-})
+
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="Employee")
+@DiscriminatorValue(value="Empleado")
 public class Employee extends User implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -50,11 +40,11 @@ public class Employee extends User implements Serializable{
     /**
      * Position of the employee.
      */
-    private String workstation;
+    private String job;
     /**
      * List of {@link Sector} where the employee works.
      */
-    @OneToMany(mappedBy = "employees",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set <EmployeeSectorManagement> sectorsManaged;
     /**
      * List of {@link Visitor} the employee manages.
@@ -71,10 +61,10 @@ public class Employee extends User implements Serializable{
      */
     public Employee() {
     }
-    
+
     /**
      * Gets the wages of the employee.
-     * @return The wage value.
+     * @return The Boss value.
      */
     public float getWage() {
         return wage;
@@ -82,26 +72,26 @@ public class Employee extends User implements Serializable{
 
     /**
      * Sets the wages of the employee.
-     * @param wage
+     * @param Salario The Boss value.
      */
-    public void setWage(float wage) {
-        this.wage = wage;
+    public void setWage(float Salario) {
+        this.wage = Salario;
     }
 
     /**
      * Gets the position of the employee.
      * @return The position value.
      */
-    public String getWorkstation() {
-        return workstation;
+    public String getJob() {
+        return job;
     }
 
     /**
      * Sets the position of the employee.
-     * @param workstation The position value.
+     * @param puesto The position value.
      */
-    public void setWorkstation(String workstation) {
-        this.workstation = workstation;
+    public void setJob(String puesto) {
+        this.job = puesto;
     }
     
     /**
@@ -115,7 +105,7 @@ public class Employee extends User implements Serializable{
 
     /**
      * Sets a list of {@link Sector} managed by the employee.
-     * @param sectors
+     * @param sector The list {@link Sector} value.
      */
     public void setSectors(Set<EmployeeSectorManagement> sectors) {
         this.sectorsManaged = sectors;
@@ -125,16 +115,17 @@ public class Employee extends User implements Serializable{
      * Gets a list of {@link Visitor} managed by  the employee.
      * @return The list {@link Visitor} value.
      */
+    @XmlTransient
     public Set<Visitor> getVisitors() {
         return visitors;
     }
 
     /**
      * Sets a list of {@link Visitor} managed by  the employee.
-     * @param visitors
+     * @param visitante The list {@link Visitor} value.
      */
-    public void setVisitors(Set<Visitor> visitors) {
-        this.visitors = visitors;
+    public void setVisitors(Set<Visitor> visitantes) {
+        this.visitors = visitantes;
     }
 
     /**
@@ -147,9 +138,9 @@ public class Employee extends User implements Serializable{
 
     /**
      * Sets the {@link Boss} of the employee.
-     * @param boss The {@link Boss} value.
+     * @param jefe The {@link Boss} value.
      */
-    public void setBoss(Boss boss) {
-        this.boss = boss;
+    public void setBoss(Boss jefe) {
+        this.boss = jefe;
     }
 }

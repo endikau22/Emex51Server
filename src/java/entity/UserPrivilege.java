@@ -1,7 +1,6 @@
 
 package entity;
 
-import java.io.Serializable;
 
 /**
  * This enumeration is for users profiles. Includes the values USER and ADMIN. 

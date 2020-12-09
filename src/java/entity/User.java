@@ -26,9 +26,9 @@ import javax.validation.constraints.Pattern;
  */
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Table(name="USER",schema="emex51db")
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
-@DiscriminatorColumn(name="tipo_usuario", discriminatorType=DiscriminatorType.STRING)
-@Table(name="usuario",schema="emex51db")
+@DiscriminatorColumn(name="tipo_usuario", discriminatorType=DiscriminatorType.STRING)/*
 @NamedQueries({
     @NamedQuery(name="findAllUsers",
             query="SELECT u FROM User u ORDER BY u.fullName DESC"
@@ -36,7 +36,7 @@ import javax.validation.constraints.Pattern;
     @NamedQuery(name="findUsersBylogin",
             query="SELECT u FROM User u WHERE u.login = :login"
     )
-})
+})*/
 public class User implements Serializable {
  private static final long serialVersionUID = 1L;
     /**
@@ -255,5 +255,44 @@ public class User implements Serializable {
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
-    } 
+    }
+    /**
+     * HashCode method implementation for the entity.
+     * @return An integer value as hashcode for the object. 
+     */
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+    
+    /**
+     * This method compares two user entities for equality. This implementation
+     * compare id field value for equality.
+     * @param obj The object to compare to.
+     * @return True if objects are equals, otherwise false.
+     */
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Sector)) {
+            return false;
+        }
+        User other = (User) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * This method returns a String representation for a user entity instance.
+     * @return The String representation for the Sector object. 
+     */
+    @Override
+    public String toString() {
+        return "User{" + "idUser=" + id + '}';
+    }
+    
 }

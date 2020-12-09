@@ -18,16 +18,18 @@ import javax.persistence.NamedQuery;
  * @version 1.0
  * @since 01/12/2020
  */
-@Entity
+@Entity/*
 @NamedQueries ({
     @NamedQuery(name="findAllCriatures",query = "SELECT c FROM Creature c ORDER BY c.name DESC"),
     @NamedQuery(name="findCriatureById",query = "SELECT c FROM Creature c WHERE c.id = :id")
-})
+})*/
 @DiscriminatorValue(value="Creature")
 public class Creature extends Existence implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+    /**
+     * The species of the creature.
+     */
     private String species;
 
     /**

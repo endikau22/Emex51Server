@@ -28,7 +28,7 @@ import javax.validation.constraints.Pattern;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name="usuario",schema="emex51db")
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
-@DiscriminatorColumn(name="tipo_usuario", discriminatorType=DiscriminatorType.STRING)
+@DiscriminatorColumn(name="tipo_usuario", discriminatorType=DiscriminatorType.STRING)/*
 @NamedQueries({
     @NamedQuery(name="findAllUsers",
             query="SELECT u FROM User u ORDER BY u.fullName DESC"
@@ -36,7 +36,7 @@ import javax.validation.constraints.Pattern;
     @NamedQuery(name="findUsersBylogin",
             query="SELECT u FROM User u WHERE u.login = :login"
     )
-})
+})*/
 public class User implements Serializable {
  private static final long serialVersionUID = 1L;
     /**

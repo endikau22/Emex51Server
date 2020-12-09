@@ -72,7 +72,7 @@ public abstract class AbstractFacade<T> {
 
     /**
      * Find method. Sends a find order to Hibernate. The latter executes a Select operation
-     * against a MySQL database.
+     * against a MySQL database Get HTTP petition.
      * @param id The id value .
      * @return An object.
      */

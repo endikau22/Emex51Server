@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.XmlTransient;
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
-@Entity
+@Entity/*
 @NamedQueries ({
     @NamedQuery(name="findAllVisitors",query = "SELECT v FROM Visitor v ORDER BY v.fullName DESC"),
     @NamedQuery(name="findVisitorById",query = "SELECT v FROM Visitor v WHERE v.id = :id")
-})
+})*/
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
 @DiscriminatorValue(value="Visitante")
 public class Visitor extends User implements Serializable {

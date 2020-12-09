@@ -18,11 +18,11 @@ import javax.persistence.NamedQuery;
  * @version 1.0
  * @since 01/12/2020
  */
-@Entity
+@Entity/*
 @NamedQueries ({
     @NamedQuery(name="findAllArms",query = "SELECT a FROM Army a ORDER BY a.name DESC"),
     @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.id = :id")
-})
+})*/
 @DiscriminatorValue(value="Army")
 public class Army extends Existence implements Serializable {
 

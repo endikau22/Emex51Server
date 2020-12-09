@@ -5,7 +5,6 @@
  */
 package service;
 
-import entity.EmployeeSectorId;
 import entity.EmployeeSectorManagement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +20,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.PathSegment;
 
 /**
  * RESTful service for EmployeeSectorManagement entity. Includes CRUD operations.
@@ -77,7 +77,7 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
      */
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") EmployeeSectorId id) {
+    public void remove(@PathParam("id") PathSegment id) {
         LOGGER.log(Level.INFO,"Metodo remove de la clase EmployeeSectorManagementFacade");
         super.remove(super.find(id));
     }
@@ -90,7 +90,7 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public EmployeeSectorManagement find(@PathParam("id") EmployeeSectorId id) {
+    public EmployeeSectorManagement find(@PathParam("id") PathSegment id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase EmployeeSectorManagementFacade");
         return super.find(id);
     }

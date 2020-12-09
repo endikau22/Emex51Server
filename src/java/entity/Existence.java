@@ -32,7 +32,7 @@ import javax.persistence.Table;
 @Table(name="existencias",schema="emex51db")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
-@DiscriminatorColumn(name="Tipo", discriminatorType=DiscriminatorType.STRING)
+@DiscriminatorColumn(name="Tipo", discriminatorType=DiscriminatorType.STRING)/*
 @NamedQueries({
     @NamedQuery(name="findAllExistences",
             query="SELECT e FROM Existence e ORDER BY e.name DESC"
@@ -40,7 +40,7 @@ import javax.persistence.Table;
     @NamedQuery(name="findExistencebyId",
             query="SELECT e FROM Existence e WHERE e.id = :id"
     ),
-})
+})*/
 public class Existence implements Serializable{
    private static final long serialVersionUID = 1L;
     /**

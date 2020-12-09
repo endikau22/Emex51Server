@@ -35,11 +35,11 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since 01/12/2020
  */
 @Entity
-@Table(name = "sector", schema = "emex51db")
+@Table(name = "sector", schema = "emex51db")/*
 @NamedQueries ({
     @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.id DESC"),
     @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.id = :id")
-})
+})*/
 @XmlRootElement
 public class Sector implements Serializable {
 

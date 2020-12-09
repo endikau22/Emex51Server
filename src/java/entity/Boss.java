@@ -24,14 +24,6 @@ import javax.persistence.OneToMany;
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
-@NamedQueries({
-    @NamedQuery(name="findAllBosses",
-            query="SELECT b FROM Boss b ORDER BY b.fullName DESC"
-    ),
-    @NamedQuery(name="findBossBylogin",
-            query="SELECT b FROM Boss b WHERE b.login = :login"
-    )
-})
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
 @DiscriminatorValue(value="Jefe")
 public class Boss extends User implements Serializable {

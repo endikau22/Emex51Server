@@ -8,6 +8,9 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity JPA class for Creature data. This class inherits from de class SectorContent.
@@ -16,12 +19,17 @@ import javax.persistence.Entity;
  * @version 1.0
  * @since 01/12/2020
  */
-@Entity/*
-@NamedQueries ({
-    @NamedQuery(name="findAllCriatures",query = "SELECT c FROM Creature c ORDER BY c.name DESC"),
-    @NamedQuery(name="findCriatureById",query = "SELECT c FROM Creature c WHERE c.id = :id")
-})*/
-@DiscriminatorValue(value="Creature")
+@Entity
+@NamedQueries({
+    @NamedQuery(name = "findAllCreatures",
+            query = "SELECT sc FROM SectorContent sc WHERE Type = 'creature'"),
+    @NamedQuery(name = "findCreatureById",
+            query = "SELECT sc FROM SectorContent sc WHERE sc.id = :id AND Type = 'creature'"),
+    @NamedQuery(name = "findCreatureByName",
+            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name AND Type = 'creature'")
+})
+@DiscriminatorValue(value="creature")
+@XmlRootElement
 public class Creature extends SectorContent implements Serializable {
 
     private static final long serialVersionUID = 1L;

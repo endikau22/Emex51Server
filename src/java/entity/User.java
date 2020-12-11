@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity JPA class for user data. The properties of this class are id, login , 
@@ -28,15 +29,16 @@ import javax.validation.constraints.Pattern;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name="USER",schema="emex51db")
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
-@DiscriminatorColumn(name="tipo_usuario", discriminatorType=DiscriminatorType.STRING)/*
+@DiscriminatorColumn(name="user_type", discriminatorType=DiscriminatorType.STRING)
 @NamedQueries({
     @NamedQuery(name="findAllUsers",
-            query="SELECT u FROM User u ORDER BY u.fullName DESC"
-    ),
+            query="SELECT u FROM User u ORDER BY u.fullName DESC"),
     @NamedQuery(name="findUsersBylogin",
-            query="SELECT u FROM User u WHERE u.login = :login"
-    )
-})*/
+            query="SELECT u FROM User u WHERE u.login = :login"),
+    @NamedQuery(name="findUserByEmail",
+            query="SELECT u FROM User u WHERE u.email = :email"),
+})
+@XmlRootElement
 public class User implements Serializable {
  private static final long serialVersionUID = 1L;
     /**

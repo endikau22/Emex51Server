@@ -13,7 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -26,9 +29,17 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
-
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="Empleado")
+@DiscriminatorValue(value="employee")
+@NamedQueries({
+    @NamedQuery(name="findAllEmployees",
+            query="SELECT u FROM User u WHERE user_type='employee'"),
+    @NamedQuery(name="findEmployeeById",
+            query="SELECT u FROM User u WHERE user_type='employee' AND u.id = :id"),
+    @NamedQuery(name="findEmployeesByName",
+            query="SELECT u FROM User u WHERE user_type='employee' AND u.fullName = :name")  
+})
+@XmlRootElement
 public class Employee extends User implements Serializable{
 
     private static final long serialVersionUID = 1L;

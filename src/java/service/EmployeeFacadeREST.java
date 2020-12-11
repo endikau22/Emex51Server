@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
  * @version 1.0
  */
 @Stateless
-@Path("entity.employee")
+@Path("employee")
 public class EmployeeFacadeREST extends AbstractFacade<Employee> {
     /**
      * Logger for this class.

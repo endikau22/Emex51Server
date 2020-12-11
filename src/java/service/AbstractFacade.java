@@ -5,6 +5,8 @@
  */
 package service;
 
+import entity.Army;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -81,4 +83,8 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().find(entityClass, id);
     }
 
+    public List<Army> findByName(Object name){
+        LOGGER.log(Level.INFO,"Find by name method from ArmyFacade");
+        return getEntityManager().createNamedQuery("findArmyByName").setParameter("name", name).getResultList();
+    }
 }

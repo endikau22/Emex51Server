@@ -5,7 +5,7 @@
  */
 package service;
 
-import entity.Employee;
+import entity.SectorContent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -22,18 +22,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * RESTful service for Employee entity. Includes CRUD operations.
+ * RESTful service for SectorContent entity. Includes CRUD operations.
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
-@Path("employee")
-public class EmployeeFacadeREST extends AbstractFacade<Employee> {
+@Path("sectorcontent")
+//Los @consume y @produce xml es que recibe o envia en formato xml por http.
+public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
     /**
      * Logger for this class.
      */
-    private static final Logger LOGGER=Logger.getLogger(EmployeeFacadeREST.class.getName());
+    private static final Logger LOGGER=Logger.getLogger(SectorContentFacadeREST.class.getName());
     /**
      * Injects an {@link EntityManager} instance.
      */
@@ -43,54 +44,55 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
-    public EmployeeFacadeREST() {
-        super(Employee.class);
+    public SectorContentFacadeREST() {
+        super(SectorContent.class);
     }
-
+    
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     * @param entity The employee object in xml format.
+     * @param entity The existence object in xml format.
      */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
-    public void create(Employee entity) {
-        LOGGER.log(Level.INFO,"Metodo create de la clase EmployeeFacade");
+    public void create(SectorContent entity) {
+        LOGGER.log(Level.INFO,"Metodo create de la clase SectorContentFacade");
         super.create(entity);
     }
 
     /**
+     * 
      * Edit (Update) operation after receiving a Delete HTTP order.
-     * @param entity The employee object in xml format.
+     * @param entity The existence object in xml format.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
-    public void edit(Employee entity) {
-        LOGGER.log(Level.INFO,"Metodo edit de la clase EmployeeFacade");
+    public void edit(SectorContent entity) {
+        LOGGER.log(Level.INFO,"Metodo edit de la clase SectorContentFacade");
         super.edit(entity);
     }
 
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order. 
-     * @param id An id value of an employee.
+     * @param id An id value of a SectorContent.
      */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo remove de la clase EmployeeFacade");
+        LOGGER.log(Level.INFO,"Metodo remove de la clase SectorContentFacade");
         super.remove(super.find(id));
     }
 
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     * @param id An id value of an employee.
-     * @return An Employee object in xml format.
+     * @param id An id value of an existence.
+     * @return An existence object in xml format.
      */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public Employee find(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo find de la clase EmployeeFacade");
+    public SectorContent find(@PathParam("id") Integer id) {
+        LOGGER.log(Level.INFO,"Metodo find de la clase SectorContentFacade");
         return super.find(id);
     }
 
@@ -100,7 +102,7 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
      */
     @Override
     protected EntityManager getEntityManager() {
-        LOGGER.log(Level.INFO,"Metodo getEntityManager de la clase EmployeeFacade");
+        LOGGER.log(Level.INFO,"Metodo getEntityManager de la clase SectorContentFacade");
         return em;
     }
     

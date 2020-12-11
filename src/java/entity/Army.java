@@ -8,6 +8,9 @@ package entity;
 import java.io.Serializable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity JPA class for Army data. This class inherits from de class SectorContent.
@@ -16,12 +19,17 @@ import javax.persistence.Entity;
  * @version 1.0
  * @since 01/12/2020
  */
-@Entity/*
-@NamedQueries ({
-    @NamedQuery(name="findAllArms",query = "SELECT a FROM Army a ORDER BY a.name DESC"),
-    @NamedQuery(name="findArmById",query = "SELECT a FROM Army a WHERE a.id = :id")
-})*/
-@DiscriminatorValue(value="Army")
+@Entity
+@DiscriminatorValue(value="army")
+@NamedQueries({
+    @NamedQuery(name = "findAllArmy",
+            query = "SELECT sc FROM SectorContent sc WHERE Type = 'army'"),
+    @NamedQuery(name = "findArmyById",
+            query = "SELECT sc FROM SectorContent sc WHERE sc.id = :id AND Type = 'army'"),
+    @NamedQuery(name = "findArmyByName",
+            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name AND Type = 'army'"),
+})
+@XmlRootElement
 public class Army extends SectorContent implements Serializable {
 
     private static final long serialVersionUID = 1L;

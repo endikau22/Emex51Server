@@ -15,6 +15,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This class contains the relation between the class {@link Employee} and the class {@link Sector}.
@@ -24,6 +25,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="EMPLOYEE_SECTOR",schema="emex51db")
+@XmlRootElement
 //Esta clase es la clase relacional que se forma en la relación N:M con atributos. La clave primaria son las dos tanto la
 //de sector como empleado embebidas en EmployeeeSectorId. 
 //Lo que hace esta clase es divide el N:M entre las entidades Empleado y Sector y las convierte en dos 1:N. De Empleado a esta y de Sector a esta clase. 

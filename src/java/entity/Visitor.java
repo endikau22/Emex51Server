@@ -15,6 +15,9 @@ import static javax.persistence.FetchType.EAGER;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -25,13 +28,18 @@ import javax.xml.bind.annotation.XmlTransient;
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
-@Entity/*
-@NamedQueries ({
-    @NamedQuery(name="findAllVisitors",query = "SELECT v FROM Visitor v ORDER BY v.fullName DESC"),
-    @NamedQuery(name="findVisitorById",query = "SELECT v FROM Visitor v WHERE v.id = :id")
-})*/
+@Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="Visitante")
+@DiscriminatorValue(value="visitor")
+@NamedQueries({
+    @NamedQuery(name="findAllVisitors",
+            query="SELECT u FROM User u WHERE user_type='visitor'"),
+    @NamedQuery(name="findVisitorsById",
+            query="SELECT u FROM User u WHERE user_type='visitor' AND u.id = :id"),
+    @NamedQuery(name="findVisitorsByName",
+            query="SELECT u FROM User u WHERE user_type='visitor' AND u.fullName = :name")  
+})
+@XmlRootElement
 public class Visitor extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;

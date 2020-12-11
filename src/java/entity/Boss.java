@@ -14,6 +14,7 @@ import static javax.persistence.FetchType.EAGER;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity JPA class for Boss data. This class inherits from de class User.
@@ -25,7 +26,16 @@ import javax.persistence.OneToMany;
  */
 @Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="Boss")
+@DiscriminatorValue(value="boss")
+@NamedQueries({
+    @NamedQuery(name="findAllBosses",
+            query="SELECT u FROM User u WHERE user_type='boss'"),
+    @NamedQuery(name="findBossById",
+            query="SELECT u FROM User u WHERE user_type='boss' AND u.id = :id"),
+    @NamedQuery(name="findBossByName",
+            query="SELECT u FROM User u WHERE user_type='boss' AND u.fullName = :name")
+})
+@XmlRootElement
 public class Boss extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;

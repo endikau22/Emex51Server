@@ -6,6 +6,7 @@
 package service;
 
 import entity.Army;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -28,7 +29,7 @@ import javax.ws.rs.core.MediaType;
  * @version 1.0
  */
 @Stateless
-@Path("entity.army")
+@Path("army")
 //Los @consume y @produce xml es que recibe o envia en formato xml por http.
 public class ArmyFacadeREST extends AbstractFacade<Army> {
     /**
@@ -93,6 +94,14 @@ public class ArmyFacadeREST extends AbstractFacade<Army> {
     public Army find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase ArmyFacade");
         return super.find(id);
+    }
+    
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Army> findByName(@PathParam("name") String name){
+        LOGGER.log(Level.INFO,"Find by name method from ArmyFacade");
+        return super.findByName(name);
     }
 
     /**

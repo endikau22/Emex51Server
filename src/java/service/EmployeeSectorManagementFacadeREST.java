@@ -29,7 +29,7 @@ import javax.ws.rs.core.PathSegment;
  * @version 1.0
  */
 @Stateless
-@Path("entity.employeesectormanagement")
+@Path("employeesectormanagement")
 public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeSectorManagement> {
     /**
      * Logger for this class.

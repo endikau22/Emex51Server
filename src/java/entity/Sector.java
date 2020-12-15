@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries ({
     @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.id DESC"),
     @NamedQuery(name="findSectorByType",query = "SELECT s FROM Sector s WHERE s.type = :type")
+
 })
 @XmlRootElement
 public class Sector implements Serializable {

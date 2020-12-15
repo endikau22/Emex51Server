@@ -6,7 +6,7 @@
 package entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 import static javax.persistence.CascadeType.MERGE;
 import javax.persistence.DiscriminatorValue;
@@ -17,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,11 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @DiscriminatorValue(value="visitor")
 @NamedQueries({
     @NamedQuery(name="findAllVisitors",
-            query="SELECT u FROM User u WHERE user_type='visitor'"),
-    @NamedQuery(name="findVisitorsById",
-            query="SELECT u FROM User u WHERE user_type='visitor' AND u.id = :id"),
+            query="SELECT v FROM Visitor v"),
     @NamedQuery(name="findVisitorsByName",
-            query="SELECT u FROM User u WHERE user_type='visitor' AND u.fullName = :name")  
+            query="SELECT v FROM Visitor v WHERE v.fullName = :name")  
 })
 @XmlRootElement
 public class Visitor extends User implements Serializable {
@@ -51,7 +51,8 @@ public class Visitor extends User implements Serializable {
     /**
      * The request date of the visitReply.
      */
-    private LocalDateTime requestedVisitDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date requestedVisitDate;
     /**
      * The response. True or false. 
      */
@@ -63,7 +64,8 @@ public class Visitor extends User implements Serializable {
     /**
      * The date of the visitors visitReply.
      */
-    private LocalDateTime visitDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date visitDate;
     /**
      * The {@link Employee} who manage the visitors visitReply.
      */
@@ -102,7 +104,7 @@ public class Visitor extends User implements Serializable {
      * Gets the date of the requested visitReply.
      * @return The date of the requested visitReply value.
      */
-    public LocalDateTime getRequestedVisitDate() {
+    public Date getRequestedVisitDate() {
         return requestedVisitDate;
     }
 
@@ -110,7 +112,7 @@ public class Visitor extends User implements Serializable {
      * Sets the date of the requested visitReply.
      * @param requestedVisit The date of the requested visitReply value.
      */
-    public void setVisitaSolicitada(LocalDateTime requestedVisit) {
+    public void setVisitaSolicitada(Date requestedVisit) {
         this.requestedVisitDate = requestedVisit;
     }
 
@@ -150,7 +152,7 @@ public class Visitor extends User implements Serializable {
      * Gets the date of the visitReply.
      * @return The date of the visitReply value.
      */
-    public LocalDateTime getFechaVisita() {
+    public Date getFechaVisita() {
         return visitDate;
     }
 
@@ -158,7 +160,7 @@ public class Visitor extends User implements Serializable {
      * Sets the date of the visitReply.
      * @param fechaVisita The date of the visitReply value.
      */
-    public void setFechaVisita(LocalDateTime fechaVisita) {
+    public void setFechaVisita(Date fechaVisita) {
         this.visitDate = fechaVisita;
     }
 

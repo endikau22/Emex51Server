@@ -28,15 +28,15 @@ import javax.ws.rs.core.MediaType;
  * @version 1.0
  */
 @Stateless
-@Path("entity.existence")
+@Path("sectorcontent")
 //Los @consume y @produce xml es que recibe o envia en formato xml por http.
-public class ExistenceFacadeREST extends AbstractFacade<SectorContent> {
+public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
     /**
      * Logger for this class.
      */
-    private static final Logger LOGGER=Logger.getLogger(ExistenceFacadeREST.class.getName());
+    private static final Logger LOGGER=Logger.getLogger(SectorContentFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -44,13 +44,13 @@ public class ExistenceFacadeREST extends AbstractFacade<SectorContent> {
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
-    public ExistenceFacadeREST() {
+    public SectorContentFacadeREST() {
         super(SectorContent.class);
     }
     
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     * @param entity The existence object in xml format.
+     * @param entity The sectorcontent object in xml format.
      */
     @POST
     @Override
@@ -63,12 +63,12 @@ public class ExistenceFacadeREST extends AbstractFacade<SectorContent> {
     /**
      * 
      * Edit (Update) operation after receiving a Delete HTTP order.
-     * @param entity The existence object in xml format.
+     * @param entity The sectorcontent object in xml format.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(SectorContent entity) {
-        LOGGER.log(Level.INFO,"Metodo edit de la clase ExistenceFacade");
+        LOGGER.log(Level.INFO,"Metodo edit de la clase SectorContentFacade");
         super.edit(entity);
     }
 
@@ -79,20 +79,20 @@ public class ExistenceFacadeREST extends AbstractFacade<SectorContent> {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo remove de la clase ExistenceFacade");
+        LOGGER.log(Level.INFO,"Metodo remove de la clase SectorContentFacade");
         super.remove(super.find(id));
     }
 
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     * @param id An id value of an existence.
-     * @return An existence object in xml format.
+     * @param id An id value of an SectorContent.
+     * @return An SectorContent object in xml format.
      */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
     public SectorContent find(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo find de la clase ExistenceFacade");
+        LOGGER.log(Level.INFO,"Metodo find de la clase SectorContentFacade");
         return super.find(id);
     }
 
@@ -102,7 +102,7 @@ public class ExistenceFacadeREST extends AbstractFacade<SectorContent> {
      */
     @Override
     protected EntityManager getEntityManager() {
-        LOGGER.log(Level.INFO,"Metodo getEntityManager de la clase ExistenceFacade");
+        LOGGER.log(Level.INFO,"Metodo getEntityManager de la clase SectorContentFacade");
         return em;
     }
     

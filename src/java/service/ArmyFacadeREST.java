@@ -6,6 +6,8 @@
 package service;
 
 import entity.Army;
+import entity.Sector;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -28,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  * @version 1.0
  */
 @Stateless
-@Path("entity.army")
+@Path("army")
 //Los @consume y @produce xml es que recibe o envia en formato xml por http.
 public class ArmyFacadeREST extends AbstractFacade<Army> {
     /**
@@ -36,7 +38,7 @@ public class ArmyFacadeREST extends AbstractFacade<Army> {
      */
     private static final Logger LOGGER=Logger.getLogger(ArmyFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -94,7 +96,42 @@ public class ArmyFacadeREST extends AbstractFacade<Army> {
         LOGGER.log(Level.INFO,"Metodo find de la clase ArmyFacade");
         return super.find(id);
     }
+    
+    /**
+     * Find (Select) operation after receiving a Get HTTP order. Gets all the armys.
+     * @param id An id value of an army.
+     * @return An army object in xml format.
+     */
+    @GET
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Army> findAllArmys() {
+        LOGGER.log(Level.INFO,"Metodo findAllArmys de la clase ArmyFacade");
+        List <Army> armys = null;
+        em.createNamedQuery("findAllArmy").getResultList();
+        return armys;
+    }
+    
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Army> findArmyByName(@PathParam("name") String name) {
+        LOGGER.log(Level.INFO,"Metodo find por nombre de la clase ArmyFacade");
+        List <Army> armys = null;
+        armys = em.createNamedQuery("findArmyByName").setParameter("name", name).getResultList();
+        return armys;
+    }
 
+    @GET
+    @Path("sector/{sectorId}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Army> findArmyBySector(@PathParam("sectorId") Integer sectorId) {
+        LOGGER.log(Level.INFO,"Metodo find por sector de la clase ArmyFacade");
+        List <Army> armys = null;
+        armys = em.createNamedQuery("findArmyBySector").setParameter("sector", em.find(Sector.class,sectorId)).
+                getResultList();
+
+        return armys;
+    }
     /**
      * Gets an {@link EntityManager} instance.
      * @return An {@link EntityManager} instance.

@@ -22,11 +22,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "findAllCreatures",
-            query = "SELECT sc FROM SectorContent sc WHERE Type = 'creature'"),
-    @NamedQuery(name = "findCreatureById",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.id = :id AND Type = 'creature'"),
+            query = "SELECT c FROM Creature c"),
     @NamedQuery(name = "findCreatureByName",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name AND Type = 'creature'")
+            query = "SELECT c FROM Creature c WHERE c.name = :name"),
+    @NamedQuery(name = "findCreatureBySpecie",
+            query = "SELECT c FROM Creature c WHERE c.species = :species")
 })
 @DiscriminatorValue(value="creature")
 @XmlRootElement

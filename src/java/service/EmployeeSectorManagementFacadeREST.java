@@ -29,14 +29,14 @@ import javax.ws.rs.core.PathSegment;
  * @version 1.0
  */
 @Stateless
-@Path("entity.employeesectormanagement")
+@Path("employeesectormanagement")
 public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeSectorManagement> {
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER=Logger.getLogger(EmployeeSectorManagementFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;

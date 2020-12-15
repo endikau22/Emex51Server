@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
  * @version 1.0
  */
 @Stateless
-@Path("entity.visitor")
+@Path("visitor")
 public class VisitorFacadeREST extends AbstractFacade<Visitor> {
         /**
      * Logger for this class.
@@ -36,7 +36,7 @@ public class VisitorFacadeREST extends AbstractFacade<Visitor> {
     private static final Logger LOGGER=Logger.getLogger(VisitorFacadeREST.class.getName());
 
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;

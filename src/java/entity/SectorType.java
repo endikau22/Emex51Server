@@ -15,10 +15,10 @@ public enum SectorType{
     /**
      * The sector is type Army.
      */
-   ARMAMENTO,
+   ARMY,
    /**
     * The sector is type Criature.
     */
-   CRIATURA;
+   CREATURE;
     
 }

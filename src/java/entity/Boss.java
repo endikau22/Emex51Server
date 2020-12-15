@@ -29,11 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @DiscriminatorValue(value="boss")
 @NamedQueries({
     @NamedQuery(name="findAllBosses",
-            query="SELECT u FROM User u WHERE user_type='boss'"),
-    @NamedQuery(name="findBossById",
-            query="SELECT u FROM User u WHERE user_type='boss' AND u.id = :id"),
+            query="SELECT b FROM Boss b"),
     @NamedQuery(name="findBossByName",
-            query="SELECT u FROM User u WHERE user_type='boss' AND u.fullName = :name")
+            query="SELECT b FROM Boss b WHERE b.fullName = :name")
 })
 @XmlRootElement
 public class Boss extends User implements Serializable {

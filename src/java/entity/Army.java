@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity JPA class for Army data. This class inherits from de class SectorContent.
- The properties of this class is the ammunition. 
+ * The property of this class is the ammunition. 
  * @author Endika Ubierna, Markel Uralde, Xabier Carnero
  * @version 1.0
  * @since 01/12/2020
@@ -23,11 +23,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @DiscriminatorValue(value="army")
 @NamedQueries({
     @NamedQuery(name = "findAllArmy",
-            query = "SELECT sc FROM SectorContent sc WHERE Type = 'army'"),
-    @NamedQuery(name = "findArmyById",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.id = :id AND Type = 'army'"),
+            query = "SELECT a FROM Army a"),
     @NamedQuery(name = "findArmyByName",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name AND Type = 'army'"),
+            query = "SELECT a FROM Army a WHERE a.name = :name"),
+    @NamedQuery(name = "findArmyBySector",
+            query = "SELECT a FROM Army a WHERE a.sector = :sector"),
 })
 @XmlRootElement
 public class Army extends SectorContent implements Serializable {

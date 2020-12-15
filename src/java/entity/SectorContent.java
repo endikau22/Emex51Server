@@ -6,7 +6,7 @@
 package entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,8 +40,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "findAllContents",
             query = "SELECT sc FROM SectorContent sc ORDER BY sc.name DESC"),
-    @NamedQuery(name = "findContentbyId",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.id = :id"),
+    @NamedQuery(name = "findContentbyName",
+            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name"),
+    @NamedQuery(name = "findContentBySector",
+            query = "SELECT sc FROM SectorContent sc WHERE sc.sector = :sector")
 })
 @XmlRootElement
 public class SectorContent implements Serializable {
@@ -63,7 +67,8 @@ public class SectorContent implements Serializable {
     /**
      * Arrival Date of the army to the facilities.
      */
-    private LocalDateTime arrivalDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date arrivalDate;
 
     /**
      * Class constructor
@@ -135,7 +140,7 @@ public class SectorContent implements Serializable {
      *
      * @return The date value.
      */
-    public LocalDateTime getArrivalDate() {
+    public Date getArrivalDate() {
         return arrivalDate;
     }
 
@@ -145,7 +150,7 @@ public class SectorContent implements Serializable {
      *
      * @param arrivalDate The date value.
      */
-    public void setArrivalDate(LocalDateTime arrivalDate) {
+    public void setArrivalDate(Date arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 

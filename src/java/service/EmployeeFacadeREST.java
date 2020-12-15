@@ -35,7 +35,7 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
      */
     private static final Logger LOGGER=Logger.getLogger(EmployeeFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -53,7 +53,7 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
      */
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Employee entity) {
         LOGGER.log(Level.INFO,"Metodo create de la clase EmployeeFacade");
         super.create(entity);

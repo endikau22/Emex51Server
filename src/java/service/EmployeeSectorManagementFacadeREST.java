@@ -36,7 +36,7 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
      */
     private static final Logger LOGGER=Logger.getLogger(EmployeeSectorManagementFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;

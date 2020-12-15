@@ -36,7 +36,7 @@ public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
      */
     private static final Logger LOGGER=Logger.getLogger(SectorContentFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -50,20 +50,20 @@ public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
     
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     * @param entity The existence object in xml format.
+     * @param entity The sectorcontent object in xml format.
      */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(SectorContent entity) {
-        LOGGER.log(Level.INFO,"Metodo create de la clase SectorContentFacade");
+        LOGGER.log(Level.INFO,"Metodo create de la clase ExistenceFacade");
         super.create(entity);
     }
 
     /**
      * 
      * Edit (Update) operation after receiving a Delete HTTP order.
-     * @param entity The existence object in xml format.
+     * @param entity The sectorcontent object in xml format.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
@@ -85,8 +85,8 @@ public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
 
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     * @param id An id value of an existence.
-     * @return An existence object in xml format.
+     * @param id An id value of an SectorContent.
+     * @return An SectorContent object in xml format.
      */
     @GET
     @Path("{id}")

@@ -35,7 +35,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
      */
     private static final Logger LOGGER=Logger.getLogger(UserFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;

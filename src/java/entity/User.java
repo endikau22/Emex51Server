@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,10 +68,12 @@ public class User implements Serializable {
     /**
      * {@link UserStatus} of the user.
      */
+    @Enumerated(EnumType.ORDINAL)
     private UserStatus status = UserStatus.ENABLED;
     /**
      * {@link UserPrivilege} of the user.
      */
+    @Enumerated(EnumType.ORDINAL)
     private UserPrivilege privilege = UserPrivilege.USER;
     /**
      * Password of the user.

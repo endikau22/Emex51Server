@@ -33,11 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @DiscriminatorValue(value="employee")
 @NamedQueries({
     @NamedQuery(name="findAllEmployees",
-            query="SELECT u FROM User u WHERE user_type='employee'"),
-    @NamedQuery(name="findEmployeeById",
-            query="SELECT u FROM User u WHERE user_type='employee' AND u.id = :id"),
+            query="SELECT e FROM Employee e"),
     @NamedQuery(name="findEmployeesByName",
-            query="SELECT u FROM User u WHERE user_type='employee' AND u.fullName = :name")  
+            query="SELECT e FROM Employee e WHERE e.fullName = :name")  
 })
 @XmlRootElement
 public class Employee extends User implements Serializable{

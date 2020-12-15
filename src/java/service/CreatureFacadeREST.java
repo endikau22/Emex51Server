@@ -5,7 +5,10 @@
  */
 package service;
 
+import entity.Army;
 import entity.Creature;
+import entity.Sector;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -92,6 +95,37 @@ public class CreatureFacadeREST extends AbstractFacade<Creature> {
     public Creature find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase CreatureFacade");
         return super.find(id);
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Creature> findAllCreatures() {
+        LOGGER.log(Level.INFO,"Metodo findAllCreatures de la clase CreatureFacade");
+        List <Creature> creatures = null;
+        em.createNamedQuery("findAllCreature").getResultList();
+        return creatures;
+    }
+    
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Creature> findCreatureByName(@PathParam("name") String name) {
+        LOGGER.log(Level.INFO,"Metodo find por nombre de la clase CreatureFacade");
+        List <Creature> creatures = null;
+        creatures = em.createNamedQuery("findCreatureByName").setParameter("name", name).getResultList();
+        return creatures;
+    }
+
+    @GET
+    @Path("sector/{sectorId}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Creature> findCreatureBySector(@PathParam("sectorId") Integer sectorId) {
+        LOGGER.log(Level.INFO,"Metodo find por sector de la clase CreatureFacade");
+        List <Creature> creatures = null;
+        creatures = em.createNamedQuery("findCreatureBySector").setParameter("sector", em.find(Sector.class,sectorId)).
+                getResultList();
+
+        return creatures;
     }
 
     /**

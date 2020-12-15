@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @since 01/12/2020
  */
 @Entity
-@DiscriminatorValue(value="army")
+@DiscriminatorValue(value="ARMY")
 @NamedQueries({
     @NamedQuery(name = "findAllArmy",
             query = "SELECT a FROM Army a"),

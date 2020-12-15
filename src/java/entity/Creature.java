@@ -20,15 +20,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @since 01/12/2020
  */
 @Entity
+@DiscriminatorValue(value="CREATURE")
 @NamedQueries({
     @NamedQuery(name = "findAllCreatures",
             query = "SELECT c FROM Creature c"),
     @NamedQuery(name = "findCreatureByName",
             query = "SELECT c FROM Creature c WHERE c.name = :name"),
-    @NamedQuery(name = "findCreatureBySpecie",
-            query = "SELECT c FROM Creature c WHERE c.species = :species")
+    @NamedQuery(name = "findCreatureBySector",
+            query = "SELECT c FROM Creature c WHERE c.sector = :sector")
 })
-@DiscriminatorValue(value="creature")
 @XmlRootElement
 public class Creature extends SectorContent implements Serializable {
 

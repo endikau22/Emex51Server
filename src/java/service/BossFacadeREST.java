@@ -6,6 +6,7 @@
 package service;
 
 import entity.Boss;
+import exception.CreateException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -57,7 +59,12 @@ public class BossFacadeREST extends AbstractFacade<Boss> {
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Boss entity) {
         LOGGER.log(Level.INFO,"Metodo create de la clase BossFacade");
-        super.create(entity);
+            try {
+            super.create(entity);
+        } catch (CreateException ex) {
+            Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**

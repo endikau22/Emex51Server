@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "SECTOR", schema = "emex51db")
 @NamedQueries ({
+    @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.id = :id"),
     @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.id DESC"),
     @NamedQuery(name="findSectorByType",query = "SELECT s FROM Sector s WHERE s.type = :type")
 
@@ -67,13 +68,12 @@ public class Sector implements Serializable {
      */
     @OneToMany(mappedBy = "sector",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set <SectorContent> sectorContent;
-
     /**
      * {@link Type} of the sector.
      */
     @Enumerated(EnumType.ORDINAL)
     private SectorType type;
-
+    
     /**
      * Class constructor.
     */

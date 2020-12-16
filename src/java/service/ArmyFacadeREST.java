@@ -6,7 +6,7 @@
 package service;
 
 import entity.Army;
-import entity.Sector;
+import exception.CreateException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -59,7 +60,12 @@ public class ArmyFacadeREST extends AbstractFacade<Army> {
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Army entity) {
         LOGGER.log(Level.INFO,"Metodo create de la clase ArmyFacade");
-        super.create(entity);
+        try {
+            super.create(entity);
+        } catch (CreateException ex) {
+            Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**
@@ -103,12 +109,11 @@ public class ArmyFacadeREST extends AbstractFacade<Army> {
      * @return An army object in xml format.
      */
     @GET
+    @Path("all")
     @Produces({MediaType.APPLICATION_XML})
     public List <Army> findAllArmys() {
         LOGGER.log(Level.INFO,"Metodo findAllArmys de la clase ArmyFacade");
-        List <Army> armys = null;
-        em.createNamedQuery("findAllArmy").getResultList();
-        return armys;
+        return em.createNamedQuery("findAllArmy").getResultList();
     }
     
     @GET
@@ -116,9 +121,7 @@ public class ArmyFacadeREST extends AbstractFacade<Army> {
     @Produces({MediaType.APPLICATION_XML})
     public List <Army> findArmyByName(@PathParam("name") String name) {
         LOGGER.log(Level.INFO,"Metodo find por nombre de la clase ArmyFacade");
-        List <Army> armys = null;
-        armys = em.createNamedQuery("findArmyByName").setParameter("name", name).getResultList();
-        return armys;
+        return super.findArmyByName(name);
     }
 
     @GET
@@ -126,11 +129,7 @@ public class ArmyFacadeREST extends AbstractFacade<Army> {
     @Produces({MediaType.APPLICATION_XML})
     public List <Army> findArmyBySector(@PathParam("sectorId") Integer sectorId) {
         LOGGER.log(Level.INFO,"Metodo find por sector de la clase ArmyFacade");
-        List <Army> armys = null;
-        armys = em.createNamedQuery("findArmyBySector").setParameter("sector", em.find(Sector.class,sectorId)).
-                getResultList();
-
-        return armys;
+        return super.findById(sectorId);
     }
     /**
      * Gets an {@link EntityManager} instance.

@@ -5,7 +5,12 @@
  */
 package service;
 
+import abstractFacades.AbstractFacade;
 import entity.EmployeeSectorManagement;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -14,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -36,7 +42,7 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
      */
     private static final Logger LOGGER=Logger.getLogger(EmployeeSectorManagementFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -57,7 +63,12 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
     @Consumes({MediaType.APPLICATION_XML})
     public void create(EmployeeSectorManagement entity) {
         LOGGER.log(Level.INFO,"Metodo create de la clase EmployeeSectorManagementFacade");
-        super.create(entity);
+            try {
+            super.create(entity);
+        } catch (CreateException ex) {
+            Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**
@@ -68,7 +79,12 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(EmployeeSectorManagement entity) {
         LOGGER.log(Level.INFO,"Metodo edit de la clase EmployeeSectorManagementFacade");
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -79,7 +95,12 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
         LOGGER.log(Level.INFO,"Metodo remove de la clase EmployeeSectorManagementFacade");
-        super.remove(super.find(id));
+        try {
+            super.remove(super.find(id));
+        } catch (ReadException|DeleteException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -92,7 +113,12 @@ public class EmployeeSectorManagementFacadeREST extends AbstractFacade<EmployeeS
     @Produces({MediaType.APPLICATION_XML})
     public EmployeeSectorManagement find(@PathParam("id") PathSegment id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase EmployeeSectorManagementFacade");
-        return super.find(id);
+        try {
+            return super.find(id);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**

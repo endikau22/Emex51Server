@@ -19,6 +19,5 @@ public enum SectorType{
    /**
     * The sector is type Criature.
     */
-   CREATURE;
-    
+   CREATURE;   
 }

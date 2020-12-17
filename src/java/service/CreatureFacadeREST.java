@@ -5,7 +5,13 @@
  */
 package service;
 
+import abstractFacades.AbstractCreatureFacade;
 import entity.Creature;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -14,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -23,19 +30,22 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Creature entity. Includes CRUD operations.
+ *
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("creature")
-public class CreatureFacadeREST extends AbstractFacade<Creature> {
+public class CreatureFacadeREST extends AbstractCreatureFacade<Creature> {
+
     /**
      * Logger for this class.
      */
-    private static final Logger LOGGER=Logger.getLogger(CreatureFacadeREST.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CreatureFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an
+     * {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -49,40 +59,60 @@ public class CreatureFacadeREST extends AbstractFacade<Creature> {
 
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
+     *
      * @param entity The creature object in xml format.
      */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Creature entity) {
-        LOGGER.log(Level.INFO,"Metodo create de la clase CreatureFacade");
-        super.create(entity);
+        LOGGER.log(Level.INFO, "Metodo create de la clase CreatureFacade");
+        try {
+            super.create(entity);
+        } catch (CreateException ex) {
+            Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
+     *
      * @param entity The creature object in xml format.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
+    @Override
     public void edit(Creature entity) {
-        LOGGER.log(Level.INFO,"Metodo edit de la clase CreatureFacade");
-        super.edit(entity);
+        LOGGER.log(Level.INFO, "Metodo edit de la clase CreatureFacade");
+        try {
+            super.edit(entity);
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     /**
-     * Remove (Delete) operation after receiving a Delete HTTP order. 
+     * Remove (Delete) operation after receiving a Delete HTTP order.
+     *
      * @param id An id value.
      */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo remove de la clase CreatureFacade");
-        super.remove(super.find(id));
+        LOGGER.log(Level.INFO, "Metodo remove de la clase CreatureFacade");
+        try {
+            super.remove(super.find(id));
+        } catch (ReadException | DeleteException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     /**
      * Find (Select) operation after receiving a Get HTTP order.
+     *
      * @param id An id value.
      * @return A Creature object in xml format.
      */
@@ -90,18 +120,59 @@ public class CreatureFacadeREST extends AbstractFacade<Creature> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
     public Creature find(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo find de la clase CreatureFacade");
-        return super.find(id);
+        LOGGER.log(Level.INFO, "Metodo find de la clase CreatureFacade");
+        try {
+            return super.find(id);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Creature> findAllCreatures() {
+        LOGGER.log(Level.INFO, "Metodo findAllCreatures de la clase CreatureFacade");
+        try {
+            return super.getAllCreatures();
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Creature> findCreatureByName(@PathParam("name") String name) {
+        LOGGER.log(Level.INFO, "Metodo find por nombre de la clase CreatureFacade");
+        try {
+            return super.getCreaturesByName(name);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    //Pendientes de hacer
+    @GET
+    @Path("sector/{sectorId}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Creature> findCreatureBySector(@PathParam("sectorId") Integer sectorId) {
+        LOGGER.log(Level.INFO, "Metodo find por sector de la clase CreatureFacade");
+        return null;
     }
 
     /**
      * Gets an {@link EntityManager} instance.
+     *
      * @return An {@link EntityManager} instance.
      */
     @Override
     protected EntityManager getEntityManager() {
-        LOGGER.log(Level.INFO,"Metodo getEntityManager de la clase CreatureFacade");
+        LOGGER.log(Level.INFO, "Metodo getEntityManager de la clase CreatureFacade");
         return em;
     }
-    
+
 }

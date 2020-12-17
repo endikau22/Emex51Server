@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,28 +21,30 @@ import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entity JPA class for user data. The properties of this class are id, login , 
+ * Entity JPA class for user data. The properties of this class are id, login ,
  * name, email, status, privilege, password, last password change, last access.
+ *
  * @since 23/11/2020
  * @version 1.0
  * @author Endika Ubierna, Markel Uralde, Xabier Carnero.
  */
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@Table(name="USER",schema="emex51db")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "USER", schema = "emex51db")
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
-@DiscriminatorColumn(name="user_type", discriminatorType=DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
-    @NamedQuery(name="findAllUsers",
-            query="SELECT u FROM User u ORDER BY u.fullName DESC"),
-    @NamedQuery(name="findUsersBylogin",
-            query="SELECT u FROM User u WHERE u.login = :login" ),
-    @NamedQuery(name="findUserByEmail",
-            query="SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "findAllUsers",
+            query = "SELECT u FROM User u ORDER BY u.fullName DESC"),
+    @NamedQuery(name = "findUsersByLogin",
+            query = "SELECT u FROM User u WHERE u.login = :login"),
+    @NamedQuery(name = "findUserByEmail",
+            query = "SELECT u FROM User u WHERE u.email = :email")
 })
 @XmlRootElement
 public class User implements Serializable {
- private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
     /**
      * Id field of the Criature Entity. It is also the id value of the criature.
      */
@@ -48,16 +52,16 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**
-     *The login value for the user.
+     * The login value for the user.
      */
     private String login;
     /**
      * The email of the user.
      */
     @Pattern(regexp = "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-        + "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-        + "(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9]"
-        + "(?:[A-Za-z0-9-]*[A-Za-z0-9])?")
+            + "[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            + "(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9]"
+            + "(?:[A-Za-z0-9-]*[A-Za-z0-9])?")
     private String email;
     /**
      * The name of the user.
@@ -66,10 +70,12 @@ public class User implements Serializable {
     /**
      * {@link UserStatus} of the user.
      */
+    @Enumerated(EnumType.ORDINAL)
     private UserStatus status = UserStatus.ENABLED;
     /**
      * {@link UserPrivilege} of the user.
      */
+    @Enumerated(EnumType.ORDINAL)
     private UserPrivilege privilege = UserPrivilege.USER;
     /**
      * Password of the user.
@@ -123,6 +129,7 @@ public class User implements Serializable {
 
     /**
      * Gets the login of the user.
+     *
      * @return The login value.
      */
     public String getLogin() {
@@ -131,6 +138,7 @@ public class User implements Serializable {
 
     /**
      * Sets the login of the user.
+     *
      * @param login The login value.
      */
     public void setLogin(String login) {
@@ -139,6 +147,7 @@ public class User implements Serializable {
 
     /**
      * Gets the email value.
+     *
      * @return The email value.
      */
     public String getEmail() {
@@ -147,6 +156,7 @@ public class User implements Serializable {
 
     /**
      * Sets the email of the user.
+     *
      * @param email The email value.
      */
     public void setEmail(String email) {
@@ -154,7 +164,8 @@ public class User implements Serializable {
     }
 
     /**
-     *Gets the name of the user.
+     * Gets the name of the user.
+     *
      * @return The name value.
      */
     public String getFullName() {
@@ -163,6 +174,7 @@ public class User implements Serializable {
 
     /**
      * Sets the name of the user.
+     *
      * @param fullName The name value.
      */
     public void setFullName(String fullName) {
@@ -171,6 +183,7 @@ public class User implements Serializable {
 
     /**
      * Gets the {@link UserStatus} of the user.
+     *
      * @return The {@link UserStatus} value.
      */
     public UserStatus getStatus() {
@@ -179,6 +192,7 @@ public class User implements Serializable {
 
     /**
      * Sets the {@link UserStatus} of the user.
+     *
      * @param status The {@link UserStatus} value.
      */
     public void setStatus(UserStatus status) {
@@ -187,6 +201,7 @@ public class User implements Serializable {
 
     /**
      * Gets the {@link UserPrivilege} of the user.
+     *
      * @return The {@link UserPrivilege} value.
      */
     public UserPrivilege getPrivilege() {
@@ -195,6 +210,7 @@ public class User implements Serializable {
 
     /**
      * Gets the id of the user.
+     *
      * @return The id value.
      */
     public Integer getId() {
@@ -203,6 +219,7 @@ public class User implements Serializable {
 
     /**
      * Sets the id of the user.
+     *
      * @param id The id value.
      */
     public void setId(Integer id) {
@@ -211,6 +228,7 @@ public class User implements Serializable {
 
     /**
      * Gets the password of the user
+     *
      * @return The password value.
      */
     public String getPassword() {
@@ -219,6 +237,7 @@ public class User implements Serializable {
 
     /**
      * Sets the password of the user.
+     *
      * @param password The password value.
      */
     public void setPassword(String password) {
@@ -226,8 +245,9 @@ public class User implements Serializable {
     }
 
     /**
-     * Gets the last access date of the user into the application.
-     * The Date is registered at the time the user exits the application.
+     * Gets the last access date of the user into the application. The Date is
+     * registered at the time the user exits the application.
+     *
      * @return The date value.
      */
     public Date getLastAccess() {
@@ -235,8 +255,9 @@ public class User implements Serializable {
     }
 
     /**
-     * Sets the last access date of the user into the application.
-     * The Date is registered at the time the user exits the application.
+     * Sets the last access date of the user into the application. The Date is
+     * registered at the time the user exits the application.
+     *
      * @param lastAccess The date value.
      */
     public void setLastAccess(Date lastAccess) {
@@ -245,6 +266,7 @@ public class User implements Serializable {
 
     /**
      * Gets the last time the user changed the password.
+     *
      * @return The date value.
      */
     public Date getLastPasswordChange() {
@@ -253,14 +275,17 @@ public class User implements Serializable {
 
     /**
      * Sets the last time the user changed the password.
+     *
      * @param lastPasswordChange The date value.
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
     }
+
     /**
      * HashCode method implementation for the entity.
-     * @return An integer value as hashcode for the object. 
+     *
+     * @return An integer value as hashcode for the object.
      */
     @Override
     public int hashCode() {
@@ -268,10 +293,11 @@ public class User implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-    
+
     /**
      * This method compares two user entities for equality. This implementation
      * compare id field value for equality.
+     *
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
      */
@@ -287,14 +313,15 @@ public class User implements Serializable {
         }
         return true;
     }
-    
+
     /**
      * This method returns a String representation for a user entity instance.
-     * @return The String representation for the Sector object. 
+     *
+     * @return The String representation for the Sector object.
      */
     @Override
     public String toString() {
         return "User{" + "idUser=" + id + '}';
     }
-    
+
 }

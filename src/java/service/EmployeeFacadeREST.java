@@ -5,7 +5,14 @@
  */
 package service;
 
+import abstractFacades.AbstractEmployeeFacade;
+import abstractFacades.AbstractFacade;
 import entity.Employee;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -14,6 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -29,13 +37,13 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("employee")
-public class EmployeeFacadeREST extends AbstractFacade<Employee> {
+public class EmployeeFacadeREST extends AbstractEmployeeFacade<Employee> {
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER=Logger.getLogger(EmployeeFacadeREST.class.getName());
     /**
-     * Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -53,10 +61,15 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
      */
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Employee entity) {
         LOGGER.log(Level.INFO,"Metodo create de la clase EmployeeFacade");
-        super.create(entity);
+           try {
+            super.create(entity);
+        } catch (CreateException ex) {
+            Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException(ex);
+        }
     }
 
     /**
@@ -65,9 +78,15 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
+    @Override
     public void edit(Employee entity) {
         LOGGER.log(Level.INFO,"Metodo edit de la clase EmployeeFacade");
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -78,7 +97,12 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo remove de la clase EmployeeFacade");
-        super.remove(super.find(id));
+        try {
+            super.remove(super.find(id));
+        } catch (ReadException|DeleteException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -91,7 +115,39 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
     @Produces({MediaType.APPLICATION_XML})
     public Employee find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase EmployeeFacade");
-        return super.find(id);
+        try {
+            return super.find(id);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
+    }
+    
+    
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Employee> findAllEmployees() {
+        LOGGER.log(Level.INFO, "Metodo findAllEmployees de la clase EmployeeFacade");
+        try {
+            return super.getAllEmployees();
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Employee> findEmployeesByName(@PathParam("name") String name) {
+        try {
+            LOGGER.log(Level.INFO, "Metodo find por nombre de la clase VisitorFacade");
+            return super.getEmployeesByName(name);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     /**

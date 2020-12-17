@@ -17,23 +17,22 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entity JPA class for Boss data. This class inherits from de class User.
- * The property of this class is the wage of the boss.It also contains a relational field, 
- * a set of {@link Employee} managed by the Boss.
+ * Entity JPA class for Boss data. This class inherits from de class User. The
+ * property of this class is the wage of the boss.It also contains a relational
+ * field, a set of {@link Employee} managed by the Boss.
+ *
  * @since 23/11/2020
  * @version 1.0
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value="boss")
+@DiscriminatorValue(value = "BOSS")
 @NamedQueries({
-    @NamedQuery(name="findAllBosses",
-            query="SELECT u FROM User u WHERE user_type='boss'"),
-    @NamedQuery(name="findBossById",
-            query="SELECT u FROM User u WHERE user_type='boss' AND u.id = :id"),
-    @NamedQuery(name="findBossByName",
-            query="SELECT u FROM User u WHERE user_type='boss' AND u.fullName = :name")
+    @NamedQuery(name = "findAllBosses",
+            query = "SELECT b FROM Boss b"),
+    @NamedQuery(name = "findBossesByName",
+            query = "SELECT b FROM Boss b WHERE b.fullName = :name")
 })
 @XmlRootElement
 public class Boss extends User implements Serializable {
@@ -46,10 +45,10 @@ public class Boss extends User implements Serializable {
     private float wage;
     /**
      * The list of {@link Employee} of the boss.
-     */ 
-    @OneToMany(mappedBy="boss", fetch=EAGER, cascade = CascadeType.MERGE) 
-    private Set <Employee> employees;
-    
+     */
+    @OneToMany(mappedBy = "boss", fetch = EAGER, cascade = CascadeType.MERGE)
+    private Set<Employee> employees;
+
     /**
      * Class constructor.
      */
@@ -58,30 +57,34 @@ public class Boss extends User implements Serializable {
 
     /**
      * Gets the wages of the boss.
+     *
      * @return The Boss value.
      */
     public float getWage() {
         return wage;
     }
-  
+
     /**
      * Sets the wages of the boss.
+     *
      * @param wage The Boss value.
      */
     public void setWage(float wage) {
         this.wage = wage;
     }
- 
+
     /**
      * Gets the list of {@link Employee} of the boss.
+     *
      * @return The Set of {@link Employee} value.
      */
     public Set<Employee> getEmployees() {
         return employees;
     }
-   
+
     /**
      * Sets the list of {@link Employee} of the boss.
+     *
      * @param employees
      */
     public void setEmployees(Set<Employee> employees) {

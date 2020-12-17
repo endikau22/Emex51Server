@@ -26,20 +26,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity JPA class for Sector data. The properties of this class are idSector, name and type.
- * It also contains relational fields for getting the {@link Visitor} who visit the sector
- * the {@link SectorContent} which are storaged in the sector, this {@link SectorContent} can be {@link Creature} or
- * {@link Army} and the {@link Employee} who manage the sector. 
+ * Entity JPA class for Sector data. The properties of this class are idSector,
+ * name and type. It also contains relational fields for getting the
+ * {@link Visitor} who visit the sector the {@link SectorContent} which are
+ * storaged in the sector, this {@link SectorContent} can be {@link Creature} or
+ * {@link Army} and the {@link Employee} who manage the sector.
+ *
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  * @version 1.0
  * @since 01/12/2020
  */
 @Entity
 @Table(name = "SECTOR", schema = "emex51db")
-@NamedQueries ({
-    @NamedQuery(name="findAllSectors",query = "SELECT s FROM Sector s ORDER BY s.id DESC"),
-    @NamedQuery(name="findSectorById",query = "SELECT s FROM Sector s WHERE s.id = :id")
-        //,@NamedQuery(name="findSectorByContentName",query = "SELECT s FROM Sector s WHERE s.id = (SELECT sc.sector_id FROM Sector_content sc WHERE sc.name = :name")
+@NamedQueries({
+    @NamedQuery(name = "findAllSectors",
+            query = "SELECT s FROM Sector s ORDER BY s.id DESC")
+    ,
+    @NamedQuery(name = "findSectorByName",
+            query = "SELECT s FROM Sector s WHERE s.name = :name")
+
 })
 @XmlRootElement
 public class Sector implements Serializable {
@@ -53,21 +58,24 @@ public class Sector implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**
+     * Name field of the Sector Entity.
+     */
+    private String name;
+    /**
      * List of {@link Visitor} belonging to the sector.
      */
-    @ManyToMany(mappedBy="visitedSectors",fetch=EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "visitedSectors", fetch = EAGER, cascade = CascadeType.ALL)
     private Set<Visitor> visitors;
     /**
      * List of {@link EmployeeSectorManagement} belonging to the Sector.
      */
-    @OneToMany(mappedBy = "sector",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set <EmployeeSectorManagement> employees;
+    @OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<EmployeeSectorManagement> employees;
     /**
      * List of {@link Criature} or {@link Army} belonging to the Sector.
      */
-    @OneToMany(mappedBy = "sector",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set <SectorContent> sectorContent;
-
+    @OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<SectorContent> sectorContent;
     /**
      * {@link Type} of the sector.
      */
@@ -76,20 +84,22 @@ public class Sector implements Serializable {
 
     /**
      * Class constructor.
-    */
+     */
     public Sector() {
     }
 
     /**
      * Gets the id of the sector.
+     *
      * @return The id value.
-    */ 
+     */
     public Integer getIdSector() {
         return id;
     }
 
     /**
      * Sets the id of the sector.
+     *
      * @param idSector The id of the sector.
      */
     public void setIdSector(Integer idSector) {
@@ -97,7 +107,27 @@ public class Sector implements Serializable {
     }
 
     /**
+     * Gets the name of the sector.
+     *
+     * @return The name value
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name of the sector.
+     *
+     * @param name The name of the sector.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * Gets visitors of the sector.
+     *
+     * @return
      */
     @XmlTransient
     public Set<Visitor> getVisitors() {
@@ -105,7 +135,8 @@ public class Sector implements Serializable {
     }
 
     /**
-     * Sets the visitors of the sector. 
+     * Sets the visitors of the sector.
+     *
      * @param visitors The visitors collection value.
      */
     public void setVisitors(Set<Visitor> visitors) {
@@ -114,6 +145,7 @@ public class Sector implements Serializable {
 
     /**
      * Gets the employees who manage the sector.
+     *
      * @return The employee collection value.
      */
     @XmlTransient
@@ -123,6 +155,7 @@ public class Sector implements Serializable {
 
     /**
      * Sets the employees who manage the sector.
+     *
      * @param empleados The employee collection value.
      */
     public void setEmployees(Set<EmployeeSectorManagement> empleados) {
@@ -131,6 +164,7 @@ public class Sector implements Serializable {
 
     /**
      * Gets the type of the sector.
+     *
      * @return The type of the sector value.
      */
     public SectorType getType() {
@@ -139,6 +173,7 @@ public class Sector implements Serializable {
 
     /**
      * Sets the type of the sector.
+     *
      * @param type The type value.
      */
     public void setType(SectorType type) {
@@ -147,6 +182,7 @@ public class Sector implements Serializable {
 
     /**
      * Gets a set of {@link Criature} or {@link Army} belonging to the sector.
+     *
      * @return The set of {@link Criature} or {@link Army} value.
      */
     @XmlTransient
@@ -156,14 +192,17 @@ public class Sector implements Serializable {
 
     /**
      * Sets a set of {@link Criature} or {@link Army} belonging to the sector.
+     *
      * @param sectorContent The set of {@link Criature} or {@link Army} value.
      */
     public void setSectorContent(Set<SectorContent> sectorContent) {
         this.sectorContent = sectorContent;
     }
+
     /**
      * HashCode method implementation for the entity.
-     * @return An integer value as hashcode for the object. 
+     *
+     * @return An integer value as hashcode for the object.
      */
     @Override
     public int hashCode() {
@@ -171,10 +210,11 @@ public class Sector implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-    
+
     /**
-     * This method compares two sector entities for equality. This implementation
-     * compare id field value for equality.
+     * This method compares two sector entities for equality. This
+     * implementation compare id field value for equality.
+     *
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
      */
@@ -190,10 +230,11 @@ public class Sector implements Serializable {
         }
         return true;
     }
-    
+
     /**
      * This method returns a String representation for a sector entity instance.
-     * @return The String representation for the Sector object. 
+     *
+     * @return The String representation for the Sector object.
      */
     @Override
     public String toString() {

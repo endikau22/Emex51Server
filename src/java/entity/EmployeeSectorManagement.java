@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * This class contains the relation between the class {@link Employee} and the class {@link Sector}.
@@ -75,6 +76,7 @@ public class EmployeeSectorManagement implements Serializable{
      * Gets the {@link Employee}. 
      * @return The {@link Employee} value.
      */
+    @XmlTransient
     public Employee getEmployee() {
         return employee;
     }

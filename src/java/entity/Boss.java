@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "findAllBosses",
             query = "SELECT b FROM Boss b"),
-    @NamedQuery(name = "findBossByName",
+    @NamedQuery(name = "findBossesByName",
             query = "SELECT b FROM Boss b WHERE b.fullName = :name")
 })
 @XmlRootElement

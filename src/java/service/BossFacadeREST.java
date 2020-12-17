@@ -5,12 +5,14 @@
  */
 package service;
 
+import abstractFacades.AbstractBossFacade;
 import abstractFacades.AbstractFacade;
 import entity.Boss;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -29,20 +31,23 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Boss entity. Includes CRUD operations.
+ *
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("boss")
-public class BossFacadeREST extends AbstractFacade<Boss> {
+public class BossFacadeREST extends AbstractBossFacade<Boss> {
+
     /**
      * Logger for this class.
      */
-    private static final Logger LOGGER=Logger.getLogger(BossFacadeREST.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BossFacadeREST.class.getName());
 
     /**
-     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an
+     * {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -56,14 +61,15 @@ public class BossFacadeREST extends AbstractFacade<Boss> {
 
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
+     *
      * @param entity The boss object in xml format.
      */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Boss entity) {
-        LOGGER.log(Level.INFO,"Metodo create de la clase BossFacade");
-            try {
+        LOGGER.log(Level.INFO, "Metodo create de la clase BossFacade");
+        try {
             super.create(entity);
         } catch (CreateException ex) {
             Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,38 +79,41 @@ public class BossFacadeREST extends AbstractFacade<Boss> {
 
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
+     *
      * @param entity The boss object in xml format.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(Boss entity) {
-        LOGGER.log(Level.INFO,"Metodo edit de la class BossFacade");
+        LOGGER.log(Level.INFO, "Metodo edit de la class BossFacade");
         try {
             super.edit(entity);
         } catch (UpdateException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
     /**
-     * Remove (Delete) operation after receiving a Delete HTTP order. 
+     * Remove (Delete) operation after receiving a Delete HTTP order.
+     *
      * @param id An id value.
      */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo remove de la clase BossFacade");
+        LOGGER.log(Level.INFO, "Metodo remove de la clase BossFacade");
         try {
             super.remove(super.find(id));
-        } catch (ReadException|DeleteException ex) {
+        } catch (ReadException | DeleteException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
     /**
      * Find (Select) operation after receiving a Get HTTP order.
+     *
      * @param id An id value.
      * @return A Boss object in xml format.
      */
@@ -112,23 +121,50 @@ public class BossFacadeREST extends AbstractFacade<Boss> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
     public Boss find(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo find de la clase BossFacade");
+        LOGGER.log(Level.INFO, "Metodo find de la clase BossFacade");
         try {
             return super.find(id);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Boss> findAllBosses() {
+        LOGGER.log(Level.INFO, "Metodo findAllBosses de la clase BossFacade");
+        try {
+            return super.getAllBosses();
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Boss> findBossesByName(@PathParam("name") String name) {
+        LOGGER.log(Level.INFO, "Metodo find por nombre de la clase BossFacade");
+        try {
+            return super.getBossesByName(name);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
     /**
      * Gets an {@link EntityManager} instance.
+     *
      * @return An {@link EntityManager} instance.
      */
     @Override
     protected EntityManager getEntityManager() {
-        LOGGER.log(Level.INFO,"Metodo getManager de la clase BossFacade");
+        LOGGER.log(Level.INFO, "Metodo getManager de la clase BossFacade");
         return em;
     }
-    
+
 }

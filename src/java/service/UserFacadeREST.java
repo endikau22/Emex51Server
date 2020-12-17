@@ -6,11 +6,13 @@
 package service;
 
 import abstractFacades.AbstractFacade;
+import abstractFacades.AbstractUserFacade;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -29,19 +31,22 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for User entity. Includes CRUD operations.
+ *
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("user")
-public class UserFacadeREST extends AbstractFacade<User> {
+public class UserFacadeREST extends AbstractUserFacade<User> {
+
     /**
      * Logger for this class.
      */
-    private static final Logger LOGGER=Logger.getLogger(UserFacadeREST.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserFacadeREST.class.getName());
     /**
-     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an {@link EntityManager} instance.
+     * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an
+     * {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
@@ -55,14 +60,15 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
+     *
      * @param entity The user object in xml format.
      */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(User entity) {
-        LOGGER.log(Level.INFO,"Metodo create de la clase UserFacade");
-            try {
+        LOGGER.log(Level.INFO, "Metodo create de la clase UserFacade");
+        try {
             super.create(entity);
         } catch (CreateException ex) {
             Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,38 +78,42 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
+     *
      * @param entity The user object in xml format.
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
+    @Override
     public void edit(User entity) {
-        LOGGER.log(Level.INFO,"Metodo edit de la clase UserFacade");
+        LOGGER.log(Level.INFO, "Metodo edit de la clase UserFacade");
         try {
             super.edit(entity);
         } catch (UpdateException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
     /**
-     * Remove (Delete) operation after receiving a Delete HTTP order. 
+     * Remove (Delete) operation after receiving a Delete HTTP order.
+     *
      * @param id An id value of an User.
      */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo remove de la clase UserFacade");
+        LOGGER.log(Level.INFO, "Metodo remove de la clase UserFacade");
         try {
             super.remove(super.find(id));
-        } catch (ReadException|DeleteException ex) {
+        } catch (ReadException | DeleteException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
     /**
      * Find (Select) operation after receiving a Get HTTP order.
+     *
      * @param id An id value of an User.
      * @return A User object in xml format.
      */
@@ -111,23 +121,63 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
     public User find(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO,"Metodo find de la clase UserFacade");
+        LOGGER.log(Level.INFO, "Metodo find de la clase UserFacade");
         try {
             return super.find(id);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<User> findAllEmployees() {
+        LOGGER.log(Level.INFO, "Metodo findAllUsers de la clase UsersFacade");
+        try {
+            return super.getAllUsers();
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("login/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User findUsersByName(@PathParam("login") String login) {
+        try {
+            LOGGER.log(Level.INFO, "Metodo find by login de la clase UserFacade");
+            return super.getUserByLogin(login);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("email/{email}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User findUsersByEmail(@PathParam("email") String email) {
+        try {
+            LOGGER.log(Level.INFO, "Metodo find by email de la clase UserFacade");
+            return super.getUserByEmail(email);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
     /**
      * Gets an {@link EntityManager} instance.
+     *
      * @return An {@link EntityManager} instance.
      */
     @Override
     protected EntityManager getEntityManager() {
-        LOGGER.log(Level.INFO,"Metodo getEntityManager de la clase UserFacade");
+        LOGGER.log(Level.INFO, "Metodo getEntityManager de la clase UserFacade");
         return em;
     }
-    
+
 }

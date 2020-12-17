@@ -147,10 +147,10 @@ public class VisitorFacadeREST extends AbstractVisitorFacade<Visitor> {
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
-    public List<Visitor> findVisitorByName(@PathParam("name") String name) {
+    public List<Visitor> findVisitorsByName(@PathParam("name") String name) {
         try {
             LOGGER.log(Level.INFO, "Metodo find por nombre de la clase VisitorFacade");
-            return super.getVisitorByName(name);
+            return super.getVisitorsByName(name);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

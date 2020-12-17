@@ -5,12 +5,14 @@
  */
 package service;
 
+import abstractFacades.AbstractEmployeeFacade;
 import abstractFacades.AbstractFacade;
 import entity.Employee;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -35,7 +37,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("employee")
-public class EmployeeFacadeREST extends AbstractFacade<Employee> {
+public class EmployeeFacadeREST extends AbstractEmployeeFacade<Employee> {
     /**
      * Logger for this class.
      */
@@ -76,6 +78,7 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
+    @Override
     public void edit(Employee entity) {
         LOGGER.log(Level.INFO,"Metodo edit de la clase EmployeeFacade");
         try {
@@ -117,6 +120,33 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());        
+        }
+    }
+    
+    
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Employee> findAllEmployees() {
+        LOGGER.log(Level.INFO, "Metodo findAllEmployees de la clase EmployeeFacade");
+        try {
+            return super.getAllEmployees();
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Employee> findEmployeesByName(@PathParam("name") String name) {
+        try {
+            LOGGER.log(Level.INFO, "Metodo find por nombre de la clase VisitorFacade");
+            return super.getEmployeesByName(name);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 

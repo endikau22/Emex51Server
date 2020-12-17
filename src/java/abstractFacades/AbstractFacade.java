@@ -5,7 +5,7 @@
  */
 package abstractFacades;
 
-import entity.Creature;
+import entity.Boss;
 import entity.Sector;
 import entity.SectorType;
 import exception.CreateException;
@@ -116,12 +116,6 @@ public abstract class AbstractFacade<T> {
         } catch (Exception e) {
             throw new ReadException("Error when trying to read " + id.toString());
         }
-    }
-
-    public List<Creature> findCreatureById(Integer sectorId) {
-        LOGGER.log(Level.INFO, "Find by id method from CreatureFacade");
-        return getEntityManager().createNamedQuery("findCreatureBySector").
-                setParameter("sector", getEntityManager().find(Sector.class, sectorId)).getResultList();
     }
 
     public List<Sector> findSectorsByType(SectorType type) {

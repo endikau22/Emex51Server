@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "findAllContents",
             query = "SELECT sc FROM SectorContent sc ORDER BY sc.name DESC"),
-    @NamedQuery(name = "findContentbyName",
+    @NamedQuery(name = "findContentsByName",
             query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name")
 })
 @XmlRootElement

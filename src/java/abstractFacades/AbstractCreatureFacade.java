@@ -30,7 +30,7 @@ public abstract class AbstractCreatureFacade<Creature> extends AbstractFacade<Cr
         }
     }
 
-    public List<Creature> getCreatureByName(String name) throws ReadException {
+    public List<Creature> getCreaturesByName(String name) throws ReadException {
         try {
             return getEntityManager().createNamedQuery("findCreatureByName")
                     .setParameter("name", name)

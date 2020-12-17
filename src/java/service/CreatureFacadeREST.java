@@ -82,6 +82,7 @@ public class CreatureFacadeREST extends AbstractCreatureFacade<Creature> {
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
+    @Override
     public void edit(Creature entity) {
         LOGGER.log(Level.INFO, "Metodo edit de la clase CreatureFacade");
         try {
@@ -147,7 +148,7 @@ public class CreatureFacadeREST extends AbstractCreatureFacade<Creature> {
     public List<Creature> findCreatureByName(@PathParam("name") String name) {
         LOGGER.log(Level.INFO, "Metodo find por nombre de la clase CreatureFacade");
         try {
-            return super.getCreatureByName(name);
+            return super.getCreaturesByName(name);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -160,7 +161,7 @@ public class CreatureFacadeREST extends AbstractCreatureFacade<Creature> {
     @Produces({MediaType.APPLICATION_XML})
     public List<Creature> findCreatureBySector(@PathParam("sectorId") Integer sectorId) {
         LOGGER.log(Level.INFO, "Metodo find por sector de la clase CreatureFacade");
-        return super.findCreatureById(sectorId);
+        return null;
     }
 
     /**

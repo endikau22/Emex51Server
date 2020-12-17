@@ -13,30 +13,30 @@ import javax.persistence.EntityManager;
  *
  * @author xabig
  */
-public abstract class AbstractVisitorFacade<Visitor> extends AbstractFacade<Visitor> {
-    
-    public AbstractVisitorFacade(Class<Visitor> entityClass) {
+public abstract class AbstractEmployeeFacade<Employee> extends AbstractFacade<Employee> {
+
+    public AbstractEmployeeFacade(Class<Employee> entityClass) {
         super(entityClass);
     }
 
     @Override
     protected abstract EntityManager getEntityManager();
     
-        public List<Visitor> getAllVisitors() throws ReadException {
+        public List<Employee> getAllEmployees() throws ReadException {
         try {
-            return getEntityManager().createNamedQuery("findAllVisitors").getResultList();
+            return getEntityManager().createNamedQuery("findAllEmployees").getResultList();
         } catch (Exception e) {
-            throw new ReadException("Error when trying to get all visitors");
+            throw new ReadException("Error when trying to get all employees");
         }
     }
 
-    public List<Visitor> getVisitorsByName(String name) throws ReadException {
+    public List<Employee> getEmployeesByName(String name) throws ReadException {
         try {
-            return getEntityManager().createNamedQuery("findVisitorsByName")
+            return getEntityManager().createNamedQuery("findEmployeesByName")
                     .setParameter("name", name)
                     .getResultList();
         } catch (Exception e) {
-            throw new ReadException("Error when trying to get visitors by name");
+            throw new ReadException("Error when trying to get employees by name");
         }
     }
 }

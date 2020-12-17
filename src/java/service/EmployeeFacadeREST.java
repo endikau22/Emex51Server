@@ -7,6 +7,9 @@ package service;
 
 import entity.Employee;
 import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -74,7 +77,12 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(Employee entity) {
         LOGGER.log(Level.INFO,"Metodo edit de la clase EmployeeFacade");
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -85,7 +93,12 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo remove de la clase EmployeeFacade");
-        super.remove(super.find(id));
+        try {
+            super.remove(super.find(id));
+        } catch (ReadException|DeleteException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -98,7 +111,12 @@ public class EmployeeFacadeREST extends AbstractFacade<Employee> {
     @Produces({MediaType.APPLICATION_XML})
     public Employee find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase EmployeeFacade");
-        return super.find(id);
+        try {
+            return super.find(id);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**

@@ -8,6 +8,9 @@ package service;
 import entity.Sector;
 import entity.SectorContent;
 import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,7 +86,12 @@ public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(SectorContent entity) {
         LOGGER.log(Level.INFO, "Metodo edit de la clase SectorContentFacade");
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -95,7 +103,12 @@ public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO, "Metodo remove de la clase SectorContentFacade");
-        super.remove(super.find(id));
+        try {
+            super.remove(super.find(id));
+        } catch (ReadException|DeleteException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -109,7 +122,12 @@ public class SectorContentFacadeREST extends AbstractFacade<SectorContent> {
     @Produces({MediaType.APPLICATION_XML})
     public SectorContent find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO, "Metodo find de la clase SectorContentFacade");
-        return super.find(id);
+        try {
+            return super.find(id);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     @GET

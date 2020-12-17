@@ -10,10 +10,14 @@ import entity.Creature;
 import entity.Sector;
 import entity.SectorType;
 import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import static javax.ws.rs.client.Entity.entity;
 
 /**
  * RESTful service for all the EMEX51 project entities.
@@ -58,14 +62,14 @@ public abstract class AbstractFacade<T> {
      * @param entity An entity class. This Entity replaces the generic Java type
      * <T>.
      */
-    public void create(T entity) throws CreateException{
+    public void create(T entity) throws CreateException {
         LOGGER.log(Level.INFO, "Metodo create de la clase AbstractFacade");
         try {
-        getEntityManager().persist(entity);    
-        } catch (Exception e){
-            throw new CreateException("Error when trying to create "+entity.toString());
+            getEntityManager().persist(entity);
+        } catch (Exception e) {
+            throw new CreateException("Error when trying to create " + entity.toString());
         }
-        
+
     }
 
     /**
@@ -75,9 +79,13 @@ public abstract class AbstractFacade<T> {
      * @param entity An entity class. This Entity replaces the generic Java type
      * <T>.
      */
-    public void edit(T entity) {
+    public void edit(T entity) throws UpdateException {
         LOGGER.log(Level.INFO, "Metodo edit de la clase AbstractFacade");
-        getEntityManager().merge(entity);
+        try {
+            getEntityManager().merge(entity);
+        } catch (Exception e) {
+            throw new UpdateException("Error when trying to update " + entity.toString());
+        }
     }
 
     /**
@@ -87,9 +95,13 @@ public abstract class AbstractFacade<T> {
      * @param entity An entity class. This Entity replaces the generic Java type
      * <T>.
      */
-    public void remove(T entity) {
+    public void remove(T entity) throws DeleteException {
         LOGGER.log(Level.INFO, "Metodo remove de la clase AbstractFacade");
-        getEntityManager().remove(getEntityManager().merge(entity));
+        try {
+            getEntityManager().remove(getEntityManager().merge(entity));
+        } catch (Exception e) {
+            throw new DeleteException("Error when trying to delete " + entity.toString());
+        }
     }
 
     /**
@@ -99,20 +111,13 @@ public abstract class AbstractFacade<T> {
      * @param id The id value .
      * @return An object.
      */
-    public T find(Object id) {
+    public T find(Object id) throws ReadException {
         LOGGER.log(Level.INFO, "Metodo find de la clase AbstractFacade");
-        return getEntityManager().find(entityClass, id);
-    }
-
-    public List<Army> findById(Integer sectorId) {
-        LOGGER.log(Level.INFO, "Find by id method from ArmyFacade");
-        return getEntityManager().createNamedQuery("findArmyBySector").
-                setParameter("sector", getEntityManager().find(Sector.class, sectorId)).getResultList();
-    }
-
-    public List<Army> findArmyByName(String name) {
-        LOGGER.log(Level.INFO, "Find by name method from ArmyFacade");
-        return getEntityManager().createNamedQuery("findArmyByName").setParameter("name", name).getResultList();
+        try {
+            return getEntityManager().find(entityClass, id);
+        } catch (Exception e) {
+            throw new ReadException("Error when trying to read " + id.toString());
+        }
     }
 
     public List<Creature> findCreatureById(Integer sectorId) {
@@ -124,16 +129,6 @@ public abstract class AbstractFacade<T> {
     public List<Creature> findCreatureByName(String name) {
         LOGGER.log(Level.INFO, "Find by name method from CreatureFacade");
         return getEntityManager().createNamedQuery("findCreatureByName").setParameter("name", name).getResultList();
-    }
-
-    public Object findSectorById(Integer sectorId) {
-        LOGGER.log(Level.INFO, "Find by id method from SectorFacade");
-        return getEntityManager().createNamedQuery("findSectorById").setParameter("id", sectorId);
-    }
-
-    public List<Sector> findAllSectors() {
-        LOGGER.log(Level.INFO, "Find all method from SectorFacade");
-        return getEntityManager().createNamedQuery("findAllSectors").getResultList();
     }
 
     public List<Sector> findSectorsByType(SectorType type) {

@@ -7,6 +7,9 @@ package service;
 
 import entity.Boss;
 import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -75,7 +78,12 @@ public class BossFacadeREST extends AbstractFacade<Boss> {
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(Boss entity) {
         LOGGER.log(Level.INFO,"Metodo edit de la class BossFacade");
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -86,7 +94,12 @@ public class BossFacadeREST extends AbstractFacade<Boss> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo remove de la clase BossFacade");
-        super.remove(super.find(id));
+        try {
+            super.remove(super.find(id));
+        } catch (ReadException|DeleteException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -99,7 +112,12 @@ public class BossFacadeREST extends AbstractFacade<Boss> {
     @Produces({MediaType.APPLICATION_XML})
     public Boss find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase BossFacade");
-        return super.find(id);
+        try {
+            return super.find(id);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**

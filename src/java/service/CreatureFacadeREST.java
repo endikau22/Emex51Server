@@ -9,6 +9,9 @@ import entity.Army;
 import entity.Creature;
 import entity.Sector;
 import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,7 +80,12 @@ public class CreatureFacadeREST extends AbstractFacade<Creature> {
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(Creature entity) {
         LOGGER.log(Level.INFO,"Metodo edit de la clase CreatureFacade");
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -88,7 +96,12 @@ public class CreatureFacadeREST extends AbstractFacade<Creature> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo remove de la clase CreatureFacade");
-        super.remove(super.find(id));
+        try {
+            super.remove(super.find(id));
+        } catch (ReadException|DeleteException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
 
     /**
@@ -101,7 +114,12 @@ public class CreatureFacadeREST extends AbstractFacade<Creature> {
     @Produces({MediaType.APPLICATION_XML})
     public Creature find(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO,"Metodo find de la clase CreatureFacade");
-        return super.find(id);
+        try {
+            return super.find(id);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());        
+        }
     }
     
     @GET

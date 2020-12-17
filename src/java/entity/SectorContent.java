@@ -38,14 +38,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es.
 @DiscriminatorColumn(name = "Type", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
-    @NamedQuery(name = "findContentsBySector",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.sector = :id"),
     @NamedQuery(name = "findAllContents",
             query = "SELECT sc FROM SectorContent sc ORDER BY sc.name DESC"),
     @NamedQuery(name = "findContentbyName",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name"),
-    @NamedQuery(name = "findContentBySector",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.sector = :sector")
+            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name")
 })
 @XmlRootElement
 public class SectorContent implements Serializable {

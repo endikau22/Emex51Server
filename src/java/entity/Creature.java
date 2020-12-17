@@ -12,7 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
+/** 
  * Entity JPA class for Creature data. This class inherits from de class
  * SectorContent. The property of this class is species.
  *

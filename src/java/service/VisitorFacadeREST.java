@@ -5,11 +5,14 @@
  */
 package service;
 
+import abstractFacades.AbstractFacade;
+import abstractFacades.AbstractVisitorFacade;
 import entity.Visitor;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -35,7 +38,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("visitor")
-public class VisitorFacadeREST extends AbstractFacade<Visitor> {
+public class VisitorFacadeREST extends AbstractVisitorFacade<Visitor> {
 
     /**
      * Logger for this class.
@@ -81,13 +84,14 @@ public class VisitorFacadeREST extends AbstractFacade<Visitor> {
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
+    @Override
     public void edit(Visitor entity) {
         LOGGER.log(Level.INFO, "Metodo edit de la clase VisitorFacade");
         try {
             super.edit(entity);
         } catch (UpdateException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
@@ -102,9 +106,9 @@ public class VisitorFacadeREST extends AbstractFacade<Visitor> {
         LOGGER.log(Level.INFO, "Metodo remove de la clase VisitorFacade");
         try {
             super.remove(super.find(id));
-        } catch (ReadException|DeleteException ex) {
+        } catch (ReadException | DeleteException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
@@ -123,7 +127,33 @@ public class VisitorFacadeREST extends AbstractFacade<Visitor> {
             return super.find(id);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());        
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("all")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Visitor> findAllVisitors() {
+        LOGGER.log(Level.INFO, "Metodo findAllArmys de la clase VisitorFacade");
+        try {
+            return super.getAllVisitors();
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List<Visitor> findVisitorByName(@PathParam("name") String name) {
+        try {
+            LOGGER.log(Level.INFO, "Metodo find por nombre de la clase VisitorFacade");
+            return super.getVisitorByName(name);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 

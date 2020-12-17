@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value = "boss")
+@DiscriminatorValue(value = "BOSS")
 @NamedQueries({
     @NamedQuery(name = "findAllBosses",
             query = "SELECT b FROM Boss b"),

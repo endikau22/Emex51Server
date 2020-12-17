@@ -5,8 +5,8 @@
  */
 package service;
 
+import abstractFacades.AbstractArmyFacade;
 import entity.Army;
-import entity.SectorContent;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
@@ -136,7 +136,7 @@ public class ArmyFacadeREST extends AbstractArmyFacade<Army> {
      *
      * @param id An id value of an army.
      * @return An army object in xml format.
-     *//*
+     */
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
@@ -149,7 +149,7 @@ public class ArmyFacadeREST extends AbstractArmyFacade<Army> {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-/*
+
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -162,7 +162,8 @@ public class ArmyFacadeREST extends AbstractArmyFacade<Army> {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-*/
+
+    //Pendiente
     @GET
     @Path("sector/{sectorId}")
     @Produces({MediaType.APPLICATION_XML})

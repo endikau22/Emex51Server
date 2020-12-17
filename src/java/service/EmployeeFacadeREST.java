@@ -5,6 +5,7 @@
  */
 package service;
 
+import abstractFacades.AbstractFacade;
 import entity.Employee;
 import exception.CreateException;
 import exception.DeleteException;

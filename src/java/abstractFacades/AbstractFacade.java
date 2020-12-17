@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package abstractFacades;
 
-import entity.Army;
 import entity.Creature;
 import entity.Sector;
 import entity.SectorType;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import static javax.ws.rs.client.Entity.entity;
 
 /**
  * RESTful service for all the EMEX51 project entities.
@@ -124,11 +122,6 @@ public abstract class AbstractFacade<T> {
         LOGGER.log(Level.INFO, "Find by id method from CreatureFacade");
         return getEntityManager().createNamedQuery("findCreatureBySector").
                 setParameter("sector", getEntityManager().find(Sector.class, sectorId)).getResultList();
-    }
-
-    public List<Creature> findCreatureByName(String name) {
-        LOGGER.log(Level.INFO, "Find by name method from CreatureFacade");
-        return getEntityManager().createNamedQuery("findCreatureByName").setParameter("name", name).getResultList();
     }
 
     public List<Sector> findSectorsByType(SectorType type) {

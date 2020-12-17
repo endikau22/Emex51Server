@@ -5,6 +5,7 @@
  */
 package service;
 
+import abstractFacades.AbstractSectorFacade;
 import entity.Sector;
 import exception.CreateException;
 import exception.DeleteException;
@@ -37,7 +38,7 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("sector")
 public class SectorFacadeREST extends AbstractSectorFacade<Sector> {
-
+ 
     /**
      * Logger for this class.
      */

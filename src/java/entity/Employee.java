@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value = "employee")
+@DiscriminatorValue(value = "EMPLOYEE")
 @NamedQueries({
     @NamedQuery(name = "findAllEmployees",
             query = "SELECT e FROM Employee e"),

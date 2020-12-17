@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
-@DiscriminatorValue(value = "visitor")
+@DiscriminatorValue(value = "VISITOR")
 @NamedQueries({
     @NamedQuery(name = "findAllVisitors",
             query = "SELECT v FROM Visitor v"),

@@ -5,6 +5,7 @@
  */
 package service;
 
+import abstractFacades.AbstractFacade;
 import entity.Sector;
 import entity.SectorContent;
 import exception.CreateException;

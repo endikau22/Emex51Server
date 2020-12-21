@@ -10,6 +10,7 @@ import abstractFacades.AbstractUserFacade;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.LoginNotExistException;
 import exception.ReadException;
 import exception.UpdateException;
 import java.util.List;
@@ -38,7 +39,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("user")
-public class UserFacadeREST extends AbstractUserFacade<User> {
+public class UserFacadeREST extends AbstractUserFacade {
 
     /**
      * Logger for this class.
@@ -146,27 +147,18 @@ public class UserFacadeREST extends AbstractUserFacade<User> {
     @GET
     @Path("login/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public User findUsersByName(@PathParam("login") String login) {
+    public User findUsersByLogin(@PathParam("login") String login) {
         try {
             LOGGER.log(Level.INFO, "Metodo find by login de la clase UserFacade");
             return super.getUserByLogin(login);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
+        } catch (LoginNotExistException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            //Mensaje de vuelta
         }
-    }
-
-    @GET
-    @Path("email/{email}")
-    @Produces({MediaType.APPLICATION_XML})
-    public User findUsersByEmail(@PathParam("email") String email) {
-        try {
-            LOGGER.log(Level.INFO, "Metodo find by email de la clase UserFacade");
-            return super.getUserByEmail(email);
-        } catch (ReadException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
-        }
+        return null;
     }
 
     /**

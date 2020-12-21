@@ -7,6 +7,7 @@ package service;
 
 import abstractFacades.AbstractFacade;
 import abstractFacades.AbstractVisitorFacade;
+import entity.Employee;
 import entity.Visitor;
 import exception.CreateException;
 import exception.DeleteException;
@@ -105,6 +106,14 @@ public class VisitorFacadeREST extends AbstractVisitorFacade<Visitor> {
     public void remove(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO, "Metodo remove de la clase VisitorFacade");
         try {
+            List <Employee> employees = getEntityManager().createNamedQuery("findAllEmployees").getResultList();
+            for(int i=0;i<employees.size();i++){
+                for(Visitor v:employees.get(i).getVisitors()){
+                    if(v.getId()==id){
+                        
+                    }
+                }
+            }
             super.remove(super.find(id));
         } catch (ReadException | DeleteException ex) {
             LOGGER.severe(ex.getMessage());

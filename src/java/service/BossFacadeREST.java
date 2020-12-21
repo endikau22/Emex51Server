@@ -10,6 +10,8 @@ import abstractFacades.AbstractFacade;
 import entity.Boss;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.EmailExistException;
+import exception.LoginExistException;
 import exception.ReadException;
 import exception.UpdateException;
 import java.util.List;
@@ -38,7 +40,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("boss")
-public class BossFacadeREST extends AbstractBossFacade<Boss> {
+public class BossFacadeREST extends AbstractBossFacade {
 
     /**
      * Logger for this class.
@@ -62,18 +64,24 @@ public class BossFacadeREST extends AbstractBossFacade<Boss> {
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
      *
-     * @param entity The boss object in xml format.
+     * @param boss
      */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
-    public void create(Boss entity) {
-        LOGGER.log(Level.INFO, "Metodo create de la clase BossFacade");
+    public void create(Boss boss) {
+        LOGGER.log(Level.INFO, "Metodo create Boss de la clase BossFacade");
         try {
-            super.create(entity);
+            super.createBoss(boss);
         } catch (CreateException ex) {
             Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex);
+        } catch (EmailExistException ex) {
+            Logger.getLogger(AbstractBossFacade.class.getName()).log(Level.SEVERE, null, ex);
+            //Mensaje de vuelta
+        } catch (LoginExistException ex) {
+            Logger.getLogger(AbstractBossFacade.class.getName()).log(Level.SEVERE, null, ex);
+            //Mensaje de vuelta
         }
     }
 
@@ -84,9 +92,11 @@ public class BossFacadeREST extends AbstractBossFacade<Boss> {
      */
     @PUT
     @Consumes({MediaType.APPLICATION_XML})
+    @Override
     public void edit(Boss entity) {
         LOGGER.log(Level.INFO, "Metodo edit de la class BossFacade");
         try {
+            
             super.edit(entity);
         } catch (UpdateException ex) {
             LOGGER.severe(ex.getMessage());

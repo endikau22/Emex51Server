@@ -5,11 +5,13 @@
  */
 package abstractFacades;
 
-import entity.Boss;
 import entity.Sector;
 import entity.SectorType;
+import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.EmailExistException;
+import exception.LoginExistException;
 import exception.ReadException;
 import exception.UpdateException;
 import java.util.List;
@@ -21,6 +23,7 @@ import javax.persistence.EntityManager;
  * RESTful service for all the EMEX51 project entities.
  *
  * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @param <T>
  * @since 04/12/2020
  * @version 1.0
  */
@@ -59,6 +62,7 @@ public abstract class AbstractFacade<T> {
      *
      * @param entity An entity class. This Entity replaces the generic Java type
      * <T>.
+     * @throws exception.CreateException
      */
     public void create(T entity) throws CreateException {
         LOGGER.log(Level.INFO, "Metodo create de la clase AbstractFacade");
@@ -67,7 +71,6 @@ public abstract class AbstractFacade<T> {
         } catch (Exception e) {
             throw new CreateException("Error when trying to create " + entity.toString());
         }
-
     }
 
     /**
@@ -76,6 +79,7 @@ public abstract class AbstractFacade<T> {
      *
      * @param entity An entity class. This Entity replaces the generic Java type
      * <T>.
+     * @throws exception.UpdateException
      */
     public void edit(T entity) throws UpdateException {
         LOGGER.log(Level.INFO, "Metodo edit de la clase AbstractFacade");
@@ -92,6 +96,7 @@ public abstract class AbstractFacade<T> {
      *
      * @param entity An entity class. This Entity replaces the generic Java type
      * <T>.
+     * @throws exception.DeleteException
      */
     public void remove(T entity) throws DeleteException {
         LOGGER.log(Level.INFO, "Metodo remove de la clase AbstractFacade");
@@ -108,6 +113,7 @@ public abstract class AbstractFacade<T> {
      *
      * @param id The id value .
      * @return An object.
+     * @throws exception.ReadException
      */
     public T find(Object id) throws ReadException {
         LOGGER.log(Level.INFO, "Metodo find de la clase AbstractFacade");
@@ -115,6 +121,21 @@ public abstract class AbstractFacade<T> {
             return getEntityManager().find(entityClass, id);
         } catch (Exception e) {
             throw new ReadException("Error when trying to read " + id.toString());
+        }
+    }
+
+    public void comprobateLoginAndEmailNotExist(String login, String email) throws ReadException, LoginExistException, EmailExistException {
+        LOGGER.log(Level.INFO, "Find user by login method from AbstractFacade");
+        List<User> users = getEntityManager().createNamedQuery("findAllUsers").getResultList();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getLogin().compareToIgnoreCase(login) == 0) {
+                throw new LoginExistException();
+            }
+        }
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmail().compareToIgnoreCase(email) == 0) {
+                throw new EmailExistException();
+            }
         }
     }
 

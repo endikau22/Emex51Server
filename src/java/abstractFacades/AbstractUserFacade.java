@@ -8,12 +8,14 @@ package abstractFacades;
 import exception.ReadException;
 import java.util.List;
 import javax.persistence.EntityManager;
+import entity.User;
+import exception.LoginNotExistException;
 
 /**
  *
  * @author xabig
  */
-public abstract class AbstractUserFacade<User> extends AbstractFacade<User> {
+public abstract class AbstractUserFacade extends AbstractFacade<User> {
 
     public AbstractUserFacade(Class<User> entityClass) {
         super(entityClass);
@@ -29,21 +31,18 @@ public abstract class AbstractUserFacade<User> extends AbstractFacade<User> {
             throw new ReadException("Error when trying to get all Users");
         }
     }
-
-    public User getUserByLogin(String login) throws ReadException {
-        try {
-            return (User) getEntityManager().createNamedQuery("findUsersByLogin").setParameter("login", login).getSingleResult();
-        } catch (Exception e) {
-            throw new ReadException("Error when trying to get User by login");
+    
+    public User getUserByLogin(String login) throws ReadException, LoginNotExistException {
+        try{
+            List <User> users = getEntityManager().createNamedQuery("findAllUsers").getResultList();
+            for(int i=0;i<users.size();i++){
+               if(users.get(i).getLogin().compareToIgnoreCase(login)==0){
+                   return users.get(i);
+               }
+            }
+            throw new LoginNotExistException();
+        } catch (Exception e){
+            throw new ReadException("Error when trying to get all Users");
         }
     }
-
-    public User getUserByEmail(String email) throws ReadException {
-        try {
-            return (User) getEntityManager().createNamedQuery("findUserByEmail").setParameter("email", email).getSingleResult();
-        } catch (Exception e) {
-            throw new ReadException("Error when trying to get User by login");
-        }
-    }
-
 }

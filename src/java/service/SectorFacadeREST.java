@@ -37,7 +37,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("sector")
-public class SectorFacadeREST extends AbstractSectorFacade<Sector> {
+public class SectorFacadeREST extends AbstractSectorFacade {
  
     /**
      * Logger for this class.

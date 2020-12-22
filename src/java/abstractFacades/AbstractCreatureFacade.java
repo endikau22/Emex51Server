@@ -5,6 +5,7 @@
  */
 package abstractFacades;
 
+import entity.Creature;
 import exception.ReadException;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -13,7 +14,7 @@ import javax.persistence.EntityManager;
  *
  * @author xabig
  */
-public abstract class AbstractCreatureFacade<Creature> extends AbstractFacade<Creature> {
+public abstract class AbstractCreatureFacade extends AbstractFacade<Creature> {
     
     public AbstractCreatureFacade(Class<Creature> entityClass) {
         super(entityClass);

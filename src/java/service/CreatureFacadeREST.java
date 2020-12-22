@@ -37,7 +37,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("creature")
-public class CreatureFacadeREST extends AbstractCreatureFacade<Creature> {
+public class CreatureFacadeREST extends AbstractCreatureFacade {
 
     /**
      * Logger for this class.

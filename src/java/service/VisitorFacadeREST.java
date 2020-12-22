@@ -43,7 +43,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("visitor")
-public class VisitorFacadeREST extends AbstractVisitorFacade<Visitor> {
+public class VisitorFacadeREST extends AbstractVisitorFacade {
 
     /**
      * Logger for this class.
@@ -75,7 +75,7 @@ public class VisitorFacadeREST extends AbstractVisitorFacade<Visitor> {
     public void create(Visitor visitor) {
         LOGGER.log(Level.INFO, "Metodo create Boss de la clase BossFacade");
         try {
-            super.createBoss(visitor);
+            super.createVisitor(visitor);
         } catch (CreateException ex) {
             Logger.getLogger(VisitorFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex);

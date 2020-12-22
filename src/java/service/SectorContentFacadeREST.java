@@ -40,7 +40,7 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("sectorcontent")
 //Los @consume y @produce xml es que recibe o envia en formato xml por http.
-public class SectorContentFacadeREST extends AbstractSectorContentFacade<SectorContent> {
+public class SectorContentFacadeREST extends AbstractSectorContentFacade {
 
     /**
      * Logger for this class.

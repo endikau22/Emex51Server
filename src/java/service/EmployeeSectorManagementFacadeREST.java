@@ -30,7 +30,7 @@ import javax.ws.rs.core.PathSegment;
 
 /**
  * RESTful service for EmployeeSectorManagement entity. Includes CRUD operations.
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde
  * @since 04/12/2020
  * @version 1.0
  */

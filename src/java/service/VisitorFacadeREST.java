@@ -5,10 +5,8 @@
  */
 package service;
 
-import abstractFacades.AbstractBossFacade;
 import abstractFacades.AbstractFacade;
 import abstractFacades.AbstractVisitorFacade;
-import entity.Boss;
 import entity.Visitor;
 import exception.CreateException;
 import exception.DeleteException;
@@ -36,38 +34,32 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Visitor entity. Includes CRUD operations.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("visitor")
 public class VisitorFacadeREST extends AbstractVisitorFacade {
-
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(VisitorFacadeREST.class.getName());
-
     /**
      * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an
      * {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public VisitorFacadeREST() {
         super(Visitor.class);
     }
-
-        /**
+    /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
-     * @param visitor
+     * @param entity The visitor object in xml format.
      */
     @POST
     @Override
@@ -87,10 +79,8 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             throw new ForbiddenException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The visitor object in xml format.
      */
     @PUT
@@ -105,10 +95,8 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value of a visitor.
      */
     @DELETE
@@ -122,10 +110,8 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value of a visitor.
      * @return A Visitor object in xml format.
      */
@@ -141,7 +127,10 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * This method finds all Area51 visitors.
+     * @return A list containing visitors.
+     */
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
@@ -154,7 +143,11 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * This method finds a list of <code>Visitor</code> by the class attribute name.
+     * @param name The class attribure name.
+     * @return A list of visitors.
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -167,10 +160,8 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Gets an {@link EntityManager} instance.
-     *
      * @return An {@link EntityManager} instance.
      */
     @Override

@@ -34,7 +34,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Employee entity. Includes CRUD operations.
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  * @since 04/12/2020
  * @version 1.0
  */
@@ -57,11 +57,9 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
     public EmployeeFacadeREST() {
         super(Employee.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
-     * @param boss
+     * @param employee The employee object in xml format.
      */
     @POST
     @Override
@@ -81,7 +79,6 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
             throw new ForbiddenException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
      * @param entity The employee object in xml format.
@@ -98,7 +95,6 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order. 
      * @param id An id value of an employee.
@@ -114,7 +110,6 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
      * @param id An id value of an employee.
@@ -132,8 +127,10 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
             throw new InternalServerErrorException(ex.getMessage());        
         }
     }
-    
-    
+    /**
+     * Gets all the {@link Employee} of Area51.
+     * @return A list of <code>Employee</code>.
+     */  
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
@@ -146,7 +143,11 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets a <code>List</code> {@link Employee} of Area51 with the same name as the one passed by the parameter.
+     * @param name A String with the name of a <code>Employee</code>.
+     * @return A list of <code>Employee</code>.
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -159,7 +160,6 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Gets an {@link EntityManager} instance.
      * @return An {@link EntityManager} instance.

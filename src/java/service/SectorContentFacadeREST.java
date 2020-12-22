@@ -7,7 +7,6 @@ package service;
 
 import abstractFacades.AbstractFacade;
 import abstractFacades.AbstractSectorContentFacade;
-import entity.Sector;
 import entity.SectorContent;
 import exception.CreateException;
 import exception.DeleteException;
@@ -32,8 +31,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for SectorContent entity. Includes CRUD operations.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  * @since 04/12/2020
  * @version 1.0
  */
@@ -41,7 +39,6 @@ import javax.ws.rs.core.MediaType;
 @Path("sectorcontent")
 //Los @consume y @produce xml es que recibe o envia en formato xml por http.
 public class SectorContentFacadeREST extends AbstractSectorContentFacade {
-
     /**
      * Logger for this class.
      */
@@ -52,17 +49,14 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public SectorContentFacadeREST() {
         super(SectorContent.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
      * @param entity The sectorcontent object in xml format.
      */
     @POST
@@ -77,11 +71,8 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
             throw new InternalServerErrorException(ex);
         }
     }
-
     /**
-     *
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The sectorcontent object in xml format.
      */
     @PUT
@@ -95,10 +86,8 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value of a SectorContent.
      */
     @DELETE
@@ -112,10 +101,8 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value of an SectorContent.
      * @return An SectorContent object in xml format.
      */
@@ -131,7 +118,10 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets all the {@link SectoContent} of Area51.
+     * @return A list of <code>SectorContent</code>
+     */
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
@@ -144,7 +134,11 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets a <code>List</code> {@link SectoContent} of Area51 with the same name as the one passed by the parameter.
+     * @param name A String with the name of a <code>SectorContent</code>.
+     * @return A list of <code>SectorContent</code>.
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -157,21 +151,25 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
-    //Por hacer
+    /**
+     * Gets a List {@link SectoContent} of Area51 with the same name as the one passed by the parameter.
+     * @param id A String with the id of a <code>Sector</code>.
+     * @return A list of <code>SectorContent</code>.
+     */
     @GET
-    @Path("sectorId/{id}")
+    @Path("sectorId/{sectorId}")
     @Produces({MediaType.APPLICATION_XML})
-    public List<SectorContent> findSectorContentBySector(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Metodo find de la clase SectorContentFacade");
-        List<SectorContent> sectorContents = null;
-        sectorContents = em.createNamedQuery("findContentsBySector").setParameter("id", getEntityManager().find(Sector.class, id)).getResultList();
-        return sectorContents;
+    public List<SectorContent> findSectorContentBySector(@PathParam("sectorId") Integer sectorId) {
+        LOGGER.log(Level.INFO, "Metodo findSectorContentBySector de la clase SectorContentFacade");
+        try {
+            return super.getContentBySector(sectorId);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
-
     /**
      * Gets an {@link EntityManager} instance.
-     *
      * @return An {@link EntityManager} instance.
      */
     @Override

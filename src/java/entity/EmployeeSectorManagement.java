@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * This class contains the relation between the class {@link Employee} and the class {@link Sector}.
- * @author Endika Ubierna, Markel Uralde, Xabier Carnero
+ * @author Endika Ubierna, Markel Lopez de Uralde, Xabier Carnero
  * @version 1.0
  * @since 01/12/2020
  */

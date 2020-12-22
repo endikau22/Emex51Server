@@ -34,38 +34,32 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Boss entity. Includes CRUD operations.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("boss")
 public class BossFacadeREST extends AbstractBossFacade {
-
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(BossFacadeREST.class.getName());
-
     /**
      * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an
      * {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public BossFacadeREST() {
         super(Boss.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
-     * @param boss
+     * @param entity The boss object in xml format.
      */
     @POST
     @Override
@@ -85,10 +79,8 @@ public class BossFacadeREST extends AbstractBossFacade {
             throw new ForbiddenException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The boss object in xml format.
      */
     @PUT
@@ -104,10 +96,8 @@ public class BossFacadeREST extends AbstractBossFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value.
      */
     @DELETE
@@ -121,10 +111,8 @@ public class BossFacadeREST extends AbstractBossFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value.
      * @return A Boss object in xml format.
      */
@@ -140,7 +128,10 @@ public class BossFacadeREST extends AbstractBossFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets all the {@link Boss} of Area51.
+     * @return A list of <code>Boss</code>
+     */
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
@@ -153,7 +144,11 @@ public class BossFacadeREST extends AbstractBossFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets a <code>List</code> {@link Boss} of Area51 with the same name as the one passed by the parameter.
+     * @param fullName A String with the name of a <code>Boss</code>.
+     * @return A list of <code>Boss</code>.
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -166,10 +161,8 @@ public class BossFacadeREST extends AbstractBossFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Gets an {@link EntityManager} instance.
-     *
      * @return An {@link EntityManager} instance.
      */
     @Override

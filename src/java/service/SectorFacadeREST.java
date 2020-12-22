@@ -30,36 +30,30 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Sector entity. Includes CRUD operations.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("sector")
 public class SectorFacadeREST extends AbstractSectorFacade {
- 
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(SectorFacadeREST.class.getName());
-
     /**
      * Injects an {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public SectorFacadeREST() {
         super(Sector.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
      * @param entity The sector object in xml format.
      */
     @POST
@@ -74,10 +68,8 @@ public class SectorFacadeREST extends AbstractSectorFacade {
             throw new InternalServerErrorException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The sector object in xml format.
      */
     @PUT
@@ -92,10 +84,8 @@ public class SectorFacadeREST extends AbstractSectorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value of a sector.
      */
     @DELETE
@@ -109,10 +99,8 @@ public class SectorFacadeREST extends AbstractSectorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value of a sector.
      * @return A Sector object in xml format.
      */
@@ -128,17 +116,15 @@ public class SectorFacadeREST extends AbstractSectorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
-     *
-     * @param id
-     * @return
+     * Gets all the <code>Sector</code> of the Area51.
+     * @return A list of {@link Sector}
      */
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
     public List<Sector> findAllSectors() {
-        LOGGER.log(Level.INFO, "Metodo find by id de la clase SectorFacade");
+        LOGGER.log(Level.INFO, "Metodo findAll de la clase SectorFacade");
         try {
             return super.getAllSectors();
         } catch (ReadException ex) {
@@ -146,12 +132,16 @@ public class SectorFacadeREST extends AbstractSectorFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets all the <code>Sector</code> of the Area51 whose name equals the String passed as parameter.
+     * @param name A String. 
+     * @return A list of {@link Sector}
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
     public List<Sector> findSectorsByName(@PathParam("name") String name) {
-        LOGGER.log(Level.INFO, "Metodo find by id de la clase SectorFacade");
+        LOGGER.log(Level.INFO, "Metodo find by name de la clase SectorFacade");
         try {
             return super.getSectorsByName(name);
         } catch (ReadException ex) {

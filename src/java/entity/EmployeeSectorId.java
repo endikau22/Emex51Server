@@ -11,8 +11,7 @@ import javax.persistence.Embeddable;
 /**
  * {@link Embeddable} Class that contains the primary keys of the entities
  * {@link Employee} and {@link Sector}
- *
- * @author Endika Ubierna, Markel Uralde, Xabier Carnero
+ * @author Endika Ubierna, Markel Lopez de Uralde, Xabier Carnero
  * @version 1.0
  * @since 01/12/2020
  */
@@ -34,7 +33,6 @@ public class EmployeeSectorId implements Serializable {
 
     /**
      * Gets the {@link Employee} id.
-     *
      * @return The id value.
      */
     public Integer getEmployeeId() {
@@ -43,7 +41,6 @@ public class EmployeeSectorId implements Serializable {
 
     /**
      * Sets the {@link Employee} id.
-     *
      * @param employeeId The id value.
      */
     public void setEmployeeId(Integer employeeId) {
@@ -52,7 +49,6 @@ public class EmployeeSectorId implements Serializable {
 
     /**
      * Gets the {@link  Sector} id.
-     *
      * @return The id value.
      */
     public Integer getSectorId() {
@@ -61,7 +57,6 @@ public class EmployeeSectorId implements Serializable {
 
     /**
      * Sets the {@link Sector} id.
-     *
      * @param sectorId The id value.
      */
     public void setSectorId(Integer sectorId) {
@@ -70,7 +65,6 @@ public class EmployeeSectorId implements Serializable {
 
     /**
      * HashCode method implementation for the entity.
-     *
      * @return An integer value as hashcode for the object.
      */
     @Override
@@ -86,7 +80,6 @@ public class EmployeeSectorId implements Serializable {
      * This method compares two employeeSectorId objects for equality. This
      * implementation compare id field value for equality, in this case the id
      * is a composite id.
-     *
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
      */
@@ -111,7 +104,6 @@ public class EmployeeSectorId implements Serializable {
     /**
      * This method returns a String representation for a employeeSectorId
      * instance.
-     *
      * @return The String representation for the sectorContent object.
      */
     @Override

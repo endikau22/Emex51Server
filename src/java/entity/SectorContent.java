@@ -27,8 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Entity JPA class for SectorContent data. The properties of this class are id,
  * name, arrivalDate. It also contains relational fields for getting the
  * {@link Sector} where the content are storaged.
- *
- * @author Endika Ubierna, Markel Uralde, Xabier Carnero
+ * @author Endika Ubierna, Markel Lopez de Uralde, Xabier Carnero
  * @version 1.0
  * @since 01/12/2020
  */
@@ -77,7 +76,6 @@ public class SectorContent implements Serializable {
     /**
      * Gets the id of the content. Can be a {@link Creature} or {@link Army}
      * instance.
-     *
      * @return The id value.
      */
     public Integer getId() {
@@ -87,7 +85,6 @@ public class SectorContent implements Serializable {
     /**
      * Sets the id of the content. Can be a {@link Creature} or {@link Army}
      * instance.
-     *
      * @param id The id value.
      */
     public void setId(Integer id) {
@@ -97,7 +94,6 @@ public class SectorContent implements Serializable {
     /**
      * Gets the name of the content. Can be a {@link Creature} or {@link Army}
      * instance.
-     *
      * @return The name value.
      */
     public String getName() {
@@ -107,7 +103,6 @@ public class SectorContent implements Serializable {
     /**
      * Sets the name of the content. Can be a {@link Creature} or {@link Army}
      * instance.
-     *
      * @param name The name value.
      */
     public void setName(String name) {
@@ -116,7 +111,6 @@ public class SectorContent implements Serializable {
 
     /**
      * Gets the {@link Sector} where the content is storaged.
-     *
      * @return The {@link Sector} value.
      */
     public Sector getSector() {
@@ -125,7 +119,6 @@ public class SectorContent implements Serializable {
 
     /**
      * Sets the {@link Sector} where the content is storaged.
-     *
      * @param sector The {@link Sector} value.
      */
     public void setSector(Sector sector) {
@@ -135,7 +128,6 @@ public class SectorContent implements Serializable {
     /**
      * Sets the date where the content arrived to the area. This content can be
      * a {@link Creature} or {@link Army} instance.
-     *
      * @return The date value.
      */
     public Date getArrivalDate() {
@@ -145,7 +137,6 @@ public class SectorContent implements Serializable {
     /**
      * Sets the date where the content arrived to the area. This content can be
      * a {@link Creature} or {@link Army} instance.
-     *
      * @param arrivalDate The date value.
      */
     public void setArrivalDate(Date arrivalDate) {
@@ -154,7 +145,6 @@ public class SectorContent implements Serializable {
 
     /**
      * HashCode method implementation for the entity.
-     *
      * @return An integer value as hashcode for the object.
      */
     @Override
@@ -167,7 +157,6 @@ public class SectorContent implements Serializable {
     /**
      * This method compares two SectorContent entities for equality. This
      * implementation compare id field value for equality.
-     *
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
      */
@@ -187,7 +176,6 @@ public class SectorContent implements Serializable {
     /**
      * This method returns a String representation for a sectorcontent entity
      * instance.
-     *
      * @return The String representation for the sectorContent object.
      */
     @Override

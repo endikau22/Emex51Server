@@ -24,10 +24,9 @@ import javax.xml.bind.annotation.XmlTransient;
  * User. The properties of this class are wage and job. It also contains
  * relational fields for getting the {@link Sector} managed and the
  * {@link Visitor} management and a reference to his {@link Boss}.
- *
  * @since 23/11/2020
  * @version 1.0
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  */
 @Entity
 //Vamos a tener un campo en la tabla que nos indica que tipo de usuario es
@@ -75,7 +74,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Gets the wages of the employee.
-     *
      * @return The Boss value.
      */
     public float getWage() {
@@ -84,7 +82,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Sets the wages of the employee.
-     *
      * @param Salario The Boss value.
      */
     public void setWage(float Salario) {
@@ -93,7 +90,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Gets the position of the employee.
-     *
      * @return The position value.
      */
     public String getJob() {
@@ -102,7 +98,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Sets the position of the employee.
-     *
      * @param puesto The position value.
      */
     public void setJob(String puesto) {
@@ -111,7 +106,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Gets a list of {@link Sector} managed by the employee.
-     *
      * @return The list Sector value.
      */
     public Set<EmployeeSectorManagement> getSectors() {
@@ -120,7 +114,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Sets a list of {@link Sector} managed by the employee.
-     *
      * @param sector The list {@link Sector} value.
      */
     public void setSectors(Set<EmployeeSectorManagement> sectors) {
@@ -129,7 +122,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Gets a list of {@link Visitor} managed by the employee.
-     *
      * @return The list {@link Visitor} value.
      */
     @XmlTransient
@@ -139,7 +131,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Sets a list of {@link Visitor} managed by the employee.
-     *
      * @param visitante The list {@link Visitor} value.
      */
     public void setVisitors(Set<Visitor> visitantes) {
@@ -148,7 +139,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Gets the {@link Boss} of the employee.
-     *
      * @return The {@link Boss} value.
      */
     @XmlTransient
@@ -158,7 +148,6 @@ public class Employee extends User implements Serializable {
 
     /**
      * Sets the {@link Boss} of the employee.
-     *
      * @param jefe The {@link Boss} value.
      */
     public void setBoss(Boss jefe) {

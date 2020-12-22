@@ -7,7 +7,7 @@ package exception;
 
 /**
  * This class represents any exception produced during Area 51 data reading in application storage.
- * @author Xabier Carnero, Markel Uralde, Endika Ubierna
+ * @author Xabier Carnero, Markel Lopez de Uralde, Endika Ubierna
  */
 public class ReadException extends Exception{
     /**

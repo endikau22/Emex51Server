@@ -11,28 +11,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author 2dam
+ * Class that hashes the user password before storing it in the database.
+ * @author Markel Lopez de Uralde, Endika Ubierna, Xabier Carnero.
  */
 public class Hashing {
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Hashing.class.getName());
     /**
      * Aplica SHA al texto pasado por parámetro
      * @param texto
      * @return 
      */
-        public static String cifrarTexto(String texto) {
+    public static String cifrarTexto(String texto) {
+        LOGGER.log(Level.INFO, "Metodo cifrarTexto de la clase PasswordHash");
         MessageDigest messageDigest;
         try {
-            // Obtén una instancia de MessageDigest que usa SHA
+                // Obtén una instancia de MessageDigest que usa SHA
             messageDigest = MessageDigest.getInstance("SHA1");
-            // Convierte el texto en un array de bytes
+                // Convierte el texto en un array de bytes
             messageDigest.update(texto.getBytes());
             byte[] resumen = messageDigest.digest();
-            // Actualiza el MessageDigest con el array de bytes
+                // Actualiza el MessageDigest con el array de bytes
             messageDigest.update(resumen);
-            // Calcula el resumen (función digest)
+                // Calcula el resumen (función digest)
             messageDigest.digest(resumen);
-            
+
             return resumen.toString();
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Hashing.class.getName()).log(Level.SEVERE, null, ex);

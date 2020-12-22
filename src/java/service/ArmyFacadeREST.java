@@ -30,8 +30,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Army entity. Includes CRUD operations.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  * @since 04/12/2020
  * @version 1.0
  */
@@ -39,29 +38,24 @@ import javax.ws.rs.core.MediaType;
 @Path("army")
 //Los @consume y @produce xml es que recibe o envia en formato xml por http.
 public class ArmyFacadeREST extends AbstractArmyFacade {
-
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(ArmyFacadeREST.class.getName());
-    
     /**
      * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an
      * {@link EntityManager} instance.
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public ArmyFacadeREST() {
         super(Army.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
      * @param entity The army object in xml format.
      */
     @POST
@@ -76,10 +70,8 @@ public class ArmyFacadeREST extends AbstractArmyFacade {
             throw new InternalServerErrorException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The army object in xml format.
      */
     @PUT
@@ -94,10 +86,8 @@ public class ArmyFacadeREST extends AbstractArmyFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value of an army.
      */
     @DELETE
@@ -111,10 +101,8 @@ public class ArmyFacadeREST extends AbstractArmyFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value of an army.
      * @return An army object in xml format.
      */
@@ -130,11 +118,8 @@ public class ArmyFacadeREST extends AbstractArmyFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
-     * Find (Select) operation after receiving a Get HTTP order. Gets all the
-     * armys.
-     *
+     * Find (Select) operation after receiving a Get HTTP order. Gets all the armys.
      * @param id An id value of an army.
      * @return An army object in xml format.
      */
@@ -150,32 +135,42 @@ public class ArmyFacadeREST extends AbstractArmyFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets a <code>List</code> {@link Army} of Area51 with the same name as the one passed by the parameter.
+     * @param name A String with the name of a <code>Army</code>.
+     * @return A list of <code>Army</code>.
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
     public List<Army> findArmyByName(@PathParam("name") String name) {
-        try {
-            LOGGER.log(Level.INFO, "Metodo find por nombre de la clase ArmyFacade");
+        LOGGER.log(Level.INFO, "Metodo find por nombre de la clase ArmyFacade");
+        try {         
             return super.getArmyByName(name);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
-    //Pendiente
+    /**
+     * Gets a List {@link Army} of Area51 with the same name as the one passed by the parameter.
+     * @param sectorId A String with the id of a <code>Sector</code>.
+     * @return A list of <code>Army</code>.
+     */
     @GET
     @Path("sector/{sectorId}")
     @Produces({MediaType.APPLICATION_XML})
     public List<Army> findArmyBySector(@PathParam("sectorId") Integer sectorId) {
         LOGGER.log(Level.INFO, "Metodo find por sector de la clase ArmyFacade");
-        return null;
+        try {
+            return super.getArmyBySector(sectorId);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
-
     /**
      * Gets an {@link EntityManager} instance.
-     *
      * @return An {@link EntityManager} instance.
      */
     @Override

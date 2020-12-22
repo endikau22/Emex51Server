@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * {@link Visitor} who visit the sector the {@link SectorContent} which are
  * storaged in the sector, this {@link SectorContent} can be {@link Creature} or
  * {@link Army} and the {@link Employee} who manage the sector.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  * @version 1.0
  * @since 01/12/2020
  */
@@ -90,7 +89,6 @@ public class Sector implements Serializable {
 
     /**
      * Gets the id of the sector.
-     *
      * @return The id value.
      */
     public Integer getIdSector() {
@@ -99,7 +97,6 @@ public class Sector implements Serializable {
 
     /**
      * Sets the id of the sector.
-     *
      * @param idSector The id of the sector.
      */
     public void setIdSector(Integer idSector) {
@@ -108,7 +105,6 @@ public class Sector implements Serializable {
 
     /**
      * Gets the name of the sector.
-     *
      * @return The name value
      */
     public String getName() {
@@ -117,7 +113,6 @@ public class Sector implements Serializable {
 
     /**
      * Sets the name of the sector.
-     *
      * @param name The name of the sector.
      */
     public void setName(String name) {
@@ -126,8 +121,7 @@ public class Sector implements Serializable {
 
     /**
      * Gets visitors of the sector.
-     *
-     * @return
+     * @return A set of visitors
      */
     @XmlTransient
     public Set<Visitor> getVisitors() {
@@ -136,7 +130,6 @@ public class Sector implements Serializable {
 
     /**
      * Sets the visitors of the sector.
-     *
      * @param visitors The visitors collection value.
      */
     public void setVisitors(Set<Visitor> visitors) {
@@ -145,7 +138,6 @@ public class Sector implements Serializable {
 
     /**
      * Gets the employees who manage the sector.
-     *
      * @return The employee collection value.
      */
     @XmlTransient
@@ -155,7 +147,6 @@ public class Sector implements Serializable {
 
     /**
      * Sets the employees who manage the sector.
-     *
      * @param empleados The employee collection value.
      */
     public void setEmployees(Set<EmployeeSectorManagement> empleados) {
@@ -164,7 +155,6 @@ public class Sector implements Serializable {
 
     /**
      * Gets the type of the sector.
-     *
      * @return The type of the sector value.
      */
     public SectorType getType() {
@@ -173,7 +163,6 @@ public class Sector implements Serializable {
 
     /**
      * Sets the type of the sector.
-     *
      * @param type The type value.
      */
     public void setType(SectorType type) {
@@ -182,7 +171,6 @@ public class Sector implements Serializable {
 
     /**
      * Gets a set of {@link Criature} or {@link Army} belonging to the sector.
-     *
      * @return The set of {@link Criature} or {@link Army} value.
      */
     @XmlTransient
@@ -192,7 +180,6 @@ public class Sector implements Serializable {
 
     /**
      * Sets a set of {@link Criature} or {@link Army} belonging to the sector.
-     *
      * @param sectorContent The set of {@link Criature} or {@link Army} value.
      */
     public void setSectorContent(Set<SectorContent> sectorContent) {
@@ -201,7 +188,6 @@ public class Sector implements Serializable {
 
     /**
      * HashCode method implementation for the entity.
-     *
      * @return An integer value as hashcode for the object.
      */
     @Override
@@ -214,7 +200,6 @@ public class Sector implements Serializable {
     /**
      * This method compares two sector entities for equality. This
      * implementation compare id field value for equality.
-     *
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
      */
@@ -233,7 +218,6 @@ public class Sector implements Serializable {
 
     /**
      * This method returns a String representation for a sector entity instance.
-     *
      * @return The String representation for the Sector object.
      */
     @Override

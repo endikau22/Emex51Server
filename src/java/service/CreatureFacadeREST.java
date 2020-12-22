@@ -30,15 +30,13 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for Creature entity. Includes CRUD operations.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("creature")
 public class CreatureFacadeREST extends AbstractCreatureFacade {
-
     /**
      * Logger for this class.
      */
@@ -49,17 +47,14 @@ public class CreatureFacadeREST extends AbstractCreatureFacade {
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public CreatureFacadeREST() {
         super(Creature.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
      * @param entity The creature object in xml format.
      */
     @POST
@@ -74,10 +69,8 @@ public class CreatureFacadeREST extends AbstractCreatureFacade {
             throw new InternalServerErrorException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The creature object in xml format.
      */
     @PUT
@@ -92,10 +85,8 @@ public class CreatureFacadeREST extends AbstractCreatureFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value.
      */
     @DELETE
@@ -109,10 +100,8 @@ public class CreatureFacadeREST extends AbstractCreatureFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value.
      * @return A Creature object in xml format.
      */
@@ -128,7 +117,10 @@ public class CreatureFacadeREST extends AbstractCreatureFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets all the {@link Creature} of Area51.
+     * @return A list of <code>Creature</code>
+     */
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
@@ -141,7 +133,11 @@ public class CreatureFacadeREST extends AbstractCreatureFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets a <code>List</code> of {@link Creature} of Area51 with the same name as the one passed by the parameter.
+     * @param name A String with the name of a <code>Creature</code>.
+     * @return A list of <code>Creature</code>.
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -154,16 +150,24 @@ public class CreatureFacadeREST extends AbstractCreatureFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * Gets a List {@link Creature} of Area51 with the same name as the one passed by the parameter.
+     * @param sectorId A String with the id of a <code>Sector</code>.
+     * @return A list of <code>Creature</code>.
+     */
     //Pendientes de hacer
     @GET
     @Path("sector/{sectorId}")
     @Produces({MediaType.APPLICATION_XML})
     public List<Creature> findCreatureBySector(@PathParam("sectorId") Integer sectorId) {
         LOGGER.log(Level.INFO, "Metodo find por sector de la clase CreatureFacade");
-        return null;
+        try {
+            return super.getCreatureBySector(sectorId);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
-
     /**
      * Gets an {@link EntityManager} instance.
      *

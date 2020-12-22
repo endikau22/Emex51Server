@@ -32,15 +32,13 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for User entity. Includes CRUD operations.
- *
- * @author Xabier Carnero, Endika Ubierna, Markel Uralde
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde
  * @since 04/12/2020
  * @version 1.0
  */
 @Stateless
 @Path("user")
 public class UserFacadeREST extends AbstractUserFacade {
-
     /**
      * Logger for this class.
      */
@@ -51,17 +49,14 @@ public class UserFacadeREST extends AbstractUserFacade {
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public UserFacadeREST() {
         super(User.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
      * @param entity The user object in xml format.
      */
     @POST
@@ -76,10 +71,8 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The user object in xml format.
      */
     @PUT
@@ -94,10 +87,8 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value of an User.
      */
     @DELETE
@@ -111,10 +102,8 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value of an User.
      * @return A User object in xml format.
      */
@@ -130,7 +119,10 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * This method finds all Area51 <code>User</code>.
+     * @return A list of {@link User}.
+     */
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
@@ -143,7 +135,11 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    /**
+     * This method finds an Area51 <code>User</code> whose login attibute is the same as the String parameter.
+     * @param login A String. Represents the login attibute of an Area51 user.
+     * @return An user.
+     */
     @GET
     @Path("login/{login}")
     @Produces({MediaType.APPLICATION_XML})
@@ -160,10 +156,8 @@ public class UserFacadeREST extends AbstractUserFacade {
         }
         return null;
     }
-
     /**
      * Gets an {@link EntityManager} instance.
-     *
      * @return An {@link EntityManager} instance.
      */
     @Override

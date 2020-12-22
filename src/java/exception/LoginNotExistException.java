@@ -6,8 +6,10 @@
 package exception;
 
 /**
- *
- * @author xabig
+ * Exception thrown when a User tries to signIn in the application, but the login is not stored in the database.
+ * @version 1.0
+ * @since 23/12/2020
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  */
 public class LoginNotExistException extends Exception{
     public LoginNotExistException(){

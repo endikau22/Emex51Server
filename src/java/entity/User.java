@@ -23,10 +23,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Entity JPA class for user data. The properties of this class are id, login ,
  * name, email, status, privilege, password, last password change, last access.
- *
  * @since 23/11/2020
  * @version 1.0
- * @author Endika Ubierna, Markel Uralde, Xabier Carnero.
+ * @author Endika Ubierna, Markel Lopez de Uralde, Xabier Carnero.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -99,7 +98,6 @@ public class User implements Serializable {
 
     /**
      * Class constructor with two parameters.
-     *
      * @param login The login value.
      * @param password The password value.
      */
@@ -110,7 +108,6 @@ public class User implements Serializable {
 
     /**
      * Class constructor with four parameters
-     *
      * @param login The login value.
      * @param email The email value.
      * @param fullName The name value.
@@ -127,7 +124,6 @@ public class User implements Serializable {
 
     /**
      * Gets the login of the user.
-     *
      * @return The login value.
      */
     public String getLogin() {
@@ -136,7 +132,6 @@ public class User implements Serializable {
 
     /**
      * Sets the login of the user.
-     *
      * @param login The login value.
      */
     public void setLogin(String login) {
@@ -145,7 +140,6 @@ public class User implements Serializable {
 
     /**
      * Gets the email value.
-     *
      * @return The email value.
      */
     public String getEmail() {
@@ -154,7 +148,6 @@ public class User implements Serializable {
 
     /**
      * Sets the email of the user.
-     *
      * @param email The email value.
      */
     public void setEmail(String email) {
@@ -163,7 +156,6 @@ public class User implements Serializable {
 
     /**
      * Gets the name of the user.
-     *
      * @return The name value.
      */
     public String getFullName() {
@@ -172,7 +164,6 @@ public class User implements Serializable {
 
     /**
      * Sets the name of the user.
-     *
      * @param fullName The name value.
      */
     public void setFullName(String fullName) {
@@ -181,7 +172,6 @@ public class User implements Serializable {
 
     /**
      * Gets the {@link UserStatus} of the user.
-     *
      * @return The {@link UserStatus} value.
      */
     public UserStatus getStatus() {
@@ -190,7 +180,6 @@ public class User implements Serializable {
 
     /**
      * Sets the {@link UserStatus} of the user.
-     *
      * @param status The {@link UserStatus} value.
      */
     public void setStatus(UserStatus status) {
@@ -199,7 +188,6 @@ public class User implements Serializable {
 
     /**
      * Gets the {@link UserPrivilege} of the user.
-     *
      * @return The {@link UserPrivilege} value.
      */
     public UserPrivilege getPrivilege() {
@@ -208,7 +196,6 @@ public class User implements Serializable {
 
     /**
      * Gets the id of the user.
-     *
      * @return The id value.
      */
     public Integer getId() {
@@ -217,7 +204,6 @@ public class User implements Serializable {
 
     /**
      * Sets the id of the user.
-     *
      * @param id The id value.
      */
     public void setId(Integer id) {
@@ -226,7 +212,6 @@ public class User implements Serializable {
 
     /**
      * Gets the password of the user
-     *
      * @return The password value.
      */
     public String getPassword() {
@@ -235,7 +220,6 @@ public class User implements Serializable {
 
     /**
      * Sets the password of the user.
-     *
      * @param password The password value.
      */
     public void setPassword(String password) {
@@ -245,7 +229,6 @@ public class User implements Serializable {
     /**
      * Gets the last access date of the user into the application. The Date is
      * registered at the time the user exits the application.
-     *
      * @return The date value.
      */
     public Date getLastAccess() {
@@ -255,7 +238,6 @@ public class User implements Serializable {
     /**
      * Sets the last access date of the user into the application. The Date is
      * registered at the time the user exits the application.
-     *
      * @param lastAccess The date value.
      */
     public void setLastAccess(Date lastAccess) {
@@ -264,7 +246,6 @@ public class User implements Serializable {
 
     /**
      * Gets the last time the user changed the password.
-     *
      * @return The date value.
      */
     public Date getLastPasswordChange() {
@@ -273,7 +254,6 @@ public class User implements Serializable {
 
     /**
      * Sets the last time the user changed the password.
-     *
      * @param lastPasswordChange The date value.
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
@@ -282,7 +262,6 @@ public class User implements Serializable {
 
     /**
      * HashCode method implementation for the entity.
-     *
      * @return An integer value as hashcode for the object.
      */
     @Override
@@ -295,7 +274,6 @@ public class User implements Serializable {
     /**
      * This method compares two user entities for equality. This implementation
      * compare id field value for equality.
-     *
      * @param obj The object to compare to.
      * @return True if objects are equals, otherwise false.
      */
@@ -314,7 +292,6 @@ public class User implements Serializable {
 
     /**
      * This method returns a String representation for a user entity instance.
-     *
      * @return The String representation for the Sector object.
      */
     @Override

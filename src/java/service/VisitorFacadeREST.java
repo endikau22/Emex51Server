@@ -5,12 +5,15 @@
  */
 package service;
 
+import abstractFacades.AbstractBossFacade;
 import abstractFacades.AbstractFacade;
 import abstractFacades.AbstractVisitorFacade;
-import entity.Employee;
+import entity.Boss;
 import entity.Visitor;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.EmailExistException;
+import exception.LoginExistException;
 import exception.ReadException;
 import exception.UpdateException;
 import java.util.List;
@@ -21,6 +24,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
@@ -60,21 +64,27 @@ public class VisitorFacadeREST extends AbstractVisitorFacade<Visitor> {
         super(Visitor.class);
     }
 
-    /**
+        /**
      * Create (Insert) operation after receiving a Post HTTP order.
      *
-     * @param entity The visitor object in xml format.
+     * @param visitor
      */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
-    public void create(Visitor entity) {
-        LOGGER.log(Level.INFO, "Metodo create de la clase VisitorFacade");
+    public void create(Visitor visitor) {
+        LOGGER.log(Level.INFO, "Metodo create Boss de la clase BossFacade");
         try {
-            super.create(entity);
+            super.createBoss(visitor);
         } catch (CreateException ex) {
-            Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VisitorFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex);
+        } catch (EmailExistException ex) {
+            Logger.getLogger(AbstractVisitorFacade.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ForbiddenException(ex);
+        } catch (LoginExistException ex) {
+            Logger.getLogger(AbstractVisitorFacade.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ForbiddenException(ex);
         }
     }
 
@@ -106,14 +116,6 @@ public class VisitorFacadeREST extends AbstractVisitorFacade<Visitor> {
     public void remove(@PathParam("id") Integer id) {
         LOGGER.log(Level.INFO, "Metodo remove de la clase VisitorFacade");
         try {
-            List <Employee> employees = getEntityManager().createNamedQuery("findAllEmployees").getResultList();
-            for(int i=0;i<employees.size();i++){
-                for(Visitor v:employees.get(i).getVisitors()){
-                    if(v.getId()==id){
-                        
-                    }
-                }
-            }
             super.remove(super.find(id));
         } catch (ReadException | DeleteException ex) {
             LOGGER.severe(ex.getMessage());

@@ -44,6 +44,7 @@ public class ArmyFacadeREST extends AbstractArmyFacade<Army> {
      * Logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(ArmyFacadeREST.class.getName());
+    
     /**
      * EntityManager for EMEX51CRUDServerPU persistence unit. Injects an
      * {@link EntityManager} instance.

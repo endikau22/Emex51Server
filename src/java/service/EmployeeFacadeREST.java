@@ -10,6 +10,8 @@ import abstractFacades.AbstractFacade;
 import entity.Employee;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.EmailExistException;
+import exception.LoginExistException;
 import exception.ReadException;
 import exception.UpdateException;
 import java.util.List;
@@ -20,6 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
@@ -57,18 +60,25 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade<Employee> {
 
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     * @param entity The employee object in xml format.
+     *
+     * @param boss
      */
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Employee entity) {
-        LOGGER.log(Level.INFO,"Metodo create de la clase EmployeeFacade");
-           try {
-            super.create(entity);
+    @Consumes({MediaType.APPLICATION_XML})
+    public void create(Employee employee) {
+        LOGGER.log(Level.INFO, "Metodo create Boss de la clase BossFacade");
+        try {
+            super.createBoss(employee);
         } catch (CreateException ex) {
             Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex);
+        } catch (EmailExistException ex) {
+            Logger.getLogger(AbstractEmployeeFacade.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ForbiddenException(ex);
+        } catch (LoginExistException ex) {
+            Logger.getLogger(AbstractEmployeeFacade.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ForbiddenException(ex);
         }
     }
 

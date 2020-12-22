@@ -5,8 +5,14 @@
  */
 package abstractFacades;
 
+import entity.User;
+import exception.CreateException;
+import exception.EmailExistException;
+import exception.LoginExistException;
 import exception.ReadException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 
 /**
@@ -15,18 +21,33 @@ import javax.persistence.EntityManager;
  */
 public abstract class AbstractEmployeeFacade<Employee> extends AbstractFacade<Employee> {
 
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AbstractBossFacade.class.getName());
+
     public AbstractEmployeeFacade(Class<Employee> entityClass) {
         super(entityClass);
     }
 
     @Override
     protected abstract EntityManager getEntityManager();
-    
-        public List<Employee> getAllEmployees() throws ReadException {
+
+    public List<Employee> getAllEmployees() throws ReadException {
         try {
             return getEntityManager().createNamedQuery("findAllEmployees").getResultList();
         } catch (Exception e) {
             throw new ReadException("Error when trying to get all employees");
+        }
+    }
+
+    public void createBoss(Employee employee) throws CreateException, LoginExistException, EmailExistException {
+        LOGGER.log(Level.INFO, "Metodo create de la clase AbstractBossFacade");
+        try {
+            super.comprobateLoginAndEmailNotExist(((User) employee).getLogin(), ((User) employee).getEmail());
+            super.create(employee);
+        } catch (ReadException e) {
+            throw new CreateException("Error when trying to create " + employee.toString());
         }
     }
 

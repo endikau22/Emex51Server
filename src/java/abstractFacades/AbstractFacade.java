@@ -32,7 +32,7 @@ public abstract class AbstractFacade<T> {
     /**
      * Logger for this class.
      */
-    private static final Logger LOGGER = Logger.getLogger(AbstractFacade.class.getName());
+    static final Logger LOGGER = Logger.getLogger(AbstractFacade.class.getName());
     /**
      * Attribute for this class. Able to handle every type of class.
      */

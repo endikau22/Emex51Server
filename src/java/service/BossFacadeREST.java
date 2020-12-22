@@ -22,6 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
@@ -78,10 +79,10 @@ public class BossFacadeREST extends AbstractBossFacade {
             throw new InternalServerErrorException(ex);
         } catch (EmailExistException ex) {
             Logger.getLogger(AbstractBossFacade.class.getName()).log(Level.SEVERE, null, ex);
-            //Mensaje de vuelta
+            throw new ForbiddenException(ex);
         } catch (LoginExistException ex) {
             Logger.getLogger(AbstractBossFacade.class.getName()).log(Level.SEVERE, null, ex);
-            //Mensaje de vuelta
+            throw new ForbiddenException(ex);
         }
     }
 

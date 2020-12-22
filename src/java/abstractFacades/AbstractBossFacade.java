@@ -56,7 +56,6 @@ public abstract class AbstractBossFacade extends AbstractFacade<Boss> {
         LOGGER.log(Level.INFO, "Metodo create de la clase AbstractBossFacade");
         try {
             super.comprobateLoginAndEmailNotExist(((User)boss).getLogin(), ((User) boss).getEmail());
-            
             super.create(boss);
         } catch (ReadException e) {
             throw new CreateException("Error when trying to create " + boss.toString());

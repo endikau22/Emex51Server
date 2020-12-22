@@ -116,10 +116,10 @@ public class ServicioMail {
     }
 
     public static void main(String[] args) {
-        ServicioMail emailService = new ServicioMail("nobody@gmail.com", 
-                "somePassword", "smtp.gmail.com", 465);
+        ServicioMail emailService = new ServicioMail("xabigol4@gmail.com", 
+                "abcd*1234", "smtp.gmail.com", 465);
         try {
-            emailService.sendMail("receiver@gmail.com", "Mensaje de prueba", 
+            emailService.sendMail("xabier.carnero@txorierri.com", "SI QUE TIRA", 
                     "Correo de vital importancia");
             System.out.println("Ok, mail sent!");
         } catch (MessagingException e) {

@@ -40,7 +40,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("employee")
-public class EmployeeFacadeREST extends AbstractEmployeeFacade<Employee> {
+public class EmployeeFacadeREST extends AbstractEmployeeFacade {
     /**
      * Logger for this class.
      */
@@ -69,7 +69,7 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade<Employee> {
     public void create(Employee employee) {
         LOGGER.log(Level.INFO, "Metodo create Boss de la clase BossFacade");
         try {
-            super.createBoss(employee);
+            super.createEmployee(employee);
         } catch (CreateException ex) {
             Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex);

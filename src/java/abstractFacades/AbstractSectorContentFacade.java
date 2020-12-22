@@ -5,6 +5,7 @@
  */
 package abstractFacades;
 
+import entity.SectorContent;
 import exception.ReadException;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -13,7 +14,7 @@ import javax.persistence.EntityManager;
  *
  * @author xabig
  */
-public abstract class AbstractSectorContentFacade<SectorContent> extends AbstractFacade<SectorContent> {
+public abstract class AbstractSectorContentFacade extends AbstractFacade<SectorContent> {
     
     public AbstractSectorContentFacade(Class<SectorContent> entityClass) {
         super(entityClass);

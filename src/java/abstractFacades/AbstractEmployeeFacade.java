@@ -5,6 +5,8 @@
  */
 package abstractFacades;
 
+import encrypt.Hashing;
+import entity.Employee;
 import entity.User;
 import exception.CreateException;
 import exception.EmailExistException;
@@ -19,7 +21,7 @@ import javax.persistence.EntityManager;
  *
  * @author xabig
  */
-public abstract class AbstractEmployeeFacade<Employee> extends AbstractFacade<Employee> {
+public abstract class AbstractEmployeeFacade extends AbstractFacade<Employee> {
 
     /**
      * Logger for this class.
@@ -41,10 +43,11 @@ public abstract class AbstractEmployeeFacade<Employee> extends AbstractFacade<Em
         }
     }
 
-    public void createBoss(Employee employee) throws CreateException, LoginExistException, EmailExistException {
+    public void createEmployee(Employee employee) throws CreateException, LoginExistException, EmailExistException {
         LOGGER.log(Level.INFO, "Metodo create de la clase AbstractBossFacade");
         try {
-            super.comprobateLoginAndEmailNotExist(((User) employee).getLogin(), ((User) employee).getEmail());
+            employee.setPassword(Hashing.cifrarTexto(employee.getPassword()));
+            super.checkLoginAndEmailNotExist(employee.getLogin(),employee.getEmail());
             super.create(employee);
         } catch (ReadException e) {
             throw new CreateException("Error when trying to create " + employee.toString());

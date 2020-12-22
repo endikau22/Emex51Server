@@ -5,7 +5,9 @@
  */
 package abstractFacades;
 
+import encrypt.Hashing;
 import entity.User;
+import entity.Visitor;
 import exception.CreateException;
 import exception.EmailExistException;
 import exception.LoginExistException;
@@ -20,7 +22,7 @@ import service.BossFacadeREST;
  *
  * @author xabig
  */
-public abstract class AbstractVisitorFacade<Visitor> extends AbstractFacade<Visitor> {
+public abstract class AbstractVisitorFacade extends AbstractFacade<Visitor> {
     
     /**
      * Logger for this class.
@@ -42,10 +44,11 @@ public abstract class AbstractVisitorFacade<Visitor> extends AbstractFacade<Visi
         }
     }
 
-    public void createBoss(Visitor visitor) throws CreateException, LoginExistException, EmailExistException {
+    public void createVisitor(Visitor visitor) throws CreateException, LoginExistException, EmailExistException {
         LOGGER.log(Level.INFO, "Metodo create de la clase AbstractBossFacade");
         try {
-            super.comprobateLoginAndEmailNotExist(((User) visitor).getLogin(), ((User) visitor).getEmail());
+            visitor.setPassword(Hashing.cifrarTexto(visitor.getPassword()));
+            super.checkLoginAndEmailNotExist(visitor.getLogin(), visitor.getEmail());
             super.create(visitor);
         } catch (ReadException e) {
             throw new CreateException("Error when trying to create " + visitor.toString());

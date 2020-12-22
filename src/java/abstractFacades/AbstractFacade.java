@@ -124,7 +124,7 @@ public abstract class AbstractFacade<T> {
         }
     }
 
-    public void comprobateLoginAndEmailNotExist(String login, String email) throws ReadException, LoginExistException, EmailExistException {
+    public void checkLoginAndEmailNotExist(String login, String email) throws ReadException, LoginExistException, EmailExistException {
         LOGGER.log(Level.INFO, "Find user by login method from AbstractFacade");
         List<User> users = getEntityManager().createNamedQuery("findAllUsers").getResultList();
         for (int i = 0; i < users.size(); i++) {

@@ -5,6 +5,7 @@
  */
 package abstractFacades;
 
+import encrypt.Hashing;
 import exception.CreateException;
 import exception.ReadException;
 import java.util.List;
@@ -55,7 +56,8 @@ public abstract class AbstractBossFacade extends AbstractFacade<Boss> {
     public void createBoss(Boss boss) throws CreateException, LoginExistException, EmailExistException {
         LOGGER.log(Level.INFO, "Metodo create de la clase AbstractBossFacade");
         try {
-            super.comprobateLoginAndEmailNotExist(((User)boss).getLogin(), ((User) boss).getEmail());
+            boss.setPassword(Hashing.cifrarTexto(boss.getPassword()));
+            super.checkLoginAndEmailNotExist(boss.getLogin(), boss.getEmail());
             super.create(boss);
         } catch (ReadException e) {
             throw new CreateException("Error when trying to create " + boss.toString());

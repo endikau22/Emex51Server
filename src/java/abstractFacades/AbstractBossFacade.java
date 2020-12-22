@@ -5,7 +5,7 @@
  */
 package abstractFacades;
 
-import encrypt.Hashing;
+import security.Hashing;
 import exception.CreateException;
 import exception.ReadException;
 import java.util.List;

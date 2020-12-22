@@ -1,3 +1,5 @@
+package security;
+
 
 import javax.mail.Multipart;
 import java.util.Properties;
@@ -20,11 +22,12 @@ import javax.mail.internet.MimeMultipart;
 /**
  * Builds an Email Service capable of sending normal email to a given SMTP Host.
  * Currently <b>send()</b> can only works with text.
+ * @author Endika Ubierna, Markel Lopez de Uralde, Xabier Carnero
  */
-public class ServicioMail {
+public class MailService {
 
      // Server mail user & pass account
-    private String user = null;
+    private static final String user = "emex51.info@gmail.com";
     private String pass = null;
 
     // DNS Host + SMTP Port
@@ -32,19 +35,18 @@ public class ServicioMail {
     private int smtp_port = 0;
 
     @SuppressWarnings("unused")
-    private ServicioMail() {
+    private MailService(String emex51infogmailcom, String abcd1234, String smtpgmailcom, int par) {
     }
 
     /**
      * Builds the EmailService. 
      * 
-     * @param user User account login
      * @param pass User account password
      * @param host The Server DNS
      * @param port The Port
      */
-    public ServicioMail(String user, String pass, String host, int port) {
-            this.user = user;
+    public MailService(String pass, String host, int port) {
+
             this.pass = pass;
             this.smtp_host = host;
             this.smtp_port = port;
@@ -71,7 +73,6 @@ public class ServicioMail {
 
             // Mail properties
         Properties properties = new Properties();
-        properties.put("mail.smtp.auth", true);
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", smtp_host);
         properties.put("mail.smtp.port", smtp_port);
@@ -79,7 +80,9 @@ public class ServicioMail {
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.ssl.trust", smtp_host);
         properties.put("mail.imap.partialfetch", false);
-            
+        properties.put("mail.smtp.ssl.enable", false);
+        properties.put("mail.smtp.auth", true);
+        
             // Authenticator knows how to obtain authentication for a network connection.
         Session session = Session.getInstance(properties, new Authenticator() {
         @Override
@@ -109,22 +112,21 @@ public class ServicioMail {
             // And here it goes...
             Transport.send(message);           
         } catch (AddressException ex) {
-            Logger.getLogger(ServicioMail.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MailService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (javax.mail.MessagingException ex) {
-            Logger.getLogger(ServicioMail.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MailService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public static void main(String[] args) {
-        ServicioMail emailService = new ServicioMail("xabigol4@gmail.com", 
-                "abcd*1234", "smtp.gmail.com", 465);
+    public static void sendRecoveryMail(String receiver, String tempPassword) {
         try {
-            emailService.sendMail("xabier.carnero@txorierri.com", "SI QUE TIRA", 
-                    "Correo de vital importancia");
-            System.out.println("Ok, mail sent!");
-        } catch (MessagingException e) {
-            System.out.println("Doh! " + e.getMessage());
+            String message = "Your password has been reset. You can access your account using this temporal password: " + tempPassword;
+            
+            MailService emailService = new MailService("abcd*1234", "smtp.gmail.com", 587);
+            
+            emailService.sendMail("xabigol4@gmail.com", "Password Reset", message);
+        } catch (MessagingException ex) {
+            Logger.getLogger(MailService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }

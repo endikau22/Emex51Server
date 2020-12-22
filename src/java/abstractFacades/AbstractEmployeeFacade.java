@@ -5,7 +5,7 @@
  */
 package abstractFacades;
 
-import encrypt.Hashing;
+import security.Hashing;
 import entity.Employee;
 import entity.User;
 import exception.CreateException;

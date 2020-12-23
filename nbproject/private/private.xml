@@ -3,22 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/ArmyFacadeREST.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/VisitorFacadeREST.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractArmyFacade.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/BossFacadeREST.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractVisitorFacade.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/CreatureFacadeREST.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractBossFacade.java</file>
             <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractUserFacade.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/SectorFacadeREST.java</file>
             <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractFacade.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/SectorContentFacadeREST.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractSectorFacade.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractCreatureFacade.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/EmployeeFacadeREST.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractEmployeeFacade.java</file>
-            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/abstractFacades/AbstractSectorContentFacade.java</file>
+            <file>file:/C:/Users/xabig/OneDrive/Documentos/NetBeansProjects/EMEX51Server/src/java/service/UserFacadeREST.java</file>
         </group>
     </open-files>
 </project-private>

@@ -126,6 +126,7 @@ public abstract class AbstractFacade<T> {
             }
         }
     }
+    
     /**
      * Gets a list of <code>Sector</code> where the type is the same as the one passed by parameter..
      * @param type The type of the <code>Sector</code>.

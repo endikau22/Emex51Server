@@ -19,7 +19,7 @@ import exception.LoginExistException;
 /**
  * Restful service for {@link Boss}. Inherits from AbstractFacade. Contains createNamedQuerys from entity 
  * <code>Boss</code> in Area51 application.
- * @author Xabier Carnero.
+ * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde.
  */
 public abstract class AbstractBossFacade extends AbstractFacade<Boss> {
     /**

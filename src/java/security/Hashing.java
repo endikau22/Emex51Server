@@ -9,51 +9,49 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Class that hashes the user password before storing it in the database.
+ *
  * @author Markel Lopez de Uralde, Endika Ubierna, Xabier Carnero.
  */
 public class Hashing {
+
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(Hashing.class.getName());
+
     /**
      * Aplica SHA al texto pasado por parámetro
+     *
      * @param texto
-     * @return 
+     * @return
      */
-    public static String cifrarTexto(String texto) {
-        LOGGER.log(Level.INFO, "Metodo cifrarTexto de la clase PasswordHash");
-        MessageDigest messageDigest;
+    public static String cifrarTexto(String contrasenia) {
+        String hash = "";
         try {
-                // Obtén una instancia de MessageDigest que usa SHA
-            messageDigest = MessageDigest.getInstance("SHA1");
-                // Convierte el texto en un array de bytes
-            messageDigest.update(texto.getBytes());
-            byte[] resumen = messageDigest.digest();
-                // Actualiza el MessageDigest con el array de bytes
-            messageDigest.update(resumen);
-                // Calcula el resumen (función digest)
-            messageDigest.digest(resumen);
-
-            return resumen.toString();
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Hashing.class.getName()).log(Level.SEVERE, null, ex);
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            md.update(contrasenia.getBytes());
+            byte[] db = md.digest();
+            hash = DatatypeConverter.printHexBinary(db).toLowerCase();
+        } catch (NoSuchAlgorithmException e) {
+            //LOGGER.severe("Error al cifrar SHA1 " + e.getMessage());
         }
-        return texto;
-        }
+        return hash;
+    }
 
     // Convierte Array de Bytes en hexadecimal
     static String Hexadecimal(byte[] resumen) {
         String HEX = "";
         for (int i = 0; i < resumen.length; i++) {
             String h = Integer.toHexString(resumen[i] & 0xFF);
-            if (h.length() == 1)
-                    HEX += "0";
+            if (h.length() == 1) {
+                HEX += "0";
+            }
             HEX += h;
         }
         return HEX.toUpperCase();
-    }    
+    }
 }

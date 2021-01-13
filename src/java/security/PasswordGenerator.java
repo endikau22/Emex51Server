@@ -5,41 +5,46 @@
  */
 package security;
 
+import java.io.FileOutputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+
 /**
  *
  * @author xabig
  */
 public class PasswordGenerator {
     
-    public static String NUMEROS = "0123456789";
+    /**
+     * Genera el fichero con la clave privada
+     */
+    public void generatePrivateKey() {
 
-    public static String MAYUSCULAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        KeyPairGenerator generator;
+        try {
+            generator = KeyPairGenerator.getInstance("RSA");
+            generator.initialize(1024); // Inicializamos el tama�o a 1024 bits
+            KeyPair keypair = generator.generateKeyPair();
+            PublicKey publicKey = keypair.getPublic(); // Clave P�blica
+            PrivateKey privateKey = keypair.getPrivate(); // Clave Privada
 
-    public static String MINUSCULAS = "abcdefghijklmnopqrstuvwxyz";
+            // Publica
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKey.getEncoded());
+            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\xabig\\Downloads\\Public.key");
+            fileOutputStream.write(x509EncodedKeySpec.getEncoded());
+            fileOutputStream.close();
 
-    public static String ESPECIALES = "ñÑ";
-
-    //
-    public static String getPinNumber() {
-        return getPassword(NUMEROS, 4);
-    }
-
-    public static String getPassword() {
-        return getPassword(8);
-    }
-
-    public static String getPassword(int length) {
-        return getPassword(NUMEROS + MAYUSCULAS + MINUSCULAS, length);
-    }
-
-    public static String getPassword(String key, int length) {
-        String pswd = "";
-
-        for (int i = 0; i < length; i++) {
-            pswd += (key.charAt((int) (Math.random() * key.length())));
+            // Privada
+            PKCS8EncodedKeySpec pKCS8EncodedKeySpec = new PKCS8EncodedKeySpec(privateKey.getEncoded());
+            fileOutputStream = new FileOutputStream("C:\\Users\\xabig\\Downloads\\Private.key");
+            fileOutputStream.write(pKCS8EncodedKeySpec.getEncoded());
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return pswd;
     }
-    
 }

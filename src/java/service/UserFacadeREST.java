@@ -11,6 +11,7 @@ import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.EmailNotExistException;
+import exception.IncorrectPasswordException;
 import exception.LoginNotExistException;
 import exception.ReadException;
 import exception.UpdateException;
@@ -30,8 +31,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import security.MailService;
-import security.PasswordGenerator;
 
 /**
  * RESTful service for User entity. Includes CRUD operations.
@@ -135,6 +134,26 @@ public class UserFacadeREST extends AbstractUserFacade {
     }
 
     /**
+     * Find (Select) operation after receiving a Get HTTP order.
+     *
+     * @param login
+     * @param password
+     * @return A User object in xml format.
+     */
+    @GET
+    @Path("makeLogin/{login}/{password}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User comprobateLogin(@PathParam("login") String login, @PathParam("password") String password) {
+        LOGGER.log(Level.INFO, "Metodo find de la clase UserFacade");
+        System.out.println("Login: "+login+" Password: "+password);
+        try {
+            return super.login(login, password);
+        } catch (IncorrectPasswordException | LoginNotExistException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    /**
      * This method finds all Area51 <code>User</code>.
      *
      * @return A list of {@link User}.
@@ -179,7 +198,7 @@ public class UserFacadeREST extends AbstractUserFacade {
     @PUT
     @Path("temporalPassword/{email}")
     @Consumes({MediaType.APPLICATION_XML})
-    public void temporalPassword(@PathParam("email") String email){
+    public void temporalPassword(@PathParam("email") String email) {
         LOGGER.log(Level.INFO, "Metodo make temporal password de la clase UserFacade");
         try {
             List<User> users = super.getAllUsers();

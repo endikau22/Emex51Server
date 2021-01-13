@@ -10,12 +10,16 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import entity.User;
 import exception.EmailNotExistException;
+import exception.IncorrectPasswordException;
 import exception.LoginNotExistException;
 import exception.UpdateException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import security.Hashing;
 import security.MailService;
-import security.PasswordGenerator;
+import security.PasswordOptions;
+import security.PrivateKeyServer;
 
 /**
  * Restful service for <code>User</code>. Inherits from AbstractFacade. Contains
@@ -72,6 +76,7 @@ public abstract class AbstractUserFacade extends AbstractFacade<User> {
      * @return An User instance.
      * @throws ReadException Thrown when any error produced during the read
      * operation.
+     * @throws exception.LoginNotExistException
      */
     public User getUserByLogin(String login) throws ReadException, LoginNotExistException {
         LOGGER.log(Level.INFO, "Metodo getUserByLogin de la clase AbstractUserFacade");
@@ -106,11 +111,27 @@ public abstract class AbstractUserFacade extends AbstractFacade<User> {
         }
     }
 
+    public User login(String login, String password) throws IncorrectPasswordException, LoginNotExistException {
+        LOGGER.log(Level.INFO, "Login method from AbstractUSerFacade");
+        password = Arrays.toString(PrivateKeyServer.descifrarTexto(password));
+        password = Hashing.cifrarTexto(password);
+        List<User> users = getEntityManager().createNamedQuery("findAllUsers").getResultList();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getLogin().compareToIgnoreCase(login) == 0) {
+                if (users.get(i).getPassword().compareToIgnoreCase(password) == 0) {
+                    return users.get(i);
+                } else {
+                    throw new IncorrectPasswordException();
+                }
+            }
+        }
+        throw new LoginNotExistException();
+    }
+
     private String makePassword() {
-        String newPassword = PasswordGenerator.getPassword(
-                PasswordGenerator.MINUSCULAS
-                + PasswordGenerator.MAYUSCULAS
-                + PasswordGenerator.ESPECIALES, 10);
+        String newPassword = PasswordOptions.getPassword(PasswordOptions.MINUSCULAS
+                + PasswordOptions.MAYUSCULAS
+                + PasswordOptions.ESPECIALES, 10);
         return newPassword;
     }
 }

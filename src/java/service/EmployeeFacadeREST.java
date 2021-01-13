@@ -65,16 +65,13 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Employee employee) {
-        LOGGER.log(Level.INFO, "Metodo create Boss de la clase BossFacade");
+        LOGGER.log(Level.INFO, "Metodo create Boss de la clase EmployeeFacade");
         try {
             super.createEmployee(employee);
         } catch (CreateException ex) {
             Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex);
-        } catch (EmailExistException ex) {
-            Logger.getLogger(AbstractEmployeeFacade.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ForbiddenException(ex);
-        } catch (LoginExistException ex) {
+        } catch (EmailExistException | LoginExistException ex) {
             Logger.getLogger(AbstractEmployeeFacade.class.getName()).log(Level.SEVERE, null, ex);
             throw new ForbiddenException(ex);
         }

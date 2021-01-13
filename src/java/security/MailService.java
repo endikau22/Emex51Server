@@ -124,7 +124,7 @@ public class MailService {
             
             MailService emailService = new MailService("abcd*1234", "smtp.gmail.com", 587);
             
-            emailService.sendMail("xabigol4@gmail.com", "Password Reset", message);
+            emailService.sendMail(receiver, "Password Reset", message);
         } catch (MessagingException ex) {
             Logger.getLogger(MailService.class.getName()).log(Level.SEVERE, null, ex);
         }

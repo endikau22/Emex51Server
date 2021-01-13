@@ -10,7 +10,7 @@ import javax.ws.rs.core.Application;
 
 /**
  * This is the EMEX51 Restful web Services application class.
- * @author Xabier carnero, Endika Ubierna, Markel Uralde.
+ * @author Xabier Carnero, Endika Ubierna, Markel Uralde.
  */
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {

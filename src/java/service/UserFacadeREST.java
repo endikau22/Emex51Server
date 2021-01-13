@@ -10,6 +10,8 @@ import abstractFacades.AbstractUserFacade;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.EmailNotExistException;
+import exception.IncorrectPasswordException;
 import exception.LoginNotExistException;
 import exception.ReadException;
 import exception.UpdateException;
@@ -32,6 +34,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * RESTful service for User entity. Includes CRUD operations.
+ *
  * @author Xabier Carnero, Endika Ubierna, Markel Lopez de Uralde
  * @since 04/12/2020
  * @version 1.0
@@ -39,6 +42,7 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("user")
 public class UserFacadeREST extends AbstractUserFacade {
+
     /**
      * Logger for this class.
      */
@@ -49,14 +53,17 @@ public class UserFacadeREST extends AbstractUserFacade {
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
+
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
      */
     public UserFacadeREST() {
         super(User.class);
     }
+
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
+     *
      * @param entity The user object in xml format.
      */
     @POST
@@ -71,8 +78,10 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex);
         }
     }
+
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
+     *
      * @param entity The user object in xml format.
      */
     @PUT
@@ -87,8 +96,10 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
+     *
      * @param id An id value of an User.
      */
     @DELETE
@@ -102,8 +113,10 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+
     /**
      * Find (Select) operation after receiving a Get HTTP order.
+     *
      * @param id An id value of an User.
      * @return A User object in xml format.
      */
@@ -119,8 +132,30 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+
+    /**
+     * Find (Select) operation after receiving a Get HTTP order.
+     *
+     * @param login
+     * @param password
+     * @return A User object in xml format.
+     */
+    @GET
+    @Path("makeLogin/{login}/{password}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User comprobateLogin(@PathParam("login") String login, @PathParam("password") String password) {
+        LOGGER.log(Level.INFO, "Metodo find de la clase UserFacade");
+        System.out.println("Login: "+login+" Password: "+password);
+        try {
+            return super.login(login, password);
+        } catch (IncorrectPasswordException | LoginNotExistException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
     /**
      * This method finds all Area51 <code>User</code>.
+     *
      * @return A list of {@link User}.
      */
     @GET
@@ -135,8 +170,11 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+
     /**
-     * This method finds an Area51 <code>User</code> whose login attibute is the same as the String parameter.
+     * This method finds an Area51 <code>User</code> whose login attibute is the
+     * same as the String parameter.
+     *
      * @param login A String. Represents the login attibute of an Area51 user.
      * @return An user.
      */
@@ -156,8 +194,40 @@ public class UserFacadeREST extends AbstractUserFacade {
         }
         return null;
     }
+
+    @PUT
+    @Path("temporalPassword/{email}")
+    @Consumes({MediaType.APPLICATION_XML})
+    public void temporalPassword(@PathParam("email") String email) {
+        LOGGER.log(Level.INFO, "Metodo make temporal password de la clase UserFacade");
+        try {
+            List<User> users = super.getAllUsers();
+            super.temporalPassword(users, email);
+        } catch (ReadException | UpdateException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException();
+        } catch (EmailNotExistException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            //Mensaje de vuelta
+        }
+    }
+
+    @PUT
+    @Path("newPassword/{user}")
+    @Consumes({MediaType.APPLICATION_XML})
+    public void changePassword(@PathParam("user") User user) {
+        LOGGER.log(Level.INFO, "Metodo change password de la clase UserFacade");
+        try {
+            super.edit(user);
+        } catch (UpdateException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException();
+        }
+    }
+
     /**
      * Gets an {@link EntityManager} instance.
+     *
      * @return An {@link EntityManager} instance.
      */
     @Override
@@ -165,5 +235,4 @@ public class UserFacadeREST extends AbstractUserFacade {
         LOGGER.log(Level.INFO, "Metodo getEntityManager de la clase UserFacade");
         return em;
     }
-
 }

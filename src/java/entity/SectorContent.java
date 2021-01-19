@@ -38,9 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @DiscriminatorColumn(name = "Type", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
     @NamedQuery(name = "findAllContents",
-            query = "SELECT sc FROM SectorContent sc ORDER BY sc.name DESC"),
-    @NamedQuery(name = "findContentsByName",
-            query = "SELECT sc FROM SectorContent sc WHERE sc.name = :name")
+            query = "SELECT sc FROM SectorContent sc ORDER BY sc.id DESC"),
+    @NamedQuery(name = "findContentsBySector",
+            query = "SELECT sc FROM SectorContent sc WHERE sc.sector = :sector") 
 })
 @XmlRootElement
 public class SectorContent implements Serializable {

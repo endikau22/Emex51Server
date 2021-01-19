@@ -52,22 +52,6 @@ public abstract class AbstractSectorContentFacade extends AbstractFacade<SectorC
         }
     }
     /**
-     * This method finds a <code>SectorContent</code> by the class attribute name.
-     * @param name The class attribure name.
-     * @return A list of content.
-     * @throws ReadException Thrown when any error produced during the read operation.
-     */
-    public List<SectorContent> getSectorContentsByName(String name) throws ReadException {
-        LOGGER.log(Level.INFO, "Metodo getSectorsContentByName de la clase AbstractSectorContentFacade"); 
-        try {
-            return getEntityManager().createNamedQuery("findContentsByName")
-                    .setParameter("name", name)
-                    .getResultList();
-        } catch (Exception e) {
-            throw new ReadException("Error when trying to get SectorContents by name");
-        }
-    }
-    /**
      * This method finds <code>SectorContent</code> by the {@link Sector} where are storaged.
      * @param sectorId The <code>Sector</code> id. It's the PK of the entity.
      * @return A list of <code>SectorContent</code>.

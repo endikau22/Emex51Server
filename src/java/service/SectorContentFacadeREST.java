@@ -135,23 +135,6 @@ public class SectorContentFacadeREST extends AbstractSectorContentFacade {
         }
     }
     /**
-     * Gets a <code>List</code> {@link SectoContent} of Area51 with the same name as the one passed by the parameter.
-     * @param name A String with the name of a <code>SectorContent</code>.
-     * @return A list of <code>SectorContent</code>.
-     */
-    @GET
-    @Path("name/{name}")
-    @Produces({MediaType.APPLICATION_XML})
-    public List<SectorContent> findSectorContentsByName(@PathParam("name") String name) {
-        LOGGER.log(Level.INFO, "Metodo find by name de la clase SectorContentFacade");
-        try {
-            return super.getSectorContentsByName(name);
-        } catch (ReadException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-    }
-    /**
      * Gets a List {@link SectoContent} of Area51 with the same name as the one passed by the parameter.
      * @param id A String with the id of a <code>Sector</code>.
      * @return A list of <code>SectorContent</code>.

@@ -10,15 +10,16 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import entity.User;
 import exception.EmailNotExistException;
-import exception.IncorrectPasswordException;
 import exception.LoginNotExistException;
 import exception.UpdateException;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.persistence.NoResultException;
+import mail.MailService;
+import mail.RandomMailPasswordGenerator;
 import security.Hashing;
-import security.MailService;
-import security.PasswordOptions;
 import security.PrivateKeyServer;
 
 /**
@@ -28,36 +29,28 @@ import security.PrivateKeyServer;
  * @author Xabier Carnero.
  */
 public abstract class AbstractUserFacade extends AbstractFacade<User> {
-
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER = Logger.getLogger(AbstractUserFacade.class.getName());
-
     /**
      * Class constructor. Call to the super class {@link AbstractFacade}.
-     *
      * @param entityClass <code>User</code>.
      */
     public AbstractUserFacade(Class<User> entityClass) {
         super(entityClass);
     }
-
     /**
      * Gets an {@link EntityManager} instance from one restful service from the
      * entities of the Area 51 project.
-     *
      * @return An {@link EntityManager} instance.
      */
     @Override
     protected abstract EntityManager getEntityManager();
-
-    /**
+     /**
      * This method finds all Area51 users.
-     *
      * @return A list containing the users.
-     * @throws ReadException Thrown when any error produced during the read
-     * operation.
+     * @throws ReadException Thrown when any error produced during the read operation. 
      */
     public List<User> getAllUsers() throws ReadException {
         LOGGER.log(Level.INFO, "Metodo getAllUsers de la clase AbstractUserFacade");
@@ -67,71 +60,113 @@ public abstract class AbstractUserFacade extends AbstractFacade<User> {
             throw new ReadException("Error when trying to get all Users");
         }
     }
-
     /**
-     * This method finds a <code>User</code> in the database to check if the
-     * login is already recorded in the database.
-     *
+     * This method finds a <code>User</code> in the database to check if the login is already recorded in the database.
      * @param login A String.
      * @return An User instance.
-     * @throws ReadException Thrown when any error produced during the read
-     * operation.
-     * @throws exception.LoginNotExistException
-     */
+     * @throws ReadException Thrown when any error produced during the read operation.
+     */    
     public User getUserByLogin(String login) throws ReadException, LoginNotExistException {
         LOGGER.log(Level.INFO, "Metodo getUserByLogin de la clase AbstractUserFacade");
-        try {
-            List<User> users = getEntityManager().createNamedQuery("findAllUsers").getResultList();
-            for (int i = 0; i < users.size(); i++) {
-                if (users.get(i).getLogin().compareToIgnoreCase(login) == 0) {
-                    return users.get(i);
-                }
-            }
+        User user = null;
+        User newUser= null;
+        try{         
+            user = (User) getEntityManager().createNamedQuery("findUserByLogin").setParameter("login",login).getSingleResult();
+            newUser = new User();
+            newUser.setPrivilege(user.getPrivilege());
+        }catch(NoResultException e){
+            LOGGER.log(Level.SEVERE, e.getMessage());
             throw new LoginNotExistException();
-        } catch (Exception e) {
-            throw new ReadException("Error when trying to get all Users");
+        }catch(RuntimeException e){
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new ReadException("Impossible to show Users by login at the moment.");
         }
+        return newUser;
     }
-
-    public void temporalPassword(List<User> users, String email) throws UpdateException, EmailNotExistException {
-        LOGGER.log(Level.INFO, "Temporal Password method from AbstractUSerFacade");
-        boolean existe = false;
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getEmail().compareToIgnoreCase(email) == 0) {
-                existe = true;
-                String newPassword = makePassword();
-                MailService.sendRecoveryMail(email, newPassword);
-                users.get(i).setPassword(newPassword);
-                super.edit(users.get(i));
-                break;
-            }
-        }
-        if (!existe) {
+    /**
+     * Edits the user. Assigns a new random password to the user.
+     * @param email The user email.
+     */
+    public void editForgotPassword(User usersMail) throws UpdateException,EmailNotExistException{
+        LOGGER.log(Level.INFO, "Metodo editForgotPassword de la clase AbstractUserFacade");
+        User user = null;
+        try {
+            user = (User) getEntityManager().createNamedQuery("findUserByEmail").setParameter("email",usersMail.getEmail()).getSingleResult();
+            //El usuario está. Crear una contraseña aleatoria.
+            user.setPassword(RandomMailPasswordGenerator.createRandomPassword());
+                //mandar mail al usuario de la nueva contraseña que se le envia
+            MailService.sendRecoveryMail(user.getEmail(),user.getPassword());
+                //hashear la contraseña antes de editar en la base de datos
+            user.setPassword(Hashing.cifrarTexto(user.getPassword())); 
+            super.edit(user);
+        }catch(NoResultException e){
             throw new EmailNotExistException();
+        }catch(RuntimeException e){
+            throw new UpdateException("Something happen, at the moment we can´t reset the password.");
+        } catch (MessagingException ex) {
+            Logger.getLogger(AbstractUserFacade.class.getName()).log(Level.SEVERE, null, ex);
+            throw new UpdateException("Something happen, at the moment we can´t reset the password.");
         }
     }
-
-    public User login(String login, String password) throws IncorrectPasswordException, LoginNotExistException {
-        LOGGER.log(Level.INFO, "Login method from AbstractUSerFacade");
-        password = Arrays.toString(PrivateKeyServer.descifrarTexto(password));
-        password = Hashing.cifrarTexto(password);
-        List<User> users = getEntityManager().createNamedQuery("findAllUsers").getResultList();
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getLogin().compareToIgnoreCase(login) == 0) {
-                if (users.get(i).getPassword().compareToIgnoreCase(password) == 0) {
-                    return users.get(i);
-                } else {
-                    throw new IncorrectPasswordException();
-                }
-            }
+    /**
+     * Edit (Update) the user. Registers the new user password.
+     * @param entity The user object in xml format.
+     */
+    public void editChangePassword(String oldPass,String newPass,User userMail) throws UpdateException,EmailNotExistException {
+        LOGGER.log(Level.INFO, "Metodo editChagePassword de la clase UserFacade");
+        //Vamos a hacer una chapucilla como no hace bien el edit parece vamos a buscar el user en la bbdd y lo editamos aqui
+        User user = null;
+        try {
+            //Descifrar contrasenia
+            oldPass = new String(PrivateKeyServer.descifrarTexto(oldPass));
+            System.out.println("La contraseña vieja es "+oldPass);
+            //Hashear la contraseña vieja y comparar con la del user
+            //No se si el user cuando entra en la aplicacion vuele con la password hasheada sino no hashear la old
+            oldPass = Hashing.cifrarTexto(oldPass);
+            //Buscamos un user
+            user = (User) getEntityManager().createNamedQuery("findUserByEmail")
+                    .setParameter("email",userMail.getEmail()).getSingleResult();
+            if(oldPass.equalsIgnoreCase(user.getPassword())){
+                //Mandar email al usuario
+                MailService.sendPasswordChangedMail(userMail.getEmail(),new String(PrivateKeyServer.descifrarTexto(newPass)));
+                //Hashear la nueva contraseña y actualizar el user
+                String contraseniaNueva = new String(PrivateKeyServer.descifrarTexto(newPass));
+                user.setPassword(Hashing.cifrarTexto(contraseniaNueva));
+                super.edit(user);
+            }else
+                //Si el mail no coincide enviar error de mail incorrecto
+                throw new EmailNotExistException();
+            //El método de sendMail de la clase MailService lanza este error es justo el escalón inferior de exception
+        } catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new UpdateException("Couldn´t update the new password");
+        } catch (MessagingException ex) {
+            Logger.getLogger(AbstractUserFacade.class.getName()).log(Level.SEVERE, null, ex);
+            throw new UpdateException("Something happen, at the moment we can´t reset the password.");
         }
-        throw new LoginNotExistException();
     }
-
-    private String makePassword() {
-        String newPassword = PasswordOptions.getPassword(PasswordOptions.MINUSCULAS
-                + PasswordOptions.MAYUSCULAS
-                + PasswordOptions.ESPECIALES, 10);
-        return newPassword;
+    /**
+     * This method checks a login operation. Compares the user attributes login and password if they are stored in the database.
+     * If thats the case the user goes through if not an error is thrown and a message is shown informing the user.
+     * @param user An User instance.
+     * @return An user.
+     * @throws LoginNotExistException Thrown when the credentials of the user are not existant in the database.
+     */
+    public User loginUser(String login, String password) throws LoginNotExistException,ReadException, IOException{
+        LOGGER.log(Level.INFO, "Metodo findLoginUser de la clase AbstractUserFacade");
+        User user = null;
+        try {
+            //Primero descifrar la password
+            password = new String(PrivateKeyServer.descifrarTexto(password));        
+            //Hashear la password porque en la base de datos está hasheada
+            password = Hashing.cifrarTexto(password);
+            return user = (User) getEntityManager().createNamedQuery("findLoginExists").setParameter("login",login)
+                    .setParameter("password",password).getSingleResult();
+        }catch(NoResultException e){
+                throw new LoginNotExistException(); 
+        }catch (RuntimeException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new ReadException("Error during the operation");
+        }
     }
 }

@@ -36,7 +36,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "findAllUsers",
             query = "SELECT u FROM User u ORDER BY u.fullName DESC"),
     @NamedQuery(name = "findUserByEmail",
-            query = "SELECT u FROM User u WHERE u.email = :email")
+            query = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "findUserByLogin",
+            query = "SELECT u FROM User u WHERE u.login = :login"),
+    @NamedQuery(name = "findLoginExists",
+            query = "SELECT u from User u WHERE u.login = :login AND u.password = :password")    
 })
 @XmlRootElement
 public class User implements Serializable {
@@ -73,7 +77,7 @@ public class User implements Serializable {
      * {@link UserPrivilege} of the user.
      */
     @Enumerated(EnumType.ORDINAL)
-    private UserPrivilege privilege = UserPrivilege.USER;
+    private UserPrivilege privilege;
     /**
      * Password of the user.
      */
@@ -119,7 +123,6 @@ public class User implements Serializable {
         this.fullName = fullName;
         this.password = password;
         status = UserStatus.ENABLED;
-        privilege = UserPrivilege.USER;
     }
 
     /**
@@ -192,6 +195,13 @@ public class User implements Serializable {
      */
     public UserPrivilege getPrivilege() {
         return privilege;
+    }
+    /**
+     * Sets the {@link UserPrivilege} of the user.
+     * @param The {@link UserPrivilege} value.
+     */
+    public void setPrivilege(UserPrivilege privilege) {
+        this.privilege = privilege;
     }
 
     /**

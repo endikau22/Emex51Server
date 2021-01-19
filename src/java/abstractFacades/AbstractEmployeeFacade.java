@@ -7,6 +7,7 @@ package abstractFacades;
 
 import security.Hashing;
 import entity.Employee;
+import entity.User;
 import exception.CreateException;
 import exception.EmailExistException;
 import exception.LoginExistException;
@@ -43,21 +44,30 @@ public abstract class AbstractEmployeeFacade extends AbstractFacade<Employee> {
     @Override
     protected abstract EntityManager getEntityManager();
     /**
-     * Create method. Creates a new {@link Employee} instance using Hibernate. The latter executes an
+     * Create method. Sends a create order to Hibernate. The latter executes an
      * insert operation against a MySQL database.
      * @param employee  An instance of {@link Employee} entity class.
-     * @throws exception.CreateException
-     * @throws exception.LoginExistException
-     * @throws exception.EmailExistException
      */
-    public void createEmployee(Employee employee) throws CreateException, LoginExistException, EmailExistException {
-        LOGGER.log(Level.INFO, "Metodo create de la clase AbstractBossFacade");
+    public void createEmployee(Employee employee) throws CreateException,EmailExistException,LoginExistException {
+        LOGGER.log(Level.INFO, "Metodo create de la clase AbstractEmployeeFacade");
+        List <User> user = null;
         try {
-            employee.setPassword(Arrays.toString(PrivateKeyServer.descifrarTexto(employee.getPassword())));
-            employee.setPassword(Hashing.cifrarTexto(employee.getPassword()));
-            super.checkLoginAndEmailNotExist(employee.getLogin(),employee.getEmail());
-            super.create(employee);
-        } catch (ReadException e) {
+             user = getEntityManager().createNamedQuery("findUserByEmail").
+                setParameter("email",employee.getEmail()).getResultList();
+            if (!user.isEmpty())
+                throw new EmailExistException();
+            else{
+                user = getEntityManager().createNamedQuery("findUserByLogin").
+                    setParameter("login",employee.getLogin()).getResultList();
+                if (!user.isEmpty())
+                    throw new LoginExistException();
+                else{
+                    //employee.setPassword(RSAClavePublica.getmyRSAClavePublica().descifrarTexto(employee.getPassword().getBytes()));
+                    employee.setPassword(Hashing.cifrarTexto(employee.getPassword()));
+                    getEntityManager().persist(employee);
+                }
+            }
+        }catch (RuntimeException/*|IOException*/ e) {
             throw new CreateException("Error when trying to create " + employee.toString());
         }
     }
@@ -84,7 +94,7 @@ public abstract class AbstractEmployeeFacade extends AbstractFacade<Employee> {
         LOGGER.log(Level.INFO, "Metodo getEmployeesByName de la clase AbstractEmployeeFacade");
         try {
             return getEntityManager().createNamedQuery("findEmployeesByName")
-                    .setParameter("name", name)
+                    .setParameter("fullName", name)
                     .getResultList();
         } catch (Exception e) {
             throw new ReadException("Error when trying to get employees by name");

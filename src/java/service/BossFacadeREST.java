@@ -14,7 +14,6 @@ import exception.EmailExistException;
 import exception.LoginExistException;
 import exception.ReadException;
 import exception.UpdateException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -123,39 +122,6 @@ public class BossFacadeREST extends AbstractBossFacade {
         LOGGER.log(Level.INFO, "Metodo find de la clase BossFacade");
         try {
             return super.find(id);
-        } catch (ReadException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-    }
-    /**
-     * Gets all the {@link Boss} of Area51.
-     * @return A list of <code>Boss</code>
-     */
-    @GET
-    @Path("all")
-    @Produces({MediaType.APPLICATION_XML})
-    public List<Boss> findAllBosses() {
-        LOGGER.log(Level.INFO, "Metodo findAllBosses de la clase BossFacade");
-        try {
-            return super.getAllBosses();
-        } catch (ReadException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-    }
-    /**
-     * Gets a <code>List</code> {@link Boss} of Area51 with the same name as the one passed by the parameter.
-     * @param fullName A String with the name of a <code>Boss</code>.
-     * @return A list of <code>Boss</code>.
-     */
-    @GET
-    @Path("name/{name}")
-    @Produces({MediaType.APPLICATION_XML})
-    public List<Boss> findBossesByName(@PathParam("name") String name) {
-        LOGGER.log(Level.INFO, "Metodo find por nombre de la clase BossFacade");
-        try {
-            return super.getBossesByName(name);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

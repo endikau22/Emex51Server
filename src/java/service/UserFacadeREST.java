@@ -5,16 +5,15 @@
  */
 package service;
 
-import abstractFacades.AbstractFacade;
 import abstractFacades.AbstractUserFacade;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.EmailNotExistException;
-import exception.IncorrectPasswordException;
 import exception.LoginNotExistException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,8 +22,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -42,7 +43,6 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("user")
 public class UserFacadeREST extends AbstractUserFacade {
-
     /**
      * Logger for this class.
      */
@@ -53,18 +53,15 @@ public class UserFacadeREST extends AbstractUserFacade {
      */
     @PersistenceContext(unitName = "EMEX51CRUDServerPU")
     private EntityManager em;
-
     /**
-     * Class constructor. Call to the super class {@link AbstractFacade}.
+     * Class constructor. Call to the super class {@link AbstractUserFacade}.
      */
     public UserFacadeREST() {
         super(User.class);
     }
-
     /**
      * Create (Insert) operation after receiving a Post HTTP order.
-     *
-     * @param entity The user object in xml format.
+     * @param entity An user object in xml format.
      */
     @POST
     @Override
@@ -75,13 +72,11 @@ public class UserFacadeREST extends AbstractUserFacade {
             super.create(entity);
         } catch (CreateException ex) {
             Logger.getLogger(ArmyFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-            throw new InternalServerErrorException(ex);
+            throw new ForbiddenException(ex);
         }
     }
-
     /**
      * Edit (Update) operation after receiving a Delete HTTP order.
-     *
      * @param entity The user object in xml format.
      */
     @PUT
@@ -96,10 +91,8 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Remove (Delete) operation after receiving a Delete HTTP order.
-     *
      * @param id An id value of an User.
      */
     @DELETE
@@ -113,10 +106,8 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
     /**
      * Find (Select) operation after receiving a Get HTTP order.
-     *
      * @param id An id value of an User.
      * @return A User object in xml format.
      */
@@ -132,30 +123,8 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
-    /**
-     * Find (Select) operation after receiving a Get HTTP order.
-     *
-     * @param login
-     * @param password
-     * @return A User object in xml format.
-     */
-    @GET
-    @Path("makeLogin/{login}/{password}")
-    @Produces({MediaType.APPLICATION_XML})
-    public User comprobateLogin(@PathParam("login") String login, @PathParam("password") String password) {
-        LOGGER.log(Level.INFO, "Metodo find de la clase UserFacade");
-        System.out.println("Login: "+login+" Password: "+password);
-        try {
-            return super.login(login, password);
-        } catch (IncorrectPasswordException | LoginNotExistException ex) {
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-    }
-
     /**
      * This method finds all Area51 <code>User</code>.
-     *
      * @return A list of {@link User}.
      */
     @GET
@@ -167,14 +136,11 @@ public class UserFacadeREST extends AbstractUserFacade {
             return super.getAllUsers();
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new InternalServerErrorException(ex.getCause());
         }
     }
-
     /**
-     * This method finds an Area51 <code>User</code> whose login attibute is the
-     * same as the String parameter.
-     *
+     * This method finds an Area51 <code>User</code> whose login attibute is the same as the String parameter.
      * @param login A String. Represents the login attibute of an Area51 user.
      * @return An user.
      */
@@ -190,44 +156,73 @@ public class UserFacadeREST extends AbstractUserFacade {
             throw new InternalServerErrorException(ex.getMessage());
         } catch (LoginNotExistException ex) {
             Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-            //Mensaje de vuelta
+            throw new ForbiddenException(ex.getMessage());
         }
-        return null;
     }
-
+    /**
+     * This method assigns a new password to the user. 
+     * @param email The email of the user.
+     */
     @PUT
-    @Path("temporalPassword/{email}")
+    @Path("forgotPassword/")
     @Consumes({MediaType.APPLICATION_XML})
-    public void temporalPassword(@PathParam("email") String email) {
-        LOGGER.log(Level.INFO, "Metodo make temporal password de la clase UserFacade");
+    @Override
+    public void editForgotPassword(User user) {
+        LOGGER.log(Level.INFO, "Metodo editForgotPassword de la clase UserFacade");
         try {
-            List<User> users = super.getAllUsers();
-            super.temporalPassword(users, email);
-        } catch (ReadException | UpdateException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-            throw new InternalServerErrorException();
-        } catch (EmailNotExistException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-            //Mensaje de vuelta
+            super.editForgotPassword(user);
+        }catch (UpdateException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }catch (EmailNotExistException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NotFoundException(ex);
         }
     }
-
+    /**
+     * This method handles the petition of an user for a new password. 
+     * Checks if the current password is correct and refreshes it with a new one.
+     * @param oldPass The current password of an {@link User}.
+     * @param newPass The new password of an {@link User}.
+     * @param user An user who asked for a new password.
+     */
     @PUT
-    @Path("newPassword/{user}")
+    @Path("changePassword/{oldPass}/{newPass}")
     @Consumes({MediaType.APPLICATION_XML})
-    public void changePassword(@PathParam("user") User user) {
-        LOGGER.log(Level.INFO, "Metodo change password de la clase UserFacade");
+    @Override
+    public void editChangePassword(@PathParam("oldPass") String oldPass,@PathParam("newPass") String newPass,User user) {
+        LOGGER.log(Level.INFO, "Metodo editChangePassword de la clase UserFacade");
         try {
-            super.edit(user);
-        } catch (UpdateException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-            throw new InternalServerErrorException();
+            super.editChangePassword(oldPass,newPass,user);
+        }catch (UpdateException|EmailNotExistException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NotFoundException(ex);
         }
     }
-
+    /**
+     * This method checks if the credentials of the <code>User</code> are correct. If so the user is authenticated. 
+     * @param user An user trying to authenticate into the application.
+     * @return An user authenticated.
+     */
+    @GET
+    @Path("loginUser/{login}/{password}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User loginUser(@PathParam("login") String login,@PathParam("password") String password) {
+        //Este método es para comprobar un login. En la abstracta se mira que coincide la user y password
+        LOGGER.log(Level.INFO, "Metodo loginUser de la clase UserFacade");
+        try {
+            return super.loginUser(login,password);
+        } catch (LoginNotExistException ex) {
+            System.out.println(ex.getMessage());
+            throw new ForbiddenException(ex);
+        }catch (ReadException ex1) {
+            throw new InternalServerErrorException(ex1.getMessage());
+        }catch (IOException ex2) {
+            throw new InternalServerErrorException(ex2);
+        }
+    }
     /**
      * Gets an {@link EntityManager} instance.
-     *
      * @return An {@link EntityManager} instance.
      */
     @Override

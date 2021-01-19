@@ -25,7 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "findAllArmys",
             query = "SELECT a FROM Army a"),
     @NamedQuery(name = "findArmyByName",
-            query = "SELECT a FROM Army a WHERE a.name = :name")
+            query = "SELECT a FROM Army a WHERE a.name = :name"),
+    @NamedQuery(name = "findArmysBySector",
+            query = "SELECT a FROM Army a WHERE a.sector = :sector")
 })
 @XmlRootElement
 public class Army extends SectorContent implements Serializable {

@@ -54,8 +54,16 @@ public abstract class AbstractUserFacade extends AbstractFacade<User> {
      */
     public List<User> getAllUsers() throws ReadException {
         LOGGER.log(Level.INFO, "Metodo getAllUsers de la clase AbstractUserFacade");
+        List <User> users;
         try {
-            return getEntityManager().createNamedQuery("findAllUsers").getResultList();
+            //Antes de devolver vamos a vaciar las passwords
+            users = getEntityManager().createNamedQuery("findAllUsers").getResultList();
+            for(User u:users){
+                getEntityManager().detach(u);
+                u.setPassword("");
+            }
+                
+            return users;
         } catch (Exception e) {
             throw new ReadException("Error when trying to get all Users");
         }
@@ -119,7 +127,6 @@ public abstract class AbstractUserFacade extends AbstractFacade<User> {
         try {
             //Descifrar contrasenia
             oldPass = new String(PrivateKeyServer.descifrarTexto(oldPass));
-            System.out.println("La contraseña vieja es "+oldPass);
             //Hashear la contraseña vieja y comparar con la del user
             //No se si el user cuando entra en la aplicacion vuele con la password hasheada sino no hashear la old
             oldPass = Hashing.cifrarTexto(oldPass);
@@ -157,11 +164,12 @@ public abstract class AbstractUserFacade extends AbstractFacade<User> {
         User user = null;
         try {
             //Primero descifrar la password
-            password = new String(PrivateKeyServer.descifrarTexto(password));        
+            password = new String(PrivateKeyServer.descifrarTexto(password));
             //Hashear la password porque en la base de datos está hasheada
             password = Hashing.cifrarTexto(password);
-            return user = (User) getEntityManager().createNamedQuery("findLoginExists").setParameter("login",login)
+            user = (User) getEntityManager().createNamedQuery("findLoginExists").setParameter("login",login)
                     .setParameter("password",password).getSingleResult();
+            return user;
         }catch(NoResultException e){
                 throw new LoginNotExistException(); 
         }catch (RuntimeException ex) {
@@ -169,4 +177,14 @@ public abstract class AbstractUserFacade extends AbstractFacade<User> {
             throw new ReadException("Error during the operation");
         }
     }
+    /**
+     * This method is used to clean the password values of the users before they are sent to the client.
+     * @param users
+     * @return 
+     */
+  /*  private List<User> cleanPasswords(List<User> users){
+        for(User u:users)
+            u.setPassword("");
+        return users;
+    }*/
 }

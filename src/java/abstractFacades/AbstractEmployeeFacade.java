@@ -8,11 +8,11 @@ package abstractFacades;
 import security.Hashing;
 import entity.Employee;
 import entity.User;
+import entity.UserPrivilege;
 import exception.CreateException;
 import exception.EmailExistException;
 import exception.LoginExistException;
 import exception.ReadException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,8 +62,9 @@ public abstract class AbstractEmployeeFacade extends AbstractFacade<Employee> {
                 if (!user.isEmpty())
                     throw new LoginExistException();
                 else{
-                    //employee.setPassword(RSAClavePublica.getmyRSAClavePublica().descifrarTexto(employee.getPassword().getBytes()));
+                    employee.setPassword(new String(PrivateKeyServer.descifrarTexto(employee.getPassword())));
                     employee.setPassword(Hashing.cifrarTexto(employee.getPassword()));
+                    employee.setPrivilege(UserPrivilege.EMPLOYEE);
                     getEntityManager().persist(employee);
                 }
             }
@@ -78,8 +79,10 @@ public abstract class AbstractEmployeeFacade extends AbstractFacade<Employee> {
      */
     public List<Employee> getAllEmployees() throws ReadException {
         LOGGER.log(Level.INFO, "Metodo getAllEmployees de la clase AbstractEmployeeFacade");
+        List <Employee> employees;
         try {
-            return getEntityManager().createNamedQuery("findAllEmployees").getResultList();
+            employees = getEntityManager().createNamedQuery("findAllEmployees").getResultList();
+            return employees;
         } catch (Exception e) {
             throw new ReadException("Error when trying to get all employees");
         }
@@ -92,12 +95,40 @@ public abstract class AbstractEmployeeFacade extends AbstractFacade<Employee> {
      */
     public List<Employee> getEmployeesByName(String name) throws ReadException {
         LOGGER.log(Level.INFO, "Metodo getEmployeesByName de la clase AbstractEmployeeFacade");
+        List <Employee> employees;
         try {
-            return getEntityManager().createNamedQuery("findEmployeesByName")
+            employees =  getEntityManager().createNamedQuery("findEmployeesByName")
                     .setParameter("fullName", name)
                     .getResultList();
+            return employees;
         } catch (Exception e) {
             throw new ReadException("Error when trying to get employees by name");
         }
+    }
+    /**
+     * Gets an employee by name
+     * @param email The email of an user
+     * @return An user.
+     * @throws ReadException 
+     */
+    public Employee getEmployeeByEmail(String email) throws ReadException {
+
+        LOGGER.log(Level.INFO, "Metodo getEmployeeByEmail de la clase AbstractEmployeeFacade");
+        try {
+            return (Employee) getEntityManager().createNamedQuery("findEmployeeByEmail")
+                    .setParameter("email", email).getSingleResult();
+        } catch (Exception e) {
+            throw new ReadException("Error when trying to read employee by email");
+        }
+    }
+    /**
+     * This method is used to clean the password values of the users before they are sent to the client.
+     * @param users
+     * @return 
+     */
+    private List<Employee> cleanPasswords(List<Employee> employees){
+        for(Employee e:employees)
+            e.setPassword("");
+        return employees;
     }
 }

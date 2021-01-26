@@ -7,15 +7,16 @@ package abstractFacades;
 
 import security.Hashing;
 import exception.CreateException;
-import exception.ReadException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import entity.Boss;
 import entity.User;
+import entity.UserPrivilege;
 import exception.EmailExistException;
 import exception.LoginExistException;
+import security.PrivateKeyServer;
 
 /**
  * Restful service for {@link Boss}. Inherits from AbstractFacade. Contains createNamedQuerys from entity 
@@ -63,13 +64,14 @@ public abstract class AbstractBossFacade extends AbstractFacade<Boss> {
                     throw new LoginExistException();
                 else{
                     //descifrar la contraseña. Viene cifrada
-                    //boss.setPassword(RSAClavePublica.getmyRSAClavePublica().descifrarTexto(boss.getPassword().getBytes()));
+                    boss.setPassword(new String(PrivateKeyServer.descifrarTexto(boss.getPassword())));
                     //Hashear la contraseña antes de guardarla en la base de datos
                     boss.setPassword(Hashing.cifrarTexto(boss.getPassword()));
+                    boss.setPrivilege(UserPrivilege.BOSS);
                     getEntityManager().persist(boss);
                 }
             }
-        }catch (RuntimeException/*|IOException*/ e) {
+        }catch (RuntimeException e) {
             throw new CreateException("Error when trying to create " + boss.toString());
         }
     }   

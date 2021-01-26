@@ -130,7 +130,7 @@ public class UserFacadeREST extends AbstractUserFacade {
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_XML})
-    public List<User> findAllEmployees() {
+    public List<User> findAllUsers() {
         LOGGER.log(Level.INFO, "Metodo findAllUsers de la clase UsersFacade");
         try {
             return super.getAllUsers();

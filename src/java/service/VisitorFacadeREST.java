@@ -25,6 +25,8 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAllowedException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -65,7 +67,7 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Visitor visitor) {
-        LOGGER.log(Level.INFO, "Metodo create Boss de la clase BossFacade");
+        LOGGER.log(Level.INFO, "Metodo create Visitor de la clase BossFacade");
         try {
             super.createVisitor(visitor);
         } catch (CreateException ex) {
@@ -76,7 +78,7 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             throw new ForbiddenException(ex);
         } catch (LoginExistException ex) {
             Logger.getLogger(AbstractVisitorFacade.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ForbiddenException(ex);
+            throw new NotAllowedException(ex);
         }
     }
     /**
@@ -124,7 +126,7 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             return super.find(id);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
     }
     /**
@@ -140,7 +142,7 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             return super.getAllVisitors();
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
     }
     /**
@@ -157,7 +159,24 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
             return super.getVisitorsByName(name);
         } catch (ReadException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
+        }
+    }
+     /**
+     * This method finds all Area51 users.
+     * @return A list containing the users.
+     * @throws ReadException Thrown when any error produced during the read operation. 
+     */
+    public List<Visitor> getAllVisitors() throws ReadException {
+        LOGGER.log(Level.INFO, "Metodo getAllVisitors de la clase AbstractUserFacade");
+        List <Visitor> visitors;
+        try {
+            //Antes de devolver vamos a vaciar las passwords
+            visitors = getEntityManager().createNamedQuery("findAllVisitors").getResultList();
+            visitors = cleanPasswords(visitors);
+            return visitors;
+        } catch (Exception e) {
+            throw new ReadException("Error when trying to get all Users");
         }
     }
     /**
@@ -169,5 +188,14 @@ public class VisitorFacadeREST extends AbstractVisitorFacade {
         LOGGER.log(Level.INFO, "Metodo getEntityManager de la clase VisitorFacade");
         return em;
     }
-
+    /**
+     * This method is used to clean the password values of the users before they are sent to the client.
+     * @param users
+     * @return 
+     */
+    private List<Visitor> cleanPasswords(List<Visitor> visitors){
+        for(Visitor v:visitors)
+            v.setPassword("");
+        return visitors;
+    }
 }

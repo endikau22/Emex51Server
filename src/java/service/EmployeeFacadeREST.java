@@ -158,6 +158,25 @@ public class EmployeeFacadeREST extends AbstractEmployeeFacade {
         }
     }
     /**
+     * Gets a <code>List</code> {@link Employee} of Area51 with the same name as
+     * the one passed by the parameter.
+     *
+     * @param name A String with the name of a <code>Employee</code>.
+     * @return A list of <code>Employee</code>.
+     */
+    @GET
+    @Path("email/{email}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Employee findEmployeeByEmail(@PathParam("email") String email) {
+        try {
+            LOGGER.log(Level.INFO, "Metodo find por nombre de la clase VisitorFacade");
+            return super.getEmployeeByEmail(email);
+        } catch (ReadException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+    /**
      * Gets an {@link EntityManager} instance.
      * @return An {@link EntityManager} instance.
      */

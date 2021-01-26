@@ -56,11 +56,11 @@ public class Visitor extends User implements Serializable {
     /**
      * The response. True or false.
      */
-    private Boolean visitReply;
+    private Boolean visitReply=false;
     /**
      * Visited value. True or false.
      */
-    private Boolean visited;
+    private Boolean visited=false;
     /**
      * The date of the visitors visitReply.
      */
@@ -82,6 +82,7 @@ public class Visitor extends User implements Serializable {
      * Class constructor.
      */
     public Visitor() {
+        
     }
 
     /**

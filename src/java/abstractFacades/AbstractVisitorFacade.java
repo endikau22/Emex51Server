@@ -7,6 +7,7 @@ package abstractFacades;
 
 import security.Hashing;
 import entity.User;
+import entity.UserPrivilege;
 import entity.Visitor;
 import exception.CreateException;
 import exception.EmailExistException;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import service.BossFacadeREST;
+import security.PrivateKeyServer;
 
 /**
  * Restful service for <code>Visitor</code>. Inherits from AbstractFacade. Contains createNamadQuerys from entity Visitor in 
@@ -49,27 +50,47 @@ public abstract class AbstractVisitorFacade extends AbstractFacade<Visitor> {
      */  
     public List<Visitor> getAllVisitors() throws ReadException {
         LOGGER.log(Level.INFO, "Metodo getAllVisitors de la clase AbstractVisitorFacade");
+        List <Visitor> visitors;
         try {
-            return getEntityManager().createNamedQuery("findAllVisitors").getResultList();
+            visitors = getEntityManager().createNamedQuery("findAllVisitors").getResultList();
+            return visitors;
         } catch (Exception e) {
             throw new ReadException("Error when trying to get all visitors");
         }
     }
     /**
-     * Create method. Creates a new {@link Employee} instance using Hibernate. The latter executes an
-     * insert operation against a MySQL database.
-     * @param visitor An instance of {@link Visitor} entity class.
+     * Create method. Sends a create order to Hibernate. The latter executes an
+     * insert operation against a MySQL database. Creates a Visitor of Area51.
+     * @param boss An instance of {@link Visitor} entity class.
      */
-    public void createVisitor(Visitor visitor) throws CreateException, LoginExistException, EmailExistException {
-        LOGGER.log(Level.INFO, "Metodo create de la clase AbstractBossFacade");
+    public void createVisitor(Visitor visitor) throws CreateException,EmailExistException,LoginExistException{
+        LOGGER.log(Level.INFO, "Metodo create de la clase AbstractVisitorFacade");
+        List <User> user;
         try {
-            visitor.setPassword(Hashing.cifrarTexto(visitor.getPassword()));
-            super.checkLoginAndEmailNotExist(visitor.getLogin(), visitor.getEmail());
-            super.create(visitor);
-        } catch (ReadException e) {
+            //Mirar si el email está registrado
+             user = getEntityManager().createNamedQuery("findUserByEmail").
+                setParameter("email",visitor.getEmail()).getResultList();
+            if (!user.isEmpty())
+                throw new EmailExistException();
+            else{
+                //Mirar si el login ya está registrado
+                user = getEntityManager().createNamedQuery("findUserByLogin").
+                    setParameter("login",visitor.getLogin()).getResultList();
+                if (!user.isEmpty())
+                    throw new LoginExistException();
+                else{
+                    //descifrar la contraseña. Viene cifrada
+                    visitor.setPassword(new String(PrivateKeyServer.descifrarTexto(visitor.getPassword())));
+                    //Hashear la contraseña antes de guardarla en la base de datos
+                    visitor.setPassword(Hashing.cifrarTexto(visitor.getPassword()));
+                    visitor.setPrivilege(UserPrivilege.VISITOR);
+                    getEntityManager().persist(visitor);
+                }
+            }
+        }catch (RuntimeException e) {
             throw new CreateException("Error when trying to create " + visitor.toString());
         }
-    }
+    }   
     /**
      * This method finds a <code>Visitor</code> by the class attribute name.
      * @param name The class attribure name.
